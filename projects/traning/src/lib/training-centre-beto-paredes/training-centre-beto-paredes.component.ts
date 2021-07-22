@@ -337,7 +337,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.trainingCategoryData[0].count == this.trainingCategoryData[0].done && this.trainingCentreData.calendar_booking_data.length == 0 && JSON.parse(this.cookieService.get('gameplancall')) != 1) {
+    if (this.trainingCategoryData[0].count == this.trainingCategoryData[0].done && this.trainingCentreData.calendar_booking_data.length == 0 && JSON.parse(this.cookieService.get('gameplancall')) == 1) {
       this.gamePlanModal(this.paramslessonId, this.paramsTrainingId);
     }
   }
@@ -439,6 +439,8 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
 
   }
+
+  
   progressbtn(val, fullval) {
 
     if (fullval.audio_skippable == true) {
@@ -471,7 +473,9 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   gamePlanModal(lessonid, trainingid,) {
 
 
-    if (JSON.parse(this.cookieService.get('type')) != 'admin'||JSON.parse(this.cookieService.get('type')) != 'distributor' || JSON.parse(this.cookieService.get('gameplancall')) == 1) {
+    if (JSON.parse(this.cookieService.get('type')) == 'technological-consultant' && JSON.parse(this.cookieService.get('gameplancall')) == 1) {
+      console.log('hhiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii');
+
       const dialogRef = this.dialog.open(GameplanModalComponent, {
         panelClass: 'schedule_modal',
         width: '900px',
@@ -504,7 +508,6 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
         // // // // // console.log(this.lesson_content, 'this.lesson_content', this.lessonDataList[0])
         // if (this.lesson_content.is_done == null && this.lesson_content.has_lessonplan == 0) {
         //   // // // // // console.log(this.lesson_content.has_lessonplan, 'has_lessonplan')
-        //   this.addMarkedData(this.lessonDataList[0]._id, this.paramsId, this.nextdata, this.lesson_content.lession_title, this.nextlessondata);
         // }
         this.addMarkedData(this.lessonDataList);
 
@@ -577,7 +580,9 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
   addMarkedData(value) {
 
- 
+    console.log(value);
+
+
     let ind;
 
     let data: any = {}
@@ -597,6 +602,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
         previous_lesson_name: '',
         previous_lesson_id: '',
+        // productid:,
         use_type: JSON.parse(this.cookieService.get('type'))
 
       },
@@ -604,8 +610,19 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       "token": this.serverDetailsVal.jwttoken
     }
 
+    if (this.trainingCategoryData && this.trainingCategoryData != null && typeof (this.trainingCategoryData) != 'undefined' && this.trainingCategoryData.length > 0) {
+      for (const key in this.trainingCategoryData) {
+        if (this.paramsTrainingId == this.trainingCategoryData[key]._id) {
+          console.log(this.trainingCategoryData[key].product_id);
+          if (this.trainingCategoryData[key].product_id && this.trainingCategoryData[key].product_id != null && typeof (this.trainingCategoryData[key].product_id) != 'undefined' && this.trainingCategoryData[key].product_id != '') {
+            data.data.product_id = this.trainingCategoryData[key].product_id;
 
-    if (value.length > 0) {
+          }
+        }
+      }
+
+    }
+    if (value != null && typeof (value) != 'undefined' && value.length > 0) {
       for (let i in value) {
         ind = parseInt(i)
         if (value[i]._id == this.paramslessonId) {
@@ -632,6 +649,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       }
     }
 
+    console.log(data);
 
     let link = this.serverDetailsVal.serverUrl + this.formSourceVal.addMarkendpoint;
 
@@ -664,7 +682,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
                 let link2 = this.serverDetailsVal.serverUrl + this.traingupdateendpoint;
 
                 this.apiService.postDatawithoutToken(link2, data2).subscribe((response: any) => {
-                  console.log(response, 'respoese453')
+                  // console.log(response, 'respoese453')
 
                 })
               }
@@ -684,10 +702,10 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
         let link2 = this.serverDetailsVal.serverUrl + this.formSourceVal.complete_traing_data;
 
         this.apiService.postDatawithoutToken(link2, data2).subscribe((response: any) => {
-          console.log(response, 'respoese453')
+          // console.log(response, 'respoese453')
 
         })
-        console.log(associated_id, 'associated_id');
+        // console.log(associated_id, 'associated_id');
 
 
       }
@@ -717,7 +735,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
 
           // if (this.lesson_content.is_done == null) {
-          //   this.addMarkedData(this.lessonDataList[0]._id, this.paramsId, this.nextdata, this.lesson_content.lession_title, this.nextlessondata);
+          // 
           // }
           if (this.quizflag == false) {
             this.next_button_access = true;
@@ -831,7 +849,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     if (item.test_associate_training == 'Yes') {
       this.questionDetails(item._id, i, j);
     } else {
-      // this.addMarkedData(item._id, this.paramsId, i, this.lesson_title, this.nextlessondata);
+
     }
     if (j == 1) {
       setTimeout(() => {
@@ -892,7 +910,6 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
         let result: any = response;
         this.questionArray = result.results.questionanswerlist;
         if (this.questionArray.length == 0) {
-          // this.addMarkedData(this.currentlesson, this.paramsId, id, this.lesson_title, this.nextlessondata);
           this.questionArray.expanded = true;
         }
 
@@ -966,7 +983,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     }
 
 
-    if (value.length > 0) {
+    if (value != null && typeof (value) != 'undefined' && value.length > 0 && value.length > 0) {
       for (let i in value) {
         ind = parseInt(i)
         if (value[i]._id == this.paramslessonId) {
