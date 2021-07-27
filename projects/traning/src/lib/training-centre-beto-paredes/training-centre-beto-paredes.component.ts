@@ -440,7 +440,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
   }
 
-  
+
   progressbtn(val, fullval) {
 
     if (fullval.audio_skippable == true) {
@@ -599,7 +599,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
         next_lesson_name: '',
         next_lesson_id: '',
-
+        status: 1,
         previous_lesson_name: '',
         previous_lesson_id: '',
         // productid:,
