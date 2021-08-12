@@ -30,7 +30,8 @@
 
           <div (click)="nochildclick(item,'click')" [ngClass]="paramslessonId == item._id
               ? 'classlessonongoing':
-              (item.is_done == true ? 'classlessondone' : 'classlessonnotdone')">{{item.lession_title}}
+              
+              (item.is_done == true ? 'classlessondone' : 'classlessonnotdone')">{{item.lession_title}} 
             <!-- <span>{{item | json}}</span> -->
           </div>
 
@@ -407,7 +408,7 @@
                     </span>
                     {{item.catagory_name}}
                     <span class="countcls">
-                      ({{item.done}}/{{item.count}})
+                    {{item|json}}  ({{item.done}}/{{item.count}})
                     </span>
                     <span class="progresspercentagecls">{{(item.done/item.count)| percent
                       }}

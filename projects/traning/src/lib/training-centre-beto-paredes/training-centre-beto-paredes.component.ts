@@ -214,7 +214,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     this.trainingCategoryData = val.trainingcenterlist;
     this.trainingLessonData = this.trainingCentreData.alllessondata;
 
-    // console.log(this.trainingLessonData)
+    console.log(this.trainingLessonData)
 
 
     if (this.activatedRoute.snapshot.params._id != null) {
@@ -235,8 +235,10 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     // this.lession_atachment_dataarray=this.trainingCentreData.lesson_content[0].lesson_attachements;
     for (const key in this.trainingCategoryData) {
       for (const d of val.done_lesson_by_cat_by_user) {
-        //
+        
         if (this.trainingCategoryData[key]._id == d.associated_training) {
+        console.log(this.trainingCategoryData,'this.trainingCategoryData',val.done_lesson_by_cat_by_user);
+
           this.trainingCategoryData[key].done = d.lessonsdone;
           this.trainingCategoryData[key].percentage = Math.floor((this.trainingCategoryData[key].done / this.trainingCategoryData[key].count) * 100);
           this.percentage = this.trainingCategoryData[key].percentage
@@ -272,13 +274,15 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
     for (const key in this.trainingLessonData) {
       // // // // // console.log(this.trainingLessonData[key], 'raju')
-      for (const iterator of this.trainingCentreData.donetraininglessondata) {
+      for (const iterator in this.trainingCentreData.donetraininglessondata) {
         // // // // // console.log(iterator)
         // // // // // console.log(iterator, 'this.trainingCategoryData[key]._id',this.trainingLessonData[key]._id)
-        if (iterator.lesson_id == this.trainingLessonData[key]._id) {
+        if (this.trainingCentreData.donetraininglessondata[iterator].lesson_id == this.trainingLessonData[key]._id) {
           // // console.log()
           // this.is_done[iterator.lesson_id] = true;
           this.trainingLessonData[key].is_done = true;
+          console.log(this.trainingLessonData[key],'trainingLessonData');
+          
         }
         // else {
         //   this.trainingLessonData[key].is_done = false;
@@ -674,7 +678,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
             if (key._id == this.complete_data[it].associated_training) {
               if (key.count == key.done) {
                 // this.reloadComponent()
-                console.log(this.complete_data[this.complete_data.length - 1].associated_training, 'complete_data', this.complete_data.length - 1);
+                // console.log(this.complete_data[this.complete_data.length - 1].associated_training, 'complete_data', this.complete_data.length - 1);
                 associated_id = this.complete_data[this.complete_data.length - 1].associated_training;
                 let data2: any = {
                   "user_id": this.userId,
