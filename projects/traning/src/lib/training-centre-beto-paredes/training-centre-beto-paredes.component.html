@@ -1,7 +1,7 @@
 <div class="training_progresscls">
   <div class="trainingheadercls_wrapper">
     <div class="trainingheadercls_inner">
-      <h2>You Have  {{ dividend }}/{{divisor}} Lesson Completed</h2>
+      <h2>You Have {{ dividend }}/{{divisor}} Lesson Completed</h2>
       <div class="trainingheadercls">
 
         <mat-progress-bar *ngIf="percentageprogressLoader" mode="determinate" value="{{((dividend/divisor)*100)}}">
@@ -27,13 +27,15 @@
         <mat-card-title class="mentortitle" id="lessonData">{{training_cat_name}}</mat-card-title>
         <div fxLayout="row" class="rowinner_block" *ngFor="let item of trainingLessonData
             ; let i=index;">
+          <ng-container (click)="openSignupPage()">
 
-          <div (click)="nochildclick(item,'click')" [ngClass]="paramslessonId == item._id
+            <div (click)="nochildclick(item,'click')" id={{item._id}} [ngClass]="paramslessonId == item._id
               ? 'classlessonongoing':
               
-              (item.is_done == true ? 'classlessondone' : 'classlessonnotdone')">{{item.lession_title}} 
-            <!-- <span>{{item | json}}</span> -->
-          </div>
+              (item.is_done == true ? 'classlessondone' : 'classlessonnotdone')">{{item.lession_title}}
+              <!-- <span>{{item | json}}</span> -->
+            </div>
+          </ng-container>
 
 
           <div class="" *ngIf="item._id==paramslessonId">
@@ -388,87 +390,88 @@
         </div>
       </mat-card-content>
     </mat-card>
-
     <mat-card class="alltrainingcls">
       <mat-card-content class="trainingcentercls trainingcenterclsupdate">
-        <div class="trainingcentercls_group">
-          <h2>Incomplete Lesson</h2>
-          <div class="trainingcentercls_box_wrapper">
-            <div class="trainingcentercls_box" *ngFor="let item of trainingCategoryData;let
+        <ng-container *ngIf="dividend/divisor!=1">
+
+          <div class="trainingcentercls_group">
+            <h2>Incomplete Lesson</h2>
+            <div class="trainingcentercls_box_wrapper">
+              <div class="trainingcentercls_box" *ngFor="let item of trainingCategoryData;let
             i= index">
 
-              <div *ngIf="item.count !=item.done">
-                <mat-list-item [ngClass]="paramsTrainingId == item._id ?
+                <div *ngIf="item.count !=item.done">
+                  <mat-list-item [ngClass]="paramsTrainingId == item._id ?
                     'classongoing':
                     ( item.percentage >=100 ? 'classdone' : 'classnotdone')" *ngIf="item.childcat.length==0"
-                  (click)="clicktrcataining(item._id,item.catagory_name)">
-                  <div class="categoryname">
-                    <span class="material-icons">
-                      folder_open
-                    </span>
-                    {{item.catagory_name}}
-                    <span class="countcls">
-                    {{item|json}}  ({{item.done}}/{{item.count}})
-                    </span>
-                    <span class="progresspercentagecls">{{(item.done/item.count)| percent
-                      }}
-                    </span>
-                  </div>
+                    (click)="clicktrcataining(item._id,item.catagory_name,i)">
+                    <div class="categoryname">
+                      <span class="material-icons">
+                        folder_open
+                      </span>
+                      {{item.catagory_name}}
+                      <span class="countcls">
+                        ({{item.done}}/{{item.count}})
+                      </span>
+                      <span class="progresspercentagecls">{{(item.done/item.count)| percent
+                        }}
+                      </span>
+                    </div>
 
 
-                  <div class="progressbarcls">
-                    <mat-progress-bar *ngIf="percentageprogressLoader" mode="determinate"
-                      value="{{((item.done/item.count)*100) }}">
-                    </mat-progress-bar>
+                    <div class="progressbarcls">
+                      <mat-progress-bar *ngIf="percentageprogressLoader" mode="determinate"
+                        value="{{((item.done/item.count)*100) }}">
+                      </mat-progress-bar>
 
-                  </div>
-                </mat-list-item>
+                    </div>
+                  </mat-list-item>
+                </div>
               </div>
             </div>
+
           </div>
-
-        </div>
-
-
-        <div class="trainingcentercls_group">
-          <h2>Complete Lesson</h2>
-          <div class="trainingcentercls_box_wrapper">
-            <div class="trainingcentercls_box" *ngFor="let item of trainingCategoryData;let
+        </ng-container>
+        <ng-container *ngIf="dividend!=0">
+          <div class="trainingcentercls_group">
+            <h2>Complete Lesson</h2>
+            <div class="trainingcentercls_box_wrapper">
+              <div class="trainingcentercls_box" *ngFor="let item of trainingCategoryData;let
             i= index">
 
-              <div *ngIf="item.count ==item.done">
-                <mat-list-item [ngClass]="paramsTrainingId == item._id ?
+                <div *ngIf="item.count ==item.done">
+                  <mat-list-item [ngClass]="paramsTrainingId == item._id ?
                     'classongoing':
                     ( item.percentage >=100 ? 'classdone' : 'classnotdone')" *ngIf="item.childcat.length==0"
-                  (click)="clicktrcataining(item._id,item.catagory_name)">
-                  <div class="categoryname">
-                    <span class="material-icons">
-                      folder_open
-                    </span>
-                    {{item.catagory_name}}
-                    <span class="countcls">
-                      ({{item.done}}/{{item.count}})
-                    </span>
-                    <span class="progresspercentagecls">{{(item.done/item.count)| percent
-                      }}
-                    </span>
-                  </div>
+                    (click)="clicktrcataining(item._id,item.catagory_name,i)">
+                    <div class="categoryname">
+                      <span class="material-icons">
+                        folder_open
+                      </span>
+                      {{item.catagory_name}}
+                      <span class="countcls">
+                        ({{item.done}}/{{item.count}})
+                      </span>
+                      <span class="progresspercentagecls">{{(item.done/item.count)| percent
+                        }}
+                      </span>
+                    </div>
 
 
-                  <div class="progressbarcls">
-                    <mat-progress-bar *ngIf="percentageprogressLoader" mode="determinate"
-                      value="{{((item.done/item.count)*100) }}">
-                    </mat-progress-bar>
+                    <div class="progressbarcls">
+                      <mat-progress-bar *ngIf="percentageprogressLoader" mode="determinate"
+                        value="{{((item.done/item.count)*100) }}">
+                      </mat-progress-bar>
 
-                  </div>
-                </mat-list-item>
+                    </div>
+                  </mat-list-item>
+                </div>
               </div>
             </div>
+
+
           </div>
-
-
-        </div>
-
+        </ng-container>
 
       </mat-card-content>
     </mat-card>

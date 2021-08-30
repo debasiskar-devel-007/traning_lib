@@ -344,7 +344,6 @@ export class TraningComponent implements OnInit {
         token: this.serverDetailsVal.jwttoken
       }
 
-      // // console.log(data, 'data++')
 
       if (this.dnaFlag == true) {
         if (this.hasLessonVal == true) {
@@ -406,6 +405,7 @@ export class TraningComponent implements OnInit {
         delete data.data.test_percentage;
         delete data.data.has_test_lesson;
       }
+      console.log(data, 'data++')
 
 
       this.apiService.postData(link, data).subscribe((res: any) => {

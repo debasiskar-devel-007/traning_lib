@@ -142,7 +142,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   @Input()
   set LessionFileEndpoint(val: any) {
     this.lessionFileEndpoint = val;
-    // // // console.log(this.lessionFileEndpoint, 'lessionFileEndpoint')
+    // // // // console.log(this.lessionFileEndpoint, 'lessionFileEndpoint')
   }
 
 
@@ -159,7 +159,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   @Input()
   set formSource(formSource: any) {
     this.formSourceVal = (formSource) || '<no name set>';
-    console.log(this.formSourceVal.complete_traing_data);
+    // console.log(this.formSourceVal.complete_traing_data);
   }
 
   @Input()
@@ -178,24 +178,24 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   @Input()
   set TrainingcatParamid(train_id: any) {
     this.trainingcatParamid = (train_id) || '<no name set>';
-    // // // // console.log(this.trainingcatParamid, 'trainingcatParamid')
+    // // // // // console.log(this.trainingcatParamid, 'trainingcatParamid')
   }
   @Input()
   set TraingUpdateEndpoint(val: any) {
     this.traingupdateendpoint = (val);
-    console.log(this.traingupdateendpoint);
+    // console.log(this.traingupdateendpoint);
   }
   @Input()
   set LessonParamId(lessid: any) {
     this.lessonParamId = (lessid) || '<no name set>';
-    // // // // console.log(this.lessonParamId, 'lessionParamId1111111')
+    // // // // // console.log(this.lessonParamId, 'lessionParamId1111111')
     if (this.activatedRoute.snapshot.params._id != null) {
       this.paramslessonId = this.activatedRoute.snapshot.params._id
     } else {
       this.paramslessonId = this.lessonParamId;
 
     }
-    // // // // console.log(this.paramslessonId,'???????????????????')
+    // // // // // console.log(this.paramslessonId,'???????????????????')
   }
   @Input()
   set TrainingCentreData(val) {
@@ -210,11 +210,11 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     this.quizflag = false;
     this.quizReportflag = false;
     this.trainingCentreData = val;
-    // // // // // console.log(this.trainingCentreData.lesson_content[0].lesson_attachements, 'librery')
+    // // // // // // console.log(this.trainingCentreData.lesson_content[0].lesson_attachements, 'librery')
     this.trainingCategoryData = val.trainingcenterlist;
     this.trainingLessonData = this.trainingCentreData.alllessondata;
 
-    console.log(this.trainingLessonData)
+    // console.log(this.trainingLessonData)
 
 
     if (this.activatedRoute.snapshot.params._id != null) {
@@ -224,20 +224,20 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
         this.paramslessonId = val.lesson_content[0]._id;
       }
     }
-    // // // console.log(this.paramslessonId, '_______________')
+    // // // // console.log(this.paramslessonId, '_______________')
 
     this.lessonDataList = val.alllessondata
     if (this.trainingCentreData != null && typeof (this.trainingCentreData) != 'undefined' && this.trainingCentreData.lesson_content != null && typeof (this.trainingCentreData.lesson_content) != 'undefined' && this.trainingCentreData.lesson_content.length > 0) {
-      console.log(this.trainingCentreData.lesson_content)
+      // console.log(this.trainingCentreData.lesson_content)
       this.lessonContentData = this.trainingCentreData.lesson_content[0];
     }
 
     // this.lession_atachment_dataarray=this.trainingCentreData.lesson_content[0].lesson_attachements;
     for (const key in this.trainingCategoryData) {
       for (const d of val.done_lesson_by_cat_by_user) {
-        
+
         if (this.trainingCategoryData[key]._id == d.associated_training) {
-        console.log(this.trainingCategoryData,'this.trainingCategoryData',val.done_lesson_by_cat_by_user);
+          // console.log(this.trainingCategoryData, 'this.trainingCategoryData', val.done_lesson_by_cat_by_user);
 
           this.trainingCategoryData[key].done = d.lessonsdone;
           this.trainingCategoryData[key].percentage = Math.floor((this.trainingCategoryData[key].done / this.trainingCategoryData[key].count) * 100);
@@ -250,15 +250,15 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       }
     }
 
-    // console.log(this.percentage, ' this.percentage__________________')
+    // // console.log(this.percentage, ' this.percentage__________________')
 
     for (let i in this.trainingCategoryData) {
       if (this.paramsTrainingId == this.trainingCategoryData[i]._id) {
-        // // // // // console.log(this.trainingCategoryData[i]._id, 'this.trainingCentreData[i]._id')
+        // // // // // // console.log(this.trainingCategoryData[i]._id, 'this.trainingCentreData[i]._id')
         this.training_cat_name = this.trainingCategoryData[i].catagory_name;
       }
     }
-    // // console.log(this.userId, 'this.userId')
+    // // // console.log(this.userId, 'this.userId')
     if (val.done_lesson_by_user && val.done_lesson_by_user.length != 0 && typeof (val.done_lesson_by_user[0].lessonsdone) != 'undefined') {
 
       this.dividend = val.done_lesson_by_user[0].lessonsdone;
@@ -270,19 +270,19 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       this.percentage = (this.trainingCategoryData[key].done / this.trainingCategoryData[key].count) * 100
     }
 
-    // console.log(this.percentage, 'percentage')
+    // // console.log(this.percentage, 'percentage')
 
     for (const key in this.trainingLessonData) {
-      // // // // // console.log(this.trainingLessonData[key], 'raju')
+      // // // // // // console.log(this.trainingLessonData[key], 'raju')
       for (const iterator in this.trainingCentreData.donetraininglessondata) {
-        // // // // // console.log(iterator)
-        // // // // // console.log(iterator, 'this.trainingCategoryData[key]._id',this.trainingLessonData[key]._id)
+        // // // // // // console.log(iterator)
+        // // // // // // console.log(iterator, 'this.trainingCategoryData[key]._id',this.trainingLessonData[key]._id)
         if (this.trainingCentreData.donetraininglessondata[iterator].lesson_id == this.trainingLessonData[key]._id) {
-          // // console.log()
+          // // // console.log()
           // this.is_done[iterator.lesson_id] = true;
           this.trainingLessonData[key].is_done = true;
-          console.log(this.trainingLessonData[key],'trainingLessonData');
-          
+          // console.log(this.trainingLessonData[key], 'trainingLessonData');
+
         }
         // else {
         //   this.trainingLessonData[key].is_done = false;
@@ -290,7 +290,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       }
     }
 
-    // console.log(this.trainingCategoryData, 'kkkkkkkkkkkk')
+    // // console.log(this.trainingCategoryData, 'kkkkkkkkkkkk')
 
 
 
@@ -344,57 +344,171 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     if (this.trainingCategoryData[0].count == this.trainingCategoryData[0].done && this.trainingCentreData.calendar_booking_data.length == 0 && JSON.parse(this.cookieService.get('gameplancall')) == 1) {
       this.gamePlanModal(this.paramslessonId, this.paramsTrainingId);
     }
+    // console.log(this.trainingCategoryData, 'this.trainingCategoryData');
+
+    // setTimeout(() => {
+    //   document.getElementById(this.libdataval.containerid).scrollIntoView({ behavior: "smooth" });
+    // }, 100);
   }
 
 
-  clicktrcataining(val, catagory_name: any) {
-    // console.log(catagory_name, '++--------+', val)
+  clicktrcataining(val, catagory_name: any, i) {
+
     this.progressSpinner.loading = true;
-    // // // console.log(this.trainingCategoryData[0], 'trainingCategoryData')
     let training_access_flag: boolean = false;
-    if ((this.trainingCategoryData[0].done == this.trainingCategoryData[0].count || this.trainingCategoryData[0]._id == val)) {
-      setTimeout(() => {
-        this.progress_bar = 1;
-      }, 100);
-      training_access_flag = true;
-      // this.router.navigateByUrl(this.trainingCenterRoute + val);
-      // this.training_cat_name = catagory_name;
-      setTimeout(() => {
-        document.getElementById("lessonData").scrollIntoView();
-        this.progress_bar = 0;
-      }, 1000);
+    let msg;
+    // let prioriti_training:any=
+
+    // if ((this.trainingCategoryData[0].done == this.trainingCategoryData[0].count || this.trainingCategoryData[0]._id == val)) {
+    //   setTimeout(() => {
+    //     this.progress_bar = 1;
+    //   }, 100);
+    //   training_access_flag = true;
+    //   // this.router.navigateByUrl(this.trainingCenterRoute + val);
+    //   // this.training_cat_name = catagory_name;
+    //   setTimeout(() => {
+    //     document.getElementById("lessonData").scrollIntoView();
+    //     this.progress_bar = 0;
+    //   }, 1000);
+    // }
+    // if (this.trainingCategoryData.length > 0) {
+    //   for (const key in this.trainingCategoryData) {
+    //     if (this.trainingCategoryData[key].done == this.trainingCategoryData[key].count&&this.trainingCategoryData[key].traingcompleteflag!=null&&this.trainingCategoryData[key].traingcompleteflag!=''&&typeof(this.trainingCategoryData[key].traingcompleteflag)!='undefined'&&this.trainingCategoryData[key].traingcompleteflag=='true') {
+    //       training_access_flag = true;
+    //     }
+    //   }
+    // }
+    // if (training_access_flag == true ||( this.trainingCategoryData[i]._id == val&&this.trainingCategoryData[i].traingcompleteflag=='true' )|| JSON.parse(this.cookieService.get("type")) == 'distributor' || JSON.parse(this.cookieService.get("type")) == 'admin') {
+    //   // // console.log(JSON.parse(this.cookieService.get("type")));
+
+    //   this.router.navigateByUrl(this.trainingCenterRoute + val);
+
+
+    //   this.training_cat_name = catagory_name;
+    // } else {
+    //   this.progressSpinner.loading = false;
+
+    //   this.snakBar.open("Sorry, You cannot access this training unless you complete the" + this.trainingCategoryData[0].catagory_name, 'Ok', {
+    //     duration: 4000
+    //   });
+    // }
+    // console.log(this.activatedRoute.snapshot.params.associated_training);
+
+    let duplicate_array: any = [];
+    if (this.trainingCategoryData.length > 0) {
+      for (const keys in this.trainingCategoryData) {
+        if (this.trainingCategoryData[keys].count != this.trainingCategoryData[keys].done && this.trainingCategoryData[keys].traingcompleteflag == 'true') {
+          duplicate_array.push(this.trainingCategoryData[keys])
+          console.log(this.trainingCategoryData[keys], 'llllllllllllllllllllllll');
+
+
+        }
+
+      }
+      console.log(duplicate_array);
+
+    }
+    if (this.trainingCategoryData.length > 0) {
+      for (const key in this.trainingCategoryData) {
+        if (this.trainingCategoryData[key].count == this.trainingCategoryData[key].done && this.trainingCategoryData[key].traingcompleteflag == 'true') {
+          training_access_flag = true;
+          console.log(this.trainingCategoryData[key], training_access_flag);
+
+        }
+
+      }
     }
 
-    if (training_access_flag == true || this.trainingCategoryData[0]._id == val || JSON.parse(this.cookieService.get("type")) == 'distributor' || JSON.parse(this.cookieService.get("type")) == 'admin') {
-      // console.log(JSON.parse(this.cookieService.get("type")));
+    console.log(this.trainingCategoryData, val, i);
 
+    if (this.activatedRoute.snapshot.params.associated_training == val) {
       this.router.navigateByUrl(this.trainingCenterRoute + val);
-
-
-      this.training_cat_name = catagory_name;
-    } else {
       this.progressSpinner.loading = false;
 
-      this.snakBar.open("Sorry, You cannot access this training unless you complete the" + this.trainingCategoryData[0].catagory_name, 'Ok', {
-        duration: 4000
-      });
+      return;
     }
+    else if (i == 0) {
+      this.router.navigateByUrl(this.trainingCenterRoute + val);
+      this.progressSpinner.loading = false;
+
+      return;
+    }
+    else if (this.trainingCategoryData[i].done == this.trainingCategoryData[i].count) {
+      this.router.navigateByUrl(this.trainingCenterRoute + val);
+    }
+    else if (i > 0 && this.trainingCategoryData[i - 1].done == this.trainingCategoryData[i - 1].count) {
+      this.router.navigateByUrl(this.trainingCenterRoute + val);
+    }
+    else if (training_access_flag && this.trainingCategoryData[i].traingcompleteflag == 'false' && duplicate_array.length == 0) {
+      console.log(training_access_flag);
+
+      this.router.navigateByUrl(this.trainingCenterRoute + val);
+    }
+    else {
+
+      console.log(duplicate_array[i - 1]);
+      let msg2 = '';
+      if (duplicate_array.length > 0) {
+        for (const key in duplicate_array) {
+          if (duplicate_array.length == i && i > 1) {
+            // setTimeout(() => {
+            //   this.progressSpinner.loading = false;
+            msg = "Sorry, You cannot access this training unless you complete the" + duplicate_array[i - 2].catagory_name;
+
+            //   this.snakBar.open("Sorry, You cannot access this training unless you complete the" + duplicate_array[i - 2].catagory_name, 'Ok', {
+            //     duration: 4000
+            //   });
+            // }, 1000);
+          } else {
+            if (duplicate_array.length > 1) {
+              let msg1 = "Sorry, You cannot access this training unless you complete the";
+              msg2 += ',' + duplicate_array[key].catagory_name;
+              msg = msg1 + msg2
+            }
+            else {
+              console.log(duplicate_array[0]);
+              
+              let msg1 = "Sorry, You cannot access this training unless you complete the";
+              msg2 = duplicate_array[0].catagory_name;
+              msg = msg1 + msg2
+            }
+            // setTimeout(() => {
+            //   this.progressSpinner.loading = false;
+            //   this.snakBar.open("Sorry, You cannot access this training unless you complete the" + duplicate_array[key].catagory_name, 'Ok', {
+            //     duration: 4000
+            //   });
+            // }, 1000);
+          }
+        }
+      }
+
+
+      setTimeout(() => {
+        this.progressSpinner.loading = false;
+        this.snakBar.open(msg, 'Ok', {
+          duration: 4000
+        });
+      }, 1000);
+    }
+    // if (condition) {
+
+    // }
 
   }
 
   nochildclick(val: any, flag) {
-    // // // // console.log(val, 'nochiuld')
+    // // // // // console.log(val, 'nochiuld')
     this.router.navigateByUrl(this.trainingCenterRoute + this.paramsTrainingId + '/' + val._id);
 
   }
 
   playbtn(val: any, flag: any) {
-    // // // // console.log(val, '000000796e++', flag)
+    // // // // // console.log(val, '000000796e++', flag)
     let audioId: any = document.getElementById("audioPlayer_" + val);
     this.play_flag[val] = false;
     this.pause_flag[val] = true;
     audioId.play();
-    // // // // console.log(audioId, 'audioId')
+    // // // // // console.log(audioId, 'audioId')
   }
 
   pausebtn(val: any, flag: any) {
@@ -402,7 +516,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     audioId.pause();
     this.play_flag[val] = true;
     this.pause_flag[val] = false;
-    // // // // console.log(audioId, '+++++++++++++')
+    // // // // // console.log(audioId, '+++++++++++++')
   }
 
   replay(val) {
@@ -416,11 +530,11 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     var seconds: any = sec_num - (hours * 3600) - (minutes * 60);
     this.audio_time[val] = hours + ':' + minutes + ':' + seconds;
     this.audio_progress[val] = Math.floor((this.audio_currenttime[val] / this.audio_duration[val]) * 100);
-    // // // // console.log(this.audio_currenttime[val], 'audioId.currentTime')
+    // // // // // console.log(this.audio_currenttime[val], 'audioId.currentTime')
   }
   //skip ten sec (next and previous)
   skipTensec(val, item, flag) {
-    // // // // console.log(item, '+++++++++++====', flag)
+    // // // // // console.log(item, '+++++++++++====', flag)
     if (item.audio_skippable == false) {
       this.snakBar.open("You can't skip this audio", 'Ok', {
         duration: 1000
@@ -430,13 +544,13 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       if (flag == 'previos') {
         var audioId: any = document.getElementById("audioPlayer_" + val);
         audioId.currentTime = audioId.currentTime - Math.floor(10);
-        // // // // console.log(audioId.currentTime, 'previos')
+        // // // // // console.log(audioId.currentTime, 'previos')
 
       }
       if (flag == 'next') {
         var audioId: any = document.getElementById("audioPlayer_" + val);
         audioId.currentTime = audioId.currentTime + 10;
-        // // // // console.log(audioId.currentTime, 'next')
+        // // // // // console.log(audioId.currentTime, 'next')
 
       }
     }
@@ -458,12 +572,12 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       var minutes: any = Math.floor((sec_num - (hours * 3600)) / 60);
       var seconds: any = sec_num - (hours * 3600) - (minutes * 60);
       this.audio_time[val] = hours + ':' + minutes + ':' + seconds;
-      // // // // console.log(this.audio_currenttime[val], 'audio_currenttime');
+      // // // // // console.log(this.audio_currenttime[val], 'audio_currenttime');
       let audioId: any = document.getElementById("audioPlayer_" + val);
       audioId.currentTime = this.audio_currenttime[val];
 
-      // // // // console.log(this.audio_currenttime, 'audio_currenttime progressbtn fst__--------')
-      // // // // console.log(this.audio_progress[val], 'audio_progress progressbtn fst__--------')
+      // // // // // console.log(this.audio_currenttime, 'audio_currenttime progressbtn fst__--------')
+      // // // // // console.log(this.audio_progress[val], 'audio_progress progressbtn fst__--------')
     }
     else {
       this.snakBar.open("You can't skip this audio", 'Ok', {
@@ -478,7 +592,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
 
     if (JSON.parse(this.cookieService.get('type')) == 'technological-consultant' && JSON.parse(this.cookieService.get('gameplancall')) == 1) {
-      console.log('hhiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii');
+      // console.log('hhiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii');
 
       const dialogRef = this.dialog.open(GameplanModalComponent, {
         panelClass: 'schedule_modal',
@@ -488,9 +602,9 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       });
       dialogRef.disableClose = true;
       dialogRef.afterClosed().subscribe((result: any) => {
-        // // // console.log(result, 'result')
+        // // // // console.log(result, 'result')
         if (result.flag != null && result.flag == true) {
-          // // // console.log(result, 'gyyyyyyyyyyygygyg', this.googlescheduleroute + result.training_id + '/' + result.lesson_id);
+          // // // // console.log(result, 'gyyyyyyyyyyygygyg', this.googlescheduleroute + result.training_id + '/' + result.lesson_id);
           this.router.navigateByUrl(this.googlescheduleroute + result.training_id + '/' + result.lesson_id);
         }
 
@@ -499,7 +613,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
   }
   nextbutton(value: any) {
-    // // console.log(value, 'value', this.lessonDataList)
+    // // // console.log(value, 'value', this.lessonDataList)
     this.progressSpinner = {
       mode: 'indeterminate',
       loading: true,
@@ -509,9 +623,9 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     switch (value) {
       case 'next':
         // this.lessonDataList[this.Index].lession_title
-        // // // // // console.log(this.lesson_content, 'this.lesson_content', this.lessonDataList[0])
+        // // // // // // console.log(this.lesson_content, 'this.lesson_content', this.lessonDataList[0])
         // if (this.lesson_content.is_done == null && this.lesson_content.has_lessonplan == 0) {
-        //   // // // // // console.log(this.lesson_content.has_lessonplan, 'has_lessonplan')
+        //   // // // // // // console.log(this.lesson_content.has_lessonplan, 'has_lessonplan')
         // }
         this.addMarkedData(this.lessonDataList);
 
@@ -521,7 +635,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
             if (this.lessonDataList[b]._id == this.lessonContentData._id)
               ind = (parseInt(b) + 1);
           }
-          // // // // // console.log('ind', ind);
+          // // // // // // console.log('ind', ind);
           if (this.lessonDataList[ind] != null) {
 
             setTimeout(() => {
@@ -533,9 +647,9 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
           } else {
 
             for (var n = 0; n < this.trainingCategoryData.length; n++) {
-              // // // // // console.log('++>>>>', this.trainingCategoryList[n], this.trainingCategoryList[n + 1], this.trainingCategoryList[0]._id)
+              // // // // // // console.log('++>>>>', this.trainingCategoryList[n], this.trainingCategoryList[n + 1], this.trainingCategoryList[0]._id)
               if (this.paramsTrainingId == this.trainingCategoryData[n]._id && this.trainingCategoryData[n + 1] != null) {
-                // // // // // console.log('-->>>>', this.trainingCategoryList[n + 1])
+                // // // // // // console.log('-->>>>', this.trainingCategoryList[n + 1])
 
                 this.router.navigateByUrl(this.trainingCenterRoute + this.trainingCategoryData[n + 1]._id);
                 this.progressSpinner = {
@@ -545,7 +659,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
                 };
               }
               else {
-                // // // // // console.log('++>>>>', this.trainingCategoryList[n]._id, this.trainingCategoryList[n + 1]._id,)
+                // // // // // // console.log('++>>>>', this.trainingCategoryList[n]._id, this.trainingCategoryList[n + 1]._id,)
                 // '>>>',this.trainingCategoryList[0]._id)
                 this.progressLoader = false;
                 this.router.navigateByUrl(this.trainingCenterRoute + this.trainingCategoryData[0]._id);
@@ -555,11 +669,11 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
           }
         }, 500);
-        // // // // // console.log("souresh test", this.nextdata);
+        // // // // // // console.log("souresh test", this.nextdata);
         // }
         break;
       case 'prev':
-        // // // // // console.log(this.lessonDataList[this.Index], '>>>>>>>>>>>>')
+        // // // // // // console.log(this.lessonDataList[this.Index], '>>>>>>>>>>>>')
         let ind1: number = 0;
         setTimeout(() => {
           // if(this.Index<this.lessonDataList.length){
@@ -584,7 +698,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
   addMarkedData(value) {
 
-    console.log(value);
+    // console.log(value);
 
 
     let ind;
@@ -617,7 +731,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     if (this.trainingCategoryData && this.trainingCategoryData != null && typeof (this.trainingCategoryData) != 'undefined' && this.trainingCategoryData.length > 0) {
       for (const key in this.trainingCategoryData) {
         if (this.paramsTrainingId == this.trainingCategoryData[key]._id) {
-          console.log(this.trainingCategoryData[key].product_id);
+          // console.log(this.trainingCategoryData[key].product_id);
           if (this.trainingCategoryData[key].product_id && this.trainingCategoryData[key].product_id != null && typeof (this.trainingCategoryData[key].product_id) != 'undefined' && this.trainingCategoryData[key].product_id != '') {
             data.data.product_id = this.trainingCategoryData[key].product_id;
 
@@ -631,7 +745,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
         ind = parseInt(i)
         if (value[i]._id == this.paramslessonId) {
 
-          // // console.log(value[ind].lession_title, '__________________+++++++++++++++++++++')
+          // // // console.log(value[ind].lession_title, '__________________+++++++++++++++++++++')
 
           if (value[ind + 1] != null && typeof (value[ind + 1]) != 'undefined') {
             data.data.current_lesson_name = value[ind + 1].lession_title;
@@ -649,16 +763,16 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
           }
         }
 
-        // // console.log(data, '+++++++++++++')
+        // // // console.log(data, '+++++++++++++')
       }
     }
 
-    console.log(data);
+    // console.log(data);
 
     let link = this.serverDetailsVal.serverUrl + this.formSourceVal.addMarkendpoint;
 
     this.apiService.postData(link, data).subscribe((response: any) => {
-      console.log(response, 'respoese453')
+      // console.log(response, 'respoese453')
       if (response.status == "success") {
 
         let link1 = this.serverDetailsVal.serverUrl + this.traingupdateendpoint;
@@ -667,18 +781,18 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
         }
 
         this.apiService.postDatawithoutToken(link1, data1).subscribe((response: any) => {
-          // console.log(response, 'respoese453')
+          // // console.log(response, 'respoese453')
 
         })
         let associated_id;
         let completeassociated_id;
         for (const key of this.trainingCategoryData) {
           for (const it in this.complete_data) {
-            console.log(this.trainingCategoryData)
+            // console.log(this.trainingCategoryData)
             if (key._id == this.complete_data[it].associated_training) {
               if (key.count == key.done) {
                 // this.reloadComponent()
-                // console.log(this.complete_data[this.complete_data.length - 1].associated_training, 'complete_data', this.complete_data.length - 1);
+                // // console.log(this.complete_data[this.complete_data.length - 1].associated_training, 'complete_data', this.complete_data.length - 1);
                 associated_id = this.complete_data[this.complete_data.length - 1].associated_training;
                 let data2: any = {
                   "user_id": this.userId,
@@ -686,7 +800,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
                 let link2 = this.serverDetailsVal.serverUrl + this.traingupdateendpoint;
 
                 this.apiService.postDatawithoutToken(link2, data2).subscribe((response: any) => {
-                  // console.log(response, 'respoese453')
+                  // // console.log(response, 'respoese453')
 
                 })
               }
@@ -706,10 +820,10 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
         let link2 = this.serverDetailsVal.serverUrl + this.formSourceVal.complete_traing_data;
 
         this.apiService.postDatawithoutToken(link2, data2).subscribe((response: any) => {
-          // console.log(response, 'respoese453')
+          // // console.log(response, 'respoese453')
 
         })
-        // console.log(associated_id, 'associated_id');
+        // // console.log(associated_id, 'associated_id');
 
 
       }
@@ -719,9 +833,9 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   }
 
   lessonQuiz(val: any) {
-    // // // console.log(val, 'kkkkkkkkkkkkkkbeto')
+    // // // // console.log(val, 'kkkkkkkkkkkkkkbeto')
     if (val != null && typeof (val.quiz_data) != 'undefined') {
-      // // // // // console.log(val, '++', this.AllTrainingData.quiz_data)
+      // // // // // // console.log(val, '++', this.AllTrainingData.quiz_data)
       var server_url: any = this.serverDetailsVal.serverUrl + this.lessonquizendpoint;
 
       const dialogRef = this.dialog.open(LessonQuizBetoparedesModalComponent, {
@@ -731,11 +845,11 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       });
       // dialogRef.disableClose = true;
       dialogRef.afterClosed().subscribe((result: any) => {
-        // console.log(result, 'result')
+        // // console.log(result, 'result')
         if (result == 'yes') {
           this.next_button_access = true;
           this.quizflag = false;
-          // console.log("next_button_access true++++",this.quizflag)
+          // // console.log("next_button_access true++++",this.quizflag)
 
 
           // if (this.lesson_content.is_done == null) {
@@ -743,11 +857,11 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
           // }
           if (this.quizflag == false) {
             this.next_button_access = true;
-            // // // console.log("next_button_access true")
+            // // // // console.log("next_button_access true")
           }
           else {
             this.next_button_access = false;
-            // // // console.log("next_button_access false")
+            // // // // console.log("next_button_access false")
           }
           this.getTrainingCenterlistFunctionwithLessonId(this.paramsId, this.userType, this.userId, this.paramslessonId)
 
@@ -759,7 +873,11 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   }
 
 
+  openSignupPage() {
 
+    document.getElementById("formdiv").scrollIntoView({ behavior: "smooth" });
+
+  }
   onprocess(val, fullval) {
 
     var audioId: any = document.getElementById("audioPlayer_" + val); // audio id
@@ -778,7 +896,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
 
     if (fullval.audio_skippable == false) {
-      // // // // console.log('true')
+      // // // // // console.log('true')
       this.disabled[val] = true;
     }
     // this.startEndTimeCalculation(val);
@@ -795,7 +913,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     var duration_hours: any = Math.floor(sec_duration_num / 3600);
     var duration_minutes: any = Math.floor((sec_duration_num - (duration_hours * 3600)) / 60);
     var duration_seconds: any = sec_duration_num - (duration_hours * 3600) - (duration_minutes * 60);
-    // // // // console.log(val, 'audio_duration')
+    // // // // // console.log(val, 'audio_duration')
     this.audio_end_time[val] = duration_hours + ':' + duration_minutes + ':' + duration_seconds;
 
   }
@@ -831,25 +949,25 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       this.pause_flag[val] = false;
 
       if (fullval.audio_skippable == false) {
-        // // // // console.log('true')
+        // // // // // console.log('true')
         this.disabled[val] = true
       }
 
       this.modelval[val] = 0;
-      // // // // console.log(this.modelval[val], 'ghjgh+++++++++');
+      // // // // // console.log(this.modelval[val], 'ghjgh+++++++++');
       this.modelval[val] = this.audio_progress[val];
 
       this.audio_currenttime[val] = (this.modelval[val] * this.audio_duration[val]) / 100;
       this.newaudio_currenttime[val] = this.audio_currenttime[val]
 
-      // // // // console.log(this.audio_duration[val], 'audio_currenttime')
+      // // // // // console.log(this.audio_duration[val], 'audio_currenttime')
 
 
     }, 1500);
 
   }
   audioended(item: any, i: any, j) {
-    // // // console.log(item, 'dcnjmkxdcvf')
+    // // // // console.log(item, 'dcnjmkxdcvf')
     if (item.test_associate_training == 'Yes') {
       this.questionDetails(item._id, i, j);
     } else {
@@ -872,12 +990,12 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       }
       if (item.audio_skippable != true) {
         this.apiService.postDatawithoutToken(audioendpoint, audio_data).subscribe(res => {
-          // // // console.log(res)
+          // // // // console.log(res)
           let result: any = res;
 
-          // // // // console.log(result, '+++++++')
+          // // // // // console.log(result, '+++++++')
           if (result.status == 'success') {
-            // // // console.log(item, 'dcnjmkxdcvf')
+            // // // // console.log(item, 'dcnjmkxdcvf')
             this.complete_audioflag[item.audio._id] = true;
 
             // if (this.complete_audioflag[item.audio._id] == true) {
@@ -896,7 +1014,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     }
   }
   questionDetails(id: any, i: any, lesson_title: any) {
-    // // // // console.log(this.allLessonDataList.length, 'this.allLessonDataList.length', i)
+    // // // // // console.log(this.allLessonDataList.length, 'this.allLessonDataList.length', i)
     this.lesson_title = lesson_title
     this.progressLoader = true;
     this.questionId = id;
@@ -992,7 +1110,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
         ind = parseInt(i)
         if (value[i]._id == this.paramslessonId) {
 
-          // // console.log(value[ind].lession_title, '__________________+++++++++++++++++++++')
+          // // // console.log(value[ind].lession_title, '__________________+++++++++++++++++++++')
 
           if (value[ind] != null && typeof (value[ind]) != 'undefined') {
             data.data.current_lesson_name = value[ind].lession_title;
@@ -1010,7 +1128,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
           }
         }
 
-        // // console.log(this.trainingCategoryData, '++======+++++++++++++')
+        // // // console.log(this.trainingCategoryData, '++======+++++++++++++')
       }
     }
     let t_percent: any = {}
@@ -1020,7 +1138,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     }
 
     this.apiService.postDatawithoutToken(link, data).subscribe(res => {
-      // console.log(res, 'trainingupdate');
+      // // console.log(res, 'trainingupdate');
       for (const key in this.trainingCategoryData) {
         if (this.trainingCategoryData[key]._id == this.paramsTrainingId && ((this.trainingCategoryData[key].done / this.trainingCategoryData[key].count) * 100) == 100) {
           this.trainingDataListener.emit({ action: 'update-success', result: data, training_percentage: t_percent })
@@ -1031,17 +1149,17 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     })
   }
   previewpdf(val, flag) {
-    // // // console.log(val, 'val');
+    // // // // console.log(val, 'val');
     if (flag == 'img') {
       this.previewimages = val
     }
     if (flag == 'pdf') {
       this.previewimages = val.images.converted_array;
-      // // // // // console.log(this.previewimages, 'PreviewContentDialog')
+      // // // // // // console.log(this.previewimages, 'PreviewContentDialog')
 
     }
     // this.previewimages = val.images.converted_array;
-    // // // // // console.log(this.previewimages, 'PreviewContentDialog')
+    // // // // // // console.log(this.previewimages, 'PreviewContentDialog')
 
     const dialogRef = this.dialog.open(PreviewContentDialogBeto, {
       panelClass: 'lesson_pdfmodal',
@@ -1050,14 +1168,14 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     });
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(result => {
-      // // // // // console.log(result, '>>>>>>>>>>');
+      // // // // // // console.log(result, '>>>>>>>>>>');
     });
   }
   downloadPdf(file: any, i) {
-    // // // // // console.log(file.file_type, 'fvgbnjkmgbh')
+    // // // // // // console.log(file.file_type, 'fvgbnjkmgbh')
     let fileendpoint: any;
 
-    // // // // // console.log(this.serverDetailsVal.serverUrl, 'serverDetailsVal')
+    // // // // // // console.log(this.serverDetailsVal.serverUrl, 'serverDetailsVal')
     fileendpoint = this.serverDetailsVal.serverUrl + this.lessionFileEndpoint.file_endpoint
     let file_data = {
       user_id: this.userId,
@@ -1071,14 +1189,14 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
     if (file.file_skippable != true) {
       this.apiService.postDatawithoutToken(fileendpoint, file_data).subscribe(res => {
-        // // // // console.log(res, 'res')
+        // // // // // console.log(res, 'res')
         let result: any = res;
         this.complete_fileflag[file.file._id] = false;
 
-        // // // // // console.log(this.complete_fileflag[file.file._id], '+++++++_______________')
+        // // // // // // console.log(this.complete_fileflag[file.file._id], '+++++++_______________')
         if (result.status == 'success') {
           this.complete_fileflag[file.file._id] = true
-          // // // // // console.log(this.complete_fileflag[file.file._id], '+++++++666______________')
+          // // // // // // console.log(this.complete_fileflag[file.file._id], '+++++++666______________')
           // this.next_button_access = true;
           let checked_status = 'success';
           let pdf_url = this.bucket_url + file.file.fileservername;
@@ -1103,8 +1221,8 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   }
 
   getTrainingCenterlistFunctionwithLessonId(associated_training: any, type: any, user_id: any, _id: any) {
-    // // // // // console.log('associated_training', associated_training, 'type', type, 'user_id', user_id, '_id', _id)
-    // console.log("mahitosh")
+    // // // // // // console.log('associated_training', associated_training, 'type', type, 'user_id', user_id, '_id', _id)
+    // // console.log("mahitosh")
     const link = this.serverDetailsVal.serverUrl + this.formSourceVal.gettrainingcenterlistendpoint;
     let data: any = {
       "condition": {
@@ -1117,13 +1235,13 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       "associated_training": associated_training
     }
     this.progressSpinner.loading = true
-    // // // // console.log(this.userId, 'this.userId')
+    // // // // // console.log(this.userId, 'this.userId')
     this.apiService.postDatawithoutToken(link, data).subscribe((response: any) => {
 
       if (response.status == "success") {
         this.getMarkDataButton(response.results);
 
-        // console.log("next_button_access true", response);
+        // // console.log("next_button_access true", response);
         this.progressSpinner = {
           mode: 'indeterminate',
           loading: false,
@@ -1136,7 +1254,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
 
   getMarkDataButton(val) {
-    // console.log(val, '+++bgggggggggggggggggg++++++');
+    // // console.log(val, '+++bgggggggggggggggggg++++++');
     this.next_button_access = false;
     this.quizReportflag = false;
     this.quizflag = false;
@@ -1151,7 +1269,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
     if (typeof (val.lesson_content) != 'undefined' && val.lesson_content.length > 0 && val.lesson_content[0].lesson_attachements != null && val.lesson_content[0].lesson_attachements.length > 0) {
       this.next_button_access = false;
-      // // console.log("if____block  1")
+      // // // console.log("if____block  1")
       for (const key in val.lesson_content[0].lesson_attachements) {
         if (val.lesson_content[0].lesson_attachements[key].file_skippable == false || val.lesson_content[0].lesson_attachements[key].audio_skippable == false || val.lesson_content[0].lesson_attachements[key].video_skippable == false) {
           mandetoryLessonFile.push(val.lesson_content[0].lesson_attachements[key])
@@ -1161,16 +1279,16 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
       completeLessonFile = completeLessonFile.concat(val.complete_lesson_files, val.complete_lesson_audio, val.complete_lesson_videos);
 
-      // // console.log(completeLessonFile, 'completeLessonFile')
+      // // // console.log(completeLessonFile, 'completeLessonFile')
       if (mandetoryLessonFile.length == completeLessonFile.length) {
         this.next_button_access = true;
         if (val.quiz_data.length > 0) {
           this.quizflag = true;
           this.next_button_access = false;
-          // // console.log('complete file')
+          // // // console.log('complete file')
 
           if (val.complete_lesson_quiz != null && val.complete_lesson_quiz.length > 0) {
-            // // console.log('complete quiz')
+            // // // console.log('complete quiz')
             this.next_button_access = true;
             this.quizflag = false;
             this.quizReportflag = true;
@@ -1189,7 +1307,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     else {
       this.next_button_access = true;
     }
-    // console.log(mandetoryLessonFile, 'mandetoryLessonFile')
+    // // console.log(mandetoryLessonFile, 'mandetoryLessonFile')
     if (mandetoryLessonFile.length == 0 && val.quiz_data && val.quiz_data.length != 0) {
       this.quizflag = true;
       this.next_button_access = false;
@@ -1200,7 +1318,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
           if (val.complete_lesson_quiz[i].lesson_id == val.quiz_data[key].lesson_id) {
             this.quizflag = false;
             this.next_button_access = true;
-            // console.log(this.quizflag,'keyVal')
+            // // console.log(this.quizflag,'keyVal')
 
           }
         }
@@ -1210,7 +1328,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
     let gamePlanFlag: boolean = false;
 
-    // // console.log(this.reportPercentage, 'this.next_button_access===')
+    // // // console.log(this.reportPercentage, 'this.next_button_access===')
 
     if (val.trainingcenterlist != null && typeof (val.trainingcenterlist) != 'undefined' && val.trainingcenterlist.length > 0 && val.trainingcenterlist[0].done == val.alllessondata.length) {
       gamePlanFlag = true;
@@ -1220,18 +1338,18 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       gamePlanFlag = false;
     }
 
-    // // console.log(gamePlanFlag, 'gamePlanFlag======++++++')
+    // // // console.log(gamePlanFlag, 'gamePlanFlag======++++++')
 
     // if (gamePlanFlag == true) {
     //   this.gamePlanModal(this.paramslessonId, this.paramsTrainingId);
     // }
-    // console.log(mandetoryLessonFile, 'hgftvy', completeLessonFile, 'lllllllllll',this.quizflag)
+    // // console.log(mandetoryLessonFile, 'hgftvy', completeLessonFile, 'lllllllllll',this.quizflag)
 
   }
 
 
   viewQuizResult(val) {
-    // // console.log(val, 'completeQuizData')
+    // // // console.log(val, 'completeQuizData')
     const dialogRef = this.dialog.open(QuizReportmodal, {
       panelClass: 'quiz_resultcls',
       width: '900px',
@@ -1243,7 +1361,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
 
   openLessonVideo(val: any) {
-    // // // // console.log(val)
+    // // // // // console.log(val)
     var url = this.video_base_url + val.video_url + '?modestbranding=1&autohide=0&showinfo=0&controls=0&listType=playlist&rel=0';
     var server_url = this.serverDetailsVal.serverUrl + this.lessionFileEndpoint.video_endpoint
 
@@ -1262,9 +1380,9 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
 
-      // // // // console.log(result, 'result********************', val)
+      // // // // // console.log(result, 'result********************', val)
       if (result != null && result == 'yes') {
-        // // // // // console.log()
+        // // // // // // console.log()
         this.getTrainingCenterlistFunctionwithLessonId(this.paramsId, this.userType, this.userId, this.paramslessonId);
 
 
@@ -1275,14 +1393,14 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
             if (this.trainingCentreData.quiz_data.length != 0) {
               this.quizflag = true;
               // this.next_button_access = false;
-              // // // console.log("next_button_access false")
+              // // // // console.log("next_button_access false")
 
             }
 
             if (this.trainingCentreData.complete_lesson_quiz != null && this.trainingCentreData.complete_lesson_quiz[0] != null && this.trainingCentreData.lesson_content.length > 0) {
               if (this.trainingCentreData.complete_lesson_quiz[0].lesson_id == this.trainingCentreData.lesson_content[0]._id) {
                 // this.next_button_access = true;
-                // // // console.log("next_button_access true")
+                // // // // console.log("next_button_access true")
 
                 // this.quizflag = false;
               }
@@ -1325,19 +1443,19 @@ export class PreviewContentDialogBeto {
 
   constructor(public dialogRef: MatDialogRef<PreviewContentDialogBeto>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData6, public snakBar: MatSnackBar, public apiService: ApiService, public router: Router) {
-    // // // // // console.log(data, 'data',)
+    // // // // // // console.log(data, 'data',)
     if (data.flag == 'pdf' && typeof (data.data.images.converted_array) != undefined) {
 
       this.previewImg = data.data.images.converted_array;
       this.image = this.bucket_url + data.data.images.converted_array[this.indeximg].name //set image for pdf
       this.pos = data.data.images.numberOfPages;
-      // // // // // console.log(this.previewImg[this.indeximg])
+      // // // // // // console.log(this.previewImg[this.indeximg])
 
     }
     if (data.flag == 'img') {
       this.image1 = this.bucket_url + data.data.file.fileservername; //set img for imagefile
     }
-    // // // // // // console.log(this.quizData, '++')
+    // // // // // // // console.log(this.quizData, '++')
   }
   close(val) {                 //FOR MODAL CLOSE
     this.snakBar.open(' Your Lesson  is Complete After Download This File ..!', 'OK', {
@@ -1346,37 +1464,37 @@ export class PreviewContentDialogBeto {
   }
   //next previos btn
   nextprevbtn(flag) {
-    // // // // // console.log(flag, 'nextbtn',)
+    // // // // // // console.log(flag, 'nextbtn',)
     switch (flag) {
       case 'prev': // for prevous case
         if (this.indeximg == 0 || this.indeximg < 0) {
-          // // // // // console.log(flag, '++++++++++++ if')
+          // // // // // // console.log(flag, '++++++++++++ if')
 
         } else {
-          // // // // // console.log(flag, '++++++++++++ else')
+          // // // // // // console.log(flag, '++++++++++++ else')
           this.indeximg = this.indeximg - 1;
           this.image = this.bucket_url + this.previewImg[this.indeximg].name
           this.page = this.previewImg[this.indeximg].page
-          // // // // // console.log('index+++++++', this.indeximg, this.previewImg.length)
+          // // // // // // console.log('index+++++++', this.indeximg, this.previewImg.length)
         }
         break;
       case 'next': // for next case
 
         if (this.previewImg.length == this.indeximg + 1) {
-          // // // // // console.log(flag, '++++++++++++ if')
+          // // // // // // console.log(flag, '++++++++++++ if')
         }
         else {
 
-          // // // // // console.log(flag, '++++++++++++ else')
+          // // // // // // console.log(flag, '++++++++++++ else')
           this.indeximg = this.indeximg + 1;
           this.image = this.bucket_url + this.previewImg[this.indeximg].name
           this.page = this.previewImg[this.indeximg].page
-          // // // // // console.log('index+++++++', this.indeximg + 1, this.previewImg.length)
+          // // // // // // console.log('index+++++++', this.indeximg + 1, this.previewImg.length)
         }
         break;
     }
 
-    // // // // // // console.log(flag, '++++++++++++', index)
+    // // // // // // // console.log(flag, '++++++++++++', index)
   };
 
 }
@@ -1397,13 +1515,13 @@ export class BetoparedesLessonVideoModalComponent {
 
   constructor(public dialogRef: MatDialogRef<BetoparedesLessonVideoModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData4, public snakBar: MatSnackBar, public apiService: ApiService, public router: Router, public activatedRoute: ActivatedRoute) {
-    // // // console.log(data, 'data_video')
+    // // // // console.log(data, 'data_video')
   }
   savePlayer(event) {
-    // // // // console.log(event, 'save', this.playerVars)
+    // // // // // console.log(event, 'save', this.playerVars)
   }
   closedModals() {
-    // // // // console.log()
+    // // // // // console.log()
     this.snakBar.open('Video Lesson Has Not Been Completed ...!', 'OK', {
       duration: 4000
     })
@@ -1411,10 +1529,10 @@ export class BetoparedesLessonVideoModalComponent {
   }
 
   onStateChange(event) {
-    // // // // console.log(this.data.data.video_skippable, 'data_video')
+    // // // // // console.log(this.data.data.video_skippable, 'data_video')
 
-    // // // console.log(event, 'state chn',)
-    // // // console.log(event.target.playerInfo.duration, '/\/\/\)', event.target.playerInfo.currentTime)
+    // // // // console.log(event, 'state chn',)
+    // // // // console.log(event.target.playerInfo.duration, '/\/\/\)', event.target.playerInfo.currentTime)
 
     //duration calculation
     var sec_num = parseInt(event.target.playerInfo.duration, 10);
@@ -1425,15 +1543,15 @@ export class BetoparedesLessonVideoModalComponent {
     if (hours < 10) { hours = "0" + hours; }
     if (minutes < 10) { minutes = "0" + minutes; }
     if (seconds < 10) { seconds = "0" + seconds; }
-    // // // // console.log(hours + ':' + minutes + ':' + seconds);
+    // // // // // console.log(hours + ':' + minutes + ':' + seconds);
     this.video_time = hours + ':' + minutes + ':' + seconds;
 
     // this.startTimer(event.target.playerInfo.duration);
 
-    // // // // console.log(event.target.playerInfo, 'change 1', event.data)
+    // // // // // console.log(event.target.playerInfo, 'change 1', event.data)
     if (event.data == 0 && event.target.playerInfo.duration >= event.target.playerInfo.currentTime) {
 
-      // // // // console.log(event.data, 'data 0', event.target.playerInfo)
+      // // // // // console.log(event.data, 'data 0', event.target.playerInfo)
 
       var endpoint = this.data.endpoint;
       var video_data: any = {
@@ -1444,11 +1562,11 @@ export class BetoparedesLessonVideoModalComponent {
         video_url: event.target.playerInfo.videoUrl,
         flag: 1,
       }
-      // // // // console.log(video_data, 'data===++')
+      // // // // // console.log(video_data, 'data===++')
       if (this.data.data.video_skippable != true) {
 
         this.apiService.postDatawithoutToken(endpoint, video_data).subscribe(res => {
-          // // // console.log(res, 'frghjk++++++++++', event.target.playerInfo.videoData.video_id)
+          // // // // console.log(res, 'frghjk++++++++++', event.target.playerInfo.videoData.video_id)
           let result: any = res;
           if (result.status == 'success') {
             // getTrainingCenterlistFunctionwithLessonId(associated_training: any, type: any, user_id: any, _id: any)
@@ -1486,11 +1604,11 @@ export class LessonQuizBetoparedesModalComponent {
   }
   constructor(public dialogRef: MatDialogRef<LessonQuizBetoparedesModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData5, public snakBar: MatSnackBar, public apiService: ApiService, public router: Router) {
-    // // // console.log(data, 'data')
+    // // // // console.log(data, 'data')
     this.quizData = data.quiz_data[0];
     this.lessonData = data.lesson_data;
     this.indexVal = 1;
-    // // // // console.log(this.quizData, '++')
+    // // // // // console.log(this.quizData, '++')
   }
   closedModal() {
     this.data.flag = 'no';
@@ -1509,7 +1627,7 @@ export class LessonQuizBetoparedesModalComponent {
   //next quiz
   nextQuizRecord(val: any) {
     this.indexVal = this.indexVal + 1;
-    // // // // console.log(this.CheckedAnswer, 'CheckedAnswer', this.quizVal)
+    // // // // // console.log(this.CheckedAnswer, 'CheckedAnswer', this.quizVal)
     if (this.quizVal != '') {
       this.CheckedAnswer.push(this.quizVal)
       this.quizVal = '';
@@ -1527,11 +1645,11 @@ export class LessonQuizBetoparedesModalComponent {
         } else {
           this.quizData = '';
 
-          // // // // console.log(this.CheckedAnswer, '++== else ')
+          // // // // // console.log(this.CheckedAnswer, '++== else ')
           if (this.CheckedAnswer.length > 0) {
             for (let i in this.CheckedAnswer) {
               if (this.CheckedAnswer[i].isCorrect == 1) {
-                // // // // console.log(this.CheckedAnswer[i], '????chk')
+                // // // // // console.log(this.CheckedAnswer[i], '????chk')
                 this.correctQuizVal.push(this.CheckedAnswer[i]);
               }
             }
@@ -1555,7 +1673,7 @@ export class LessonQuizBetoparedesModalComponent {
   }
 
   saveQuizRecord(val) {
-    // // // // console.log(this.resultVal, 'resultVal')
+    // // // // // console.log(this.resultVal, 'resultVal')
     this.progressSpinner.loading = true;
     let link = this.data.server_url + '';
     let user_result: any = {
@@ -1575,7 +1693,7 @@ export class LessonQuizBetoparedesModalComponent {
       score: this.resultVal
     }
 
-    // // console.log(user_result, 'user_result')
+    // // // console.log(user_result, 'user_result')
     this.apiService.postDatawithoutToken(link, user_result).subscribe(res => {
       let result: any = res;
       if (result.status == 'success') {
@@ -1612,7 +1730,7 @@ export class GameplanModalComponent {
   constructor(public dialogRef: MatDialogRef<GameplanModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData7, public snakBar: MatSnackBar, public apiService: ApiService, public router: Router) {
     this.traingname = data.data[0].catagory_name
-    // // // console.log(data, this.traingname)
+    // // // // console.log(data, this.traingname)
 
   }
   onNoClick(): void {
@@ -1641,8 +1759,8 @@ export class QuizReportmodal {
   public traingname: any;
   constructor(public dialogRef: MatDialogRef<QuizReportmodal>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData8, public snakBar: MatSnackBar, public apiService: ApiService, public router: Router) {
-    // // console.log(data)
-    // // // console.log(data, this.traingname)
+    // // // console.log(data)
+    // // // // console.log(data, this.traingname)
   }
   closedModals() {
     this.dialogRef.close()
