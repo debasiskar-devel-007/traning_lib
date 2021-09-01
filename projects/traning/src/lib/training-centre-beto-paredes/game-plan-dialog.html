@@ -3,13 +3,17 @@
         Congratulation
     </h2>
     <span>
-        You have successfully complete <strong>{{traingname}}</strong> 
+        You have successfully complete 
+
+        <ng-container *ngFor="let item of traingname">
+            <strong *ngIf="item.traingcompleteflag=='true'"> {{item.catagory_name}}</strong>
+        </ng-container>
     </span>
     <div>
         <button (click)="onNoClick()" class="Lesson_Videos_Modalclodse"><span class="material-icons">
                 clear
             </span></button>
-        <button mat-raised-button (click)="gameplay(data)">
+        <button mat-raised-button (click)="gameplay(traingname)">
             Book Game Plan Meeting
         </button>
     </div>

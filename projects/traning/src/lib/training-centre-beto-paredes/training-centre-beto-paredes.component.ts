@@ -201,6 +201,8 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   set TrainingCentreData(val) {
 
     this.complete_data = val.done_lesson_by_cat_by_user;
+    console.log(val.done_lesson_by_cat_by_user, this.complete_data);
+
     this.paramsTrainingId = this.activatedRoute.snapshot.params.associated_training;
 
     this.audio_data = [];
@@ -341,7 +343,25 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.trainingCategoryData[0].count == this.trainingCategoryData[0].done && this.trainingCentreData.calendar_booking_data.length == 0 && JSON.parse(this.cookieService.get('gameplancall')) == 1) {
+
+    console.log(this.trainingCategoryData, 'llllllllllllllllllllllllllllllllll');
+    const result = this.trainingCategoryData.filter(word => word.percentage == 100);
+    console.log(result);
+    let imptraingarray = [];
+    if (this.trainingCategoryData.length > 0) {
+      for (const key in this.trainingCategoryData) {
+        if (
+          this.trainingCategoryData[key].traingcompleteflag == "true"
+        ) {
+          imptraingarray.push(this.trainingCategoryData[key])
+
+        }
+      }
+    }
+    console.log(imptraingarray);
+
+
+    if (imptraingarray.length == result.length && this.trainingCentreData.calendar_booking_data.length == 0 && JSON.parse(this.cookieService.get('gameplancall')) == 1) {
       this.gamePlanModal(this.paramslessonId, this.paramsTrainingId);
     }
     // console.log(this.trainingCategoryData, 'this.trainingCategoryData');
@@ -357,42 +377,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     this.progressSpinner.loading = true;
     let training_access_flag: boolean = false;
     let msg;
-    // let prioriti_training:any=
 
-    // if ((this.trainingCategoryData[0].done == this.trainingCategoryData[0].count || this.trainingCategoryData[0]._id == val)) {
-    //   setTimeout(() => {
-    //     this.progress_bar = 1;
-    //   }, 100);
-    //   training_access_flag = true;
-    //   // this.router.navigateByUrl(this.trainingCenterRoute + val);
-    //   // this.training_cat_name = catagory_name;
-    //   setTimeout(() => {
-    //     document.getElementById("lessonData").scrollIntoView();
-    //     this.progress_bar = 0;
-    //   }, 1000);
-    // }
-    // if (this.trainingCategoryData.length > 0) {
-    //   for (const key in this.trainingCategoryData) {
-    //     if (this.trainingCategoryData[key].done == this.trainingCategoryData[key].count&&this.trainingCategoryData[key].traingcompleteflag!=null&&this.trainingCategoryData[key].traingcompleteflag!=''&&typeof(this.trainingCategoryData[key].traingcompleteflag)!='undefined'&&this.trainingCategoryData[key].traingcompleteflag=='true') {
-    //       training_access_flag = true;
-    //     }
-    //   }
-    // }
-    // if (training_access_flag == true ||( this.trainingCategoryData[i]._id == val&&this.trainingCategoryData[i].traingcompleteflag=='true' )|| JSON.parse(this.cookieService.get("type")) == 'distributor' || JSON.parse(this.cookieService.get("type")) == 'admin') {
-    //   // // console.log(JSON.parse(this.cookieService.get("type")));
-
-    //   this.router.navigateByUrl(this.trainingCenterRoute + val);
-
-
-    //   this.training_cat_name = catagory_name;
-    // } else {
-    //   this.progressSpinner.loading = false;
-
-    //   this.snakBar.open("Sorry, You cannot access this training unless you complete the" + this.trainingCategoryData[0].catagory_name, 'Ok', {
-    //     duration: 4000
-    //   });
-    // }
-    // console.log(this.activatedRoute.snapshot.params.associated_training);
 
     let duplicate_array: any = [];
     if (this.trainingCategoryData.length > 0) {
@@ -451,33 +436,24 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       if (duplicate_array.length > 0) {
         for (const key in duplicate_array) {
           if (duplicate_array.length == i && i > 1) {
-            // setTimeout(() => {
-            //   this.progressSpinner.loading = false;
-            msg = "Sorry, You cannot access this training unless you complete the" + duplicate_array[i - 2].catagory_name;
 
-            //   this.snakBar.open("Sorry, You cannot access this training unless you complete the" + duplicate_array[i - 2].catagory_name, 'Ok', {
-            //     duration: 4000
-            //   });
-            // }, 1000);
+            msg = "Sorry, You cannot access this training unless you complete the " + duplicate_array[i - 2].catagory_name;
+
+
           } else {
             if (duplicate_array.length > 1) {
-              let msg1 = "Sorry, You cannot access this training unless you complete the";
-              msg2 += ',' + duplicate_array[key].catagory_name;
+              let msg1 = "Sorry, You cannot access this training unless you complete the ";
+              msg2 += duplicate_array[key].catagory_name + ',';
               msg = msg1 + msg2
             }
             else {
               console.log(duplicate_array[0]);
-              
-              let msg1 = "Sorry, You cannot access this training unless you complete the";
+
+              let msg1 = "Sorry, You cannot access this training unless you complete the ";
               msg2 = duplicate_array[0].catagory_name;
               msg = msg1 + msg2
             }
-            // setTimeout(() => {
-            //   this.progressSpinner.loading = false;
-            //   this.snakBar.open("Sorry, You cannot access this training unless you complete the" + duplicate_array[key].catagory_name, 'Ok', {
-            //     duration: 4000
-            //   });
-            // }, 1000);
+
           }
         }
       }
@@ -602,10 +578,10 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       });
       dialogRef.disableClose = true;
       dialogRef.afterClosed().subscribe((result: any) => {
-        // // // // console.log(result, 'result')
+       console.log(result, 'result')
         if (result.flag != null && result.flag == true) {
           // // // // console.log(result, 'gyyyyyyyyyyygygyg', this.googlescheduleroute + result.training_id + '/' + result.lesson_id);
-          this.router.navigateByUrl(this.googlescheduleroute + result.training_id + '/' + result.lesson_id);
+          this.router.navigateByUrl(this.googlescheduleroute + result.data[result.data.length-1]._id );
         }
 
       })
@@ -1729,7 +1705,9 @@ export class GameplanModalComponent {
   public traingname: any;
   constructor(public dialogRef: MatDialogRef<GameplanModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData7, public snakBar: MatSnackBar, public apiService: ApiService, public router: Router) {
-    this.traingname = data.data[0].catagory_name
+    console.log(data.data);
+
+    this.traingname = data.data
     // // // // console.log(data, this.traingname)
 
   }

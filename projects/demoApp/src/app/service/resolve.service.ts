@@ -92,6 +92,25 @@ export class ResolveService implements Resolve<any> {
         requestData.condition['user_id'] = this.userId;
       }
     }
+    if (route.params.associated_training != null && route.params.associated_training != '') {
+      // console.log(localStorage.getItem('productarray'));
+
+
+      // console.log(JSON.parse(localStorage.getItem('productarray'))[0]);
+    let product: any
+
+      if (this.cookiesService.get('productarray') &&this.cookiesService.get('productarray')!=null&& this.cookiesService.get('productarray') != '') {
+        product = this.cookiesService.get('productarray');
+        // console.log(product,'First');
+        let products = product.split(',')
+        console.log(products, "second");
+        requestData.condition.products = products
+      }
+
+
+      console.log(route);
+
+    }
     return new Promise((resolve) => {
       this._apiService.CustomRequest(route.data.requestcondition, route.data.endpoint).subscribe(api_object => {
         if (api_object) {

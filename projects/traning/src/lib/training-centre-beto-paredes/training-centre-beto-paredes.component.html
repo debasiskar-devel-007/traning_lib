@@ -432,7 +432,8 @@
 
           </div>
         </ng-container>
-        <ng-container *ngIf="dividend!=0">
+        <!-- {{ complete_data | json} -->
+        <ng-container *ngIf="complete_data[0]?.percent==100">
           <div class="trainingcentercls_group">
             <h2>Complete Lesson</h2>
             <div class="trainingcentercls_box_wrapper">
