@@ -345,10 +345,12 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   ngOnInit() {
 
     console.log(this.trainingCategoryData, 'llllllllllllllllllllllllllllllllll');
-    const result = this.trainingCategoryData.filter(word => word.percentage == 100);
-    console.log(result);
+    let results = this.trainingCategoryData.filter(word => word.percentage == 100);
+    console.log(results);
     let imptraingarray = [];
     if (this.trainingCategoryData.length > 0) {
+      console.log(this.trainingCategoryData);
+      
       for (const key in this.trainingCategoryData) {
         if (
           this.trainingCategoryData[key].traingcompleteflag == "true"
@@ -358,11 +360,11 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
         }
       }
     }
-    console.log(imptraingarray);
+    console.log(imptraingarray.length,results.length);
 
 
-    if (imptraingarray.length == result.length && this.trainingCentreData.calendar_booking_data.length == 0 && JSON.parse(this.cookieService.get('gameplancall')) == 1) {
-      this.gamePlanModal(this.paramslessonId, this.paramsTrainingId);
+    if (imptraingarray.length == results.length && this.trainingCentreData.calendar_booking_data.length == 0 && JSON.parse(this.cookieService.get('gameplancall')) == 1) {
+      // this.gamePlanModal(this.paramslessonId, this.paramsTrainingId);
     }
     // console.log(this.trainingCategoryData, 'this.trainingCategoryData');
 
@@ -847,7 +849,12 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       )
     }
   }
-
+  gotodashbord(){
+    // this.formSourceVal
+    console.log( this.formSourceVal,' this.formSourceVal');
+    this.router.navigateByUrl(this.formSourceVal.dashbord_route);
+    
+  }
 
   openSignupPage() {
 

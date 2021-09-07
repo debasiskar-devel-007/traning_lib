@@ -24,7 +24,9 @@
     <!-- for lesson  -->
     <mat-card class="alllession_cls">
       <mat-card-content class="trainingcentercls trainingcenterclsupdate">
-        <mat-card-title class="mentortitle" id="lessonData">{{training_cat_name}}</mat-card-title>
+        <mat-card-title class="mentortitle" id="lessonData">{{training_cat_name}} <button class="back_to_dashbord" matTooltip="Back To Dashbord"(click)="gotodashbord()">
+            Back To Dashbord
+          </button> </mat-card-title>
         <div fxLayout="row" class="rowinner_block" *ngFor="let item of trainingLessonData
             ; let i=index;">
           <ng-container (click)="openSignupPage()">

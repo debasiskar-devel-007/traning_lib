@@ -44,8 +44,8 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     "trainingcatcompletemailendpoint": "trainingcatcompletemail",
     "complete_traing_data":"complete-traing-data",
     gettrainingcenterlistendpoint: 'gettrainingcenterlist',
-    traingupdateendpoint: 'update-training-percentage'
-
+    traingupdateendpoint: 'update-training-percentage',
+    dashbord_route:'/technological-consultant/dashboard'
   }
   public traingupdateendpoint: any = 'done-training-sort-data'
   public trainingCenterRoute: any = "/training-center-beto-paredes/";
