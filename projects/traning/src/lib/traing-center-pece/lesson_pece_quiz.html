@@ -1,0 +1,76 @@
+<div class="generalmodalcls">
+    <div class="modal-content">
+        <div class="logowrapperouter">
+            <div class="logowrapper">
+            </div>
+        </div>
+
+        <mat-card class="lessonquizcls">
+            <mat-card-content *ngIf="quizData != null && quizData != ''" class="questioncls">
+
+                <h2 class="quizData">Question {{indexVal}} of {{data?.quiz_data.length}} :</h2>
+
+                <h3 class="quizData">{{quizData?.question}}</h3>
+                <br>
+
+
+                <mat-radio-group aria-labelledby="example-radio-group-label" class="exampleradiogroupcls"
+                    [(ngModel)]="quizVal">
+                    <mat-radio-button class="example-radio-button" *ngFor="let item of quizData.answer;let i=index"
+                        [value]="item">
+                        {{item.answer}}
+                    </mat-radio-button>
+                </mat-radio-group>
+
+            </mat-card-content>
+
+            <mat-card-content *ngIf="quizData == ''" class="quizanscls">
+                <div class="quizloadercls">
+                    <!-- <mat-progress-bar mode="indeterminate" *ngIf="progressSpinner.loading"></mat-progress-bar> -->
+                </div>
+                <h2 class="example-h2" style="text-align: center;">Quiz Result</h2>
+
+                <span>
+                    <h2 class="quiz_data">Total Question : {{data.quiz_data.length}}</h2>
+                    <h2 class="CheckedAnswer">Attempt Question : {{CheckedAnswer.length}}</h2>
+                    <h2 class="correctQuizVal">Correct Answer : {{correctQuizVal.length}}</h2>
+                    <h2 class="lesson_data">Target Percentage : {{data.lesson_data.test_percentage}}%</h2>
+                    <h2 class="resultVal">Your Score : {{resultVal}}%</h2>
+                    <h2 class="resultStatus">
+                        Status : <span *ngIf="resultStatus == 'Success'" style="color: forestgreen;"> {{resultStatus}}
+                        </span>
+                        <span *ngIf="resultStatus == 'Failed'" style="color:rgb(211, 52, 52);"> {{resultStatus}} </span>
+                    </h2>
+
+                </span>
+            </mat-card-content>
+
+            <span class="noquizcls" *ngIf="data.quiz_data.length == 0">
+                <h2>No Quiz Available</h2>
+            </span>
+
+
+        </mat-card>
+
+
+
+        <mat-dialog-actions class="modalbtncls">
+            <button class="btncancelcls" mat-raised-button color="accent" (click)="closedModal()"><span
+                    class="material-icons">
+                    clear
+                </span></button>
+
+            <button *ngIf="quizData == '' && resultStatus == 'Success'" class="btnbluecls" mat-raised-button
+                color="accent" (click)="saveQuizRecord(quizData)">Continue</button>
+
+            <button *ngIf="quizData == '' && resultStatus == 'Failed'" class="btnbluecls" mat-raised-button
+                color="primary" (click)="startQuizAgain(quizData)">Take Quiz Again</button>
+
+            <button *ngIf="quizData != null && quizData != ''" class="btnbluecls" mat-raised-button color="accent"
+                (click)="nextQuizRecord(quizData)">Next <span class="material-icons">
+                    arrow_forward_ios
+                </span></button>
+
+        </mat-dialog-actions>
+    </div>
+</div>

@@ -47,49 +47,46 @@
     </span>
   </span>
   <span class="searchbar">
-    
+
     <mat-form-field class="searchdiv">
       <mat-label>Search by Training Name</mat-label>
-      <input (keyup)="onKeypressEvent($event,'training')" type="text"
-             placeholder="Search by Training Name"
-             aria-label="Number"
-             matInput
-             [formControl]="myControl"
-             [matAutocomplete]="auto"
-             [(ngModel)]="searchjson.catagory_name_search_regex">
+      <input (keyup)="onKeypressEvent($event,'training')" type="text" placeholder="Search by Training Name"
+        aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto"
+        [(ngModel)]="searchjson.catagory_name_search_regex">
       <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let items of category_search" [value]="items.catagory_name_search | titlecase">{{items.catagory_name_search | titlecase}}
-  
+        <mat-option *ngFor="let items of category_search" [value]="items.catagory_name_search | titlecase">
+          {{items.catagory_name_search | titlecase}}
+
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-<!-- 
+    <!-- 
     <mat-form-field class="searchdiv">
       <input matInput placeholder="Search by Parent Category" [(ngModel)]="searchjson.parent_catagory_search_regex">
     </mat-form-field> -->
 
     <mat-form-field class="searchdiv">
       <mat-label>Search by Parent Category</mat-label>
-      <input (keyup)="onKeypressEvent($event,'parent_catagory')" type="text"
-             placeholder="Search by Parent Category"
-             aria-label="Number"
-             matInput
-             [formControl]="myControl1"
-             [matAutocomplete]="auto1"
-             [(ngModel)]="searchjson.parent_catagory_search_regex">
+      <input (keyup)="onKeypressEvent($event,'parent_catagory')" type="text" placeholder="Search by Parent Category"
+        aria-label="Number" matInput [formControl]="myControl1" [matAutocomplete]="auto1"
+        [(ngModel)]="searchjson.parent_catagory_search_regex">
       <mat-autocomplete #auto1="matAutocomplete">
         <mat-option *ngFor="let items of uniqueCardArr" [value]="items | titlecase ">{{items | titlecase }}
-  
+
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-    
-    <mat-form-field  appearance="fill">
-      <mat-label>Search by Product </mat-label>
-      <mat-select disableRipple [(ngModel)]="searchjson.product_name_serach">
-        <mat-option *ngFor="let item of product_name_serach" [value]='item.productname'>{{item.productname}}</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <ng-container
+      *ngIf="formSourceVal.hideproduct&&formSourceVal.hideproduct!=null&&formSourceVal.hideproduct!=''&&formSourceVal.hideproduct==false">
+      <mat-form-field appearance="fill">
+        <mat-label>Search by Product </mat-label>
+        <mat-select disableRipple [(ngModel)]="searchjson.product_name_serach">
+          <mat-option *ngFor="let item of product_name_serach" [value]='item.productname'>{{item.productname}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+
 
     <mat-form-field class="searchdiv">
       <mat-select placeholder="Search By Status" [(ngModel)]="status_search_regex">
@@ -159,10 +156,10 @@
       </ng-container>
       <ng-container matColumnDef="product_name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Name </th>
-        <td mat-cell *matCellDef="let row" title="Product Name"> 
-        <span *ngIf="row.product_name==null || row.product_name=='undefined'">None</span>
-        <span *ngIf="row.product_name!=null && row.product_name!='undefined'">{{row.product_name}}</span>
-      </td>
+        <td mat-cell *matCellDef="let row" title="Product Name">
+          <span *ngIf="row.product_name==null || row.product_name=='undefined'">None</span>
+          <span *ngIf="row.product_name!=null && row.product_name!='undefined'">{{row.product_name}}</span>
+        </td>
       </ng-container>
       <!-- Name Column -->
       <ng-container matColumnDef="priority">

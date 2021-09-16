@@ -21,6 +21,7 @@ import { LessonPlanMaterialComponent } from './lesson-plan-material/lesson-plan-
 import { ListQuizComponent } from './manage-quiz/list-quiz/list-quiz.component';
 import { AddEditQuizComponent } from './manage-quiz/add-edit-quiz/add-edit-quiz.component';
 import { TrainingCentreBetoParedesComponent } from './training-centre-beto-paredes/training-centre-beto-paredes.component';
+import { TraingCenterPeceComponent } from './traing-center-pece/traing-center-pece.component';
 
 const appRoutes: Routes = [
 
@@ -36,7 +37,7 @@ const appRoutes: Routes = [
         data: { requestcondition: { source: '', condition: {} }, endpoint: 'gettrainingcenterlist' }
     },
 
-// for beto paredes
+    // for beto paredes
 
     {
         path: 'training-center-beto-paredes/:associated_training/:_id', component: TrainingCentreBetoParedesComponent,
@@ -61,7 +62,17 @@ const appRoutes: Routes = [
         data: { requestcondition: { source: 'manage_quiz_question', condition: { status: 1 } }, endpoint: 'datalist' }
 
     },
-
+    //for pece 
+    {
+        path: 'training-center-pece/:associated_training/:_id', component: TraingCenterPeceComponent,
+        resolve: { trainingdata: ResolveService },
+        data: { requestcondition: { source: '', condition: {} }, endpoint: 'gettrainingcenterdatalist' }
+    },
+    {
+        path: 'training-center-pece/:associated_training', component: TraingCenterPeceComponent,
+        resolve: { trainingdata: ResolveService },
+        data: { requestcondition: { source: '', condition: {} }, endpoint: 'gettrainingcenterdatalist' }
+    },
 
 
 
@@ -76,7 +87,7 @@ const appRoutes: Routes = [
     {
         path: 'manage-lesson/list', component: ListLessionComponent,
         resolve: { lessionData: ResolveService },
-        data: { requestcondition: { source: 'manage_lession_view', condition: { 'is_trash': { $ne: 1 } } }, endpoint: 'getlessondata' }
+        data: { requestcondition: { source: 'manage_lession_view', condition: { 'is_trash': { $ne: 1 } } }, endpoint: 'getlessonlist' }
     },
 
     { path: 'manage-lesson/edit/:id', component: AddEditLessionsComponent },
@@ -86,7 +97,7 @@ const appRoutes: Routes = [
     {
         path: 'manage-training/list', component: ListingTrainingComponent,
         resolve: { trainingdata: ResolveService },
-        data: { requestcondition: { source: 'training_category_management_view', condition: { 'is_trash': { $ne: 1 } } }, endpoint: 'getalltrainingdata' }
+        data: { requestcondition: { source: 'training_category_management_view', condition: { 'is_trash': { $ne: 1 } } }, endpoint: 'getlisttraining' }
     },
 
     { path: 'manage-training/edit/:id', component: AddEditTrainingComponent },

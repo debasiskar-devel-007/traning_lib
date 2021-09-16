@@ -575,7 +575,9 @@
     text-transform: uppercase;
 }
 
-
+.lessontitleclass, .lessoncontent {
+    /* display: none; */
+}
 
 /* .lessontitleclass_0, .lessoncontent0 {
     display: block;
@@ -895,7 +897,7 @@ mat-slider {
     position: relative;
 }
 
-lib-training-centre-beto-paredes {
+lib-training-centre-pece {
     position: relative;
 }
 
@@ -906,4 +908,3 @@ lib-training-centre-beto-paredes {
     overflow: hidden;
     top: 0;
 }
-

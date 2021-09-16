@@ -421,13 +421,26 @@ export class ListlessonComponent implements OnInit {
         searchval["has_test_lesson"] = parseInt(this.searchjson.has_test_lesson);
       }
     }
+    console.log(searchval, 'searchval');
+
+    if (this.searchjson.lession_title_search_regex != null && typeof this.searchjson.lession_title_search_regex != 'undefined' && this.searchjson.lession_title_search_regex != '') {
+      searchval["lession_title_search"] = { $regex: this.searchjson.lession_title_search_regex.toLowerCase() }
+      searchval["lession_title_search"] = { $regex: this.searchjson.lession_title_search_regex.toLowerCase() }
+    }
+    if (this.searchjson.prerequisite_lession_search_regex != null && typeof this.searchjson.prerequisite_lession_search_regex != 'undefined' && this.searchjson.prerequisite_lession_search_regex != '') {
+      searchval["prerequisite_lession_search"] = { $regex: this.searchjson.prerequisite_lession_search_regex.toLowerCase() }
+    }
+
+    if (this.searchjson.associated_training_search_regex != null && typeof this.searchjson.associated_training_search_regex != 'undefined' && this.searchjson.associated_training_search_regex != '') {
+      searchval["associated_training_search"] = { $regex: this.searchjson.associated_training_search_regex.toLowerCase() }
+    }
 
 
-    searchval["lession_title_search"] = { $regex: this.searchjson.lession_title_search_regex.toLowerCase() }
-    searchval["lession_title_search"] = { $regex: this.searchjson.lession_title_search_regex.toLowerCase() }
-    searchval["prerequisite_lession_search"] = { $regex: this.searchjson.prerequisite_lession_search_regex.toLowerCase() }
 
-    searchval["associated_training_search"] = { $regex: this.searchjson.associated_training_search_regex.toLowerCase() }
+
+    // if (searchval['']) {
+
+    // }
 
 
     var data = {

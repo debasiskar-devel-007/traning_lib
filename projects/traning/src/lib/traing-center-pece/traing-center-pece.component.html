@@ -1,0 +1,233 @@
+<div class="training_progresscls">
+    <div class="trainingheadercls_wrapper">
+        <div class="trainingheadercls_inner">
+            <h2>You Have {{ allDonedata }}/{{divisor}} Lesson Completed</h2>
+            <div class="trainingheadercls">
+
+                <mat-progress-bar *ngIf="percentageprogressLoader" mode="determinate"
+                    value="{{((allDonedata/divisor)*100)}}">
+                </mat-progress-bar>
+                <h3>{{ (allDonedata/divisor)|percent }}</h3>
+            </div>
+        </div>
+
+        <div class='lodercls'>
+            <mat-progress-bar mode="indeterminate" *ngIf="progressSpinner.loading"></mat-progress-bar>
+
+        </div>
+    </div>
+</div>
+<div class="maincartcls_row_wrapper">
+    <mat-card class="maincartcls_row">
+        <mat-card class="alllession_cls">
+            <mat-card-content class="trainingcentercls trainingcenterclsupdate">
+                <mat-card-title class="mentortitle" id="lessonData">{{training_cat_name}}</mat-card-title>
+                <div fxLayout="row" class="rowinner_block" *ngFor="let item of trainingLessonData
+                  ; let i=index;">
+
+                    <div (click)="openlesson(item,'click',i)" id={{item._id}} [ngClass]="paramslessonId == item._id
+                  ? 'classlessonongoing':(item.is_done == true ? 'classlessondone' : 'classlessonnotdone')">
+                        {{item.lession_title}}
+
+                    </div>
+                    <div class="" *ngIf="item._id==paramslessonId &&lesson_content_data.length>0">
+                        <div class="lessoncontent" *ngIf="lesson_content_data!=null && lesson_content_data!=''">
+
+                            <div class="paragraphwrapper">
+                                <p [innerHtml]="lesson_content_data[0]?.typeHtml" class="paragraphcls"></p>
+                            </div>
+                            <div *ngFor="let item of lesson_content_data[0]?.lesson_attachements;let a=index"
+                                class="training_mainwrappercon">
+                                <div class="video_div afvmaindiv" *ngIf="item.type=='video' &&
+                                        item.type!=null && item.type!=undefined">
+                                    <div class="videomainwrapper">
+                                        <img src="https://img.youtube.com/vi/{{item.video_url}}/0.jpg" class="videoimg">
+                                        <img (click)="openLessonVideo(item)"
+                                            src="https://awsbackend-dev-patient-files-test.s3.amazonaws.com/icon-videoplay.png"
+                                            class="videoplayimg">
+
+                                    </div>
+                                    <div class="fileinfocls">
+                                        <div class="File_titlecls_wrapper">
+                                            <p class="videotitlecls">{{item.video_title}}</p>
+                                        </div>
+                                        <div class="descriptioncls">
+                                            <p *ngIf='item.video_description.length > 120 && shwmorevideoflg==true'>{{
+                                                item.video_description
+                                                }}
+                                            </p>
+                                            <p *ngIf='item.video_description.length > 120 && shwmorevideoflg==false'>{{
+                                                item.video_description
+                                                |
+                                                slice:0:120}}</p>
+                                            <p class='greatercls'
+                                                *ngIf='item.video_description.length > 120 && shwmorevideoflg==true'>{{
+                                                item.video_description }}</p>
+                                            <p *ngIf='item.video_description.length < 120'>{{ item.video_description }}
+                                            </p>
+                                            <span class="shwmrcls"
+                                                *ngIf='item.video_description.length > 120 && shwmorevideoflg==false'>
+                                                <button mat-raised-button (click)="shwmorevideoflg=true">
+                                                    Show More ..
+                                                </button>
+                                            </span>
+                                            <span class='shwlesscls'
+                                                *ngIf='item.video_description.length > 120 && shwmorevideoflg==true'>
+                                                <button mat-raised-button (click)="shwmorevideoflg=false">
+                                                    Show Less ..
+                                                </button>
+                                            </span>
+                                        </div>
+                                        <!-- <div class="mandetorycls_wrapper">
+                                            <span class="mandetorycls" *ngIf="item.video_skippable!=true">*This is a
+                                                mandetory video to
+                                                complete this lesson
+                                                <span *ngIf="complete_videoflag[item.video_url]==true"
+                                                    class="donetikcls">
+                                                    <img class="doneimgcls"
+                                                        src="https://all-frontend-assets.s3.amazonaws.com/dna-frontend-new/assets/images/Trainninglibary_right_icon.jpg"
+                                                        alt="">
+                                                </span>
+                                            </span>
+                                        </div> -->
+
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                            <mat-card class="banner1cls" *ngIf="quizflag==true">
+
+                                <div class="bannerclassmentor">
+
+                                    <mat-card-content>
+                                        Please complete the Quiz to proceed with the your Training.
+                                    </mat-card-content>
+                                    <div class="submitbtngroup">
+                                        <button mat-button type="button" class="submitbtn
+                                        reviewlesson" color="primary" (click)="lessonQuiz()">Take Quiz
+                                        </button>
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+
+                        <span>
+                            <button button mat-raised-button color="accent" type="button" class="markbtncls"
+                                (click)="nextbutton(item,'next',i)">Mark
+                                As Done
+                            </button>
+                        </span>
+
+                        <!-- <button button mat-raised-button color="accent" type="button" class="markbtncls"
+                            (click)="nextbutton('next',i)">
+                            Next
+                        </button> -->
+                    </div>
+
+
+
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="alltrainingcls">
+            <mat-card-content class="trainingcentercls trainingcenterclsupdate">
+                <ng-container>
+                    <div class="trainingcentercls_group">
+                        <h2>Incomplete Lesson</h2>
+                        <div class="trainingcentercls_box_wrapper">
+                            <div class="trainingcentercls_box" *ngFor="let item of trainingCategoryData;let
+                  i= index">
+
+                                <div *ngIf="item.percentage !=100">
+                                    <mat-list-item [ngClass]="paramsTrainingId == item._id ?'classongoing':'ssssss'"
+                                        (click)="clicktrcataining(item._id,item.catagory_name,i)">
+                                        <div class="categoryname">
+                                            <span class="material-icons">
+                                                folder_open
+                                            </span>
+                                            {{item.catagory_name}}
+                                            <ng-template [ngIf]="item?.done>0" [ngIfElse]="elsesss">
+                                                <span class="countcls">
+                                                    ({{item.done}}/{{item.count}})
+                                                </span>
+                                            </ng-template>
+
+                                            <ng-template #elsesss>
+                                                <span class="countcls">
+                                                    (0/{{item.count}})
+                                                </span>
+                                            </ng-template>
+
+
+                                        </div>
+                                        <ng-template [ngIf]="item.percentage>0" [ngIfElse]="loggedOut">
+                                            <span class="progresspercentagecls">
+                                                {{item.percentage}}%
+                                            </span>
+                                        </ng-template>
+
+                                        <ng-template #loggedOut>
+                                            <span class="progresspercentagecls">
+                                                0%
+                                            </span>
+                                        </ng-template>
+
+                                        <div class="progressbarcls">
+                                            <mat-progress-bar *ngIf="percentageprogressLoader" mode="determinate"
+                                                value="{{item.percentage }}">
+                                            </mat-progress-bar>
+
+                                        </div>
+                                    </mat-list-item>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </ng-container>
+                <ng-container>
+                    <div class="trainingcentercls_group">
+                        <h2>Complete Lesson</h2>
+                        <div class="trainingcentercls_box_wrapper">
+                            <div class="trainingcentercls_box" *ngFor="let item of trainingCategoryData;let
+                      i= index">
+
+                                <div *ngIf="item.percentage ==100">
+                                    <mat-list-item [ngClass]="paramsTrainingId == item._id ?
+                              'classongoing':
+                              ( item.percentage >=100 ? 'classdone' : 'classnotdone')"
+                                        (click)="clicktrcataining(item._id,item.catagory_name,i)">
+                                        <div class="categoryname">
+                                            <span class="material-icons">
+                                                folder_open
+                                            </span>
+                                            {{item.catagory_name}}
+                                            <span class="countcls">
+                                                ({{item.done}}/{{item.count}})
+                                            </span>
+                                            <span class="progresspercentagecls">{{item.percentage}}%
+                                            </span>
+                                        </div>
+
+
+                                        <div class="progressbarcls">
+                                            <mat-progress-bar *ngIf="percentageprogressLoader" mode="determinate"
+                                                value="{{item.percentage }}">
+                                            </mat-progress-bar>
+
+                                        </div>
+                                    </mat-list-item>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </ng-container>
+
+            </mat-card-content>
+        </mat-card>
+    </mat-card>
+</div>

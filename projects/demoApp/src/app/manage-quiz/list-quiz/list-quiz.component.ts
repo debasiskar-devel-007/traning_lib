@@ -19,7 +19,7 @@ export class ListQuizComponent implements OnInit {
 
   public serverDetails: any = {
     // "serverUrl": "https://obq0e0nxhk.execute-api.us-east-1.amazonaws.com/production/api/",
-    "serverUrl": 'https://obq0e0nxhk.execute-api.us-east-1.amazonaws.com/production/api/',
+    "serverUrl": 'https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/',
     "jwttoken": ""
   };
   public formSource: any = {

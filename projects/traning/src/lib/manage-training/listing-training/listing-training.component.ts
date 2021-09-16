@@ -149,14 +149,26 @@ export class ListingTrainingComponent implements OnInit {
       this.trainingCount();
     }, 500);
 
+
+
   }
 
   ngOnInit() {
     setTimeout(() => {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      this.productListData();
+      if (this.formSourceVal.hideproduct != true) {
+        this.productListData();
+      }
     }, 100);
+    console.log(this.displayedColumns, 'displayedColumns', this.formSourceVal);
+    if (this.formSourceVal.hideproduct == true) {
+      const index = this.displayedColumns.indexOf('product_name');
+      if (index > -1) {
+        this.displayedColumns.splice(index, 1);
+      }
+    }
+
   }
   trainingCount() {
     let link = this.serverDetailsVal.serverUrl + this.formSourceVal.trainingCountEndpoint;

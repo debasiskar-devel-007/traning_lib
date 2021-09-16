@@ -4,6 +4,10 @@
         "val": "doctor"
     },
     {
+        "name": "Practice",
+        "val": "practice"
+    },
+    {
         "name": "Biller",
         "val": "biller"
     },
@@ -12,27 +16,23 @@
         "val": "tech"
     },
     {
-        "name": "Doctor Office",
-        "val": "doctor_office"
+        "name":"Nurse Practitioner",
+        "val":"nurse_practitioner"
     },
     {
-        "name": "Diagnostic Admin",
-        "val": "diagnostic_admin"
+        "name":"Physician Assistant",
+        "val":"physician_assistant"
     },
     {
-        "name": "Doctor Group",
-        "val": "doctor_group"
+        "name":"Record Manager",
+        "val":"record_manager"
     },
     {
-        "name": "Distributors",
-        "val": "distributors"
+        "name":"Scheduling Manager",
+        "val":"scheduling_manager"
     },
     {
-        "name": "Sales_person",
-        "val": "sales_person"
-    },
-    {
-        "name": "Admin Biller",
-        "val": "admin_biller"
+        "name":"Admin",
+        "val":"admin"
     }
 ]

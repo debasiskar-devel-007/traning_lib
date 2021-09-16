@@ -24,20 +24,20 @@
     <!-- for lesson  -->
     <mat-card class="alllession_cls">
       <mat-card-content class="trainingcentercls trainingcenterclsupdate">
-        <mat-card-title class="mentortitle" id="lessonData">{{training_cat_name}} <button class="back_to_dashbord" matTooltip="Back To Dashbord"(click)="gotodashbord()">
+        <mat-card-title class="mentortitle" id="lessonData">{{training_cat_name}} <button class="back_to_dashbord"
+            matTooltip="Back To Dashbord" (click)="gotodashbord()">
             Back To Dashbord
           </button> </mat-card-title>
         <div fxLayout="row" class="rowinner_block" *ngFor="let item of trainingLessonData
             ; let i=index;">
-          <ng-container (click)="openSignupPage()">
 
-            <div (click)="nochildclick(item,'click')" id={{item._id}} [ngClass]="paramslessonId == item._id
+          <div (click)="nochildclick(item,'click')" id={{item._id}} [ngClass]="paramslessonId == item._id
               ? 'classlessonongoing':
               
               (item.is_done == true ? 'classlessondone' : 'classlessonnotdone')">{{item.lession_title}}
-              <!-- <span>{{item | json}}</span> -->
-            </div>
-          </ng-container>
+            <!-- <span>{{item | json}}</span> -->
+          </div>
+
 
 
           <div class="" *ngIf="item._id==paramslessonId">
@@ -376,13 +376,13 @@
               </div>
               <span *ngIf="item.is_done!=true">
                 <button *ngIf="next_button_access==true" button mat-raised-button color="accent" type="button"
-                  class="markbtncls" (click)="nextbutton('next')">Mark
+                  class="markbtncls" (click)="nextbutton('next',i)">Mark
                   As Done
                 </button>
               </span>
 
               <button *ngIf="item.is_done==true" button mat-raised-button color="accent" type="button"
-                class="markbtncls" (click)="nextbutton('next')">
+                class="markbtncls" (click)="nextbutton('next',i)">
                 Next
               </button>
             </div>
@@ -434,8 +434,8 @@
 
           </div>
         </ng-container>
-        <!-- {{ complete_data | json} -->
-        <ng-container *ngIf="complete_data[0]?.percent==100">
+        <!-- {{completeflag}} -->
+        <ng-container *ngIf="completeflag">
           <div class="trainingcentercls_group">
             <h2>Complete Lesson</h2>
             <div class="trainingcentercls_box_wrapper">

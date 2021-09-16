@@ -8,32 +8,33 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrls: ['./listing-training.component.css']
 })
 export class ListingTrainingComponent implements OnInit {
-  public jwtToken:any;
-public manageTrainingList : any = [];
-public editPageRoute : any="/manage-training/edit/";
-public addPageRoute : any="/manage-training/add";
-public searchSourceName : any="training_category_management_view";
-public serverDetails: any = {
-  "serverUrl": "https://z2oo2a8oq9.execute-api.us-east-1.amazonaws.com/dev/api1/",
-  "jwttoken": ""
-};
-public formSource: Object = {
-  "source":'training_category_management',
-  "endpoint": "trainingcatdelete",
-  "deleteManyEndpoint":"trainingcatdeletemany",
-  "searchEndpoint":"getalltrainingdata",
-  "statusUpdateEndpoint":"trainingcatstatusupdate",
-  "statusUpdateManyEndpoint":"trainingcatstatusupdate",
-  "statusUpdateSourceName":"training_category_management",
-  "trashDataSource":"training_category_management_view",
-  "retriveTrashDataEndpoint":"trainingcatrestoredata",
-  "retriveTrashDataSourceName":"training_category_management",
-  "trainingCountEndpoint" : "trainingcounts"
-}
-public productlistEndpoint='productlist'
-  constructor(public activatedRoute : ActivatedRoute,public cookie:CookieService) { 
+  public jwtToken: any;
+  public manageTrainingList: any = [];
+  public editPageRoute: any = "/manage-training/edit/";
+  public addPageRoute: any = "/manage-training/add";
+  public searchSourceName: any = "training_category_management_view";
+  public serverDetails: any = {
+    "serverUrl": "https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/",
+    "jwttoken": ""
+  };
+  public formSource: Object = {
+    "source": 'training_category_management',
+    "endpoint": "trainingcatdelete",
+    "deleteManyEndpoint": "trainingcatdeletemany",
+    "searchEndpoint": "getlisttraining",
+    "statusUpdateEndpoint": "trainingcatstatusupdate",
+    "statusUpdateManyEndpoint": "trainingcatstatusupdate",
+    "statusUpdateSourceName": "training_category_management",
+    "trashDataSource": "training_category_management_view",
+    "retriveTrashDataEndpoint": "trainingcatrestoredata",
+    "retriveTrashDataSourceName": "training_category_management",
+    "trainingCountEndpoint": "trainingcounts",
+    hideproduct: true
+  }
+  public productlistEndpoint = 'productlist'
+  constructor(public activatedRoute: ActivatedRoute, public cookie: CookieService) {
     this.jwtToken = cookie.get('jwtToken');
-    this.serverDetails.jwttoken=this.jwtToken;
+    this.serverDetails.jwttoken = this.jwtToken;
   }
 
   ngOnInit() {
@@ -42,7 +43,7 @@ public productlistEndpoint='productlist'
       let result: any;
       result = data.trainingdata.res;
       this.manageTrainingList = result;
-      
+
     })
   }
 

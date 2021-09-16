@@ -96,43 +96,30 @@ export class ListLessionComponent implements OnInit {
   public manageQuizRoute: any = "/manage-quiz/list/";
   public QuizPageRoute: any = '/quiz/list/';
   public bucket_url: any = {
-    url: 'https://training-centre-bucket.s3.amazonaws.com/lesson-files/'
+    url: 'https://pece-training-files.s3.amazonaws.com/dev-files/'
   };
-  public preview_url: any = 'https://obq0e0nxhk.execute-api.us-east-1.amazonaws.com/production/'
-  public preview_endpoint = 'api1/lesson-preview-data'
+  public preview_url: any = 'https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/'
+  public preview_endpoint = 'lesson-preview-data'
   public serverDetails: any = {
-    "serverUrl": 'https://z2oo2a8oq9.execute-api.us-east-1.amazonaws.com/dev/',
+    "serverUrl": 'https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/',
     "jwttoken": ""
   };
   public formSource: any = {
     "source": 'manage_lession',
-    "endpoint": "api1/lessondelete",
+    "endpoint": "lessondelete",
     "deleteManyEndpoint": "api1/lessondelete",
-    "searchEndpoint": "api1/getlessondata",
+    "searchEndpoint": "getlessonlist",
     "associatedTrainingSourceName": "training_category_management",
     "statusUpdateEndpoint": "api1/lessonstatusupdate",
     "statusUpdateManyEndpoint": "api1/lessonstatusupdate",
     "statusUpdateSourceName": "manage_lession",
     "trashDataSource": "manage_lession_view",
-    "retriveTrashDataEndpoint": "api1/lessonrestoredata",
+    "retriveTrashDataEndpoint": "lessonrestoredata",
     "retriveTrashDataSourceName": "manage_lession",
-    "trainingCountEndpoint": "api1/trainingcounts"
+    "trainingCountEndpoint": "trainingcounts"
   }
 
-  // public formSource: any = {
-  //   source: 'manage_lession',
-  //   endpoint: 'singledeletetrainingdata',
-  //   deleteManyEndpoint: 'multipledeletetrainingdata',
-  //   searchEndpoint: 'datalistwithouttoken',
-  //   associatedTrainingSourceName: 'manage_lession_view',
-  //   statusUpdateEndpoint: 'statusChange',
-  //   statusUpdateManyEndpoint: 'statusupdate',
-  //   statusUpdateSourceName: 'manage_lession',
-  //   trashDataSource: 'manage_lession_view',
-  //   retriveTrashDataEndpoint: 'restoretrashdata',
-  //   retriveTrashDataSourceName: 'manage_lession',
-  //   trainingCountEndpoint : 'trainingcounts'
-  // };
+  
   public jwtToken: any;
   public searchSourceName: any = "manage_lession_view";
   constructor(public activatedRoute: ActivatedRoute, public cookie: CookieService) {

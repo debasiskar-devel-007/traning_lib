@@ -124,8 +124,8 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   public traingupdateendpoint: any;
   public quizReportflag: boolean = false;
   public completeQuizData: any = [];
-  public complete_data: any;
-
+  public complete_data: any = [];
+  public completeflag: boolean = false;
   @Output() trainingDataListener = new EventEmitter<any>();
 
 
@@ -201,7 +201,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   set TrainingCentreData(val) {
 
     this.complete_data = val.done_lesson_by_cat_by_user;
-    console.log(val.done_lesson_by_cat_by_user, this.complete_data);
+    console.log(val.done_lesson_by_cat_by_user, 'item.count ==item.dones', this.trainingCategoryData, 'trainingCategoryData', this.complete_data);
 
     this.paramsTrainingId = this.activatedRoute.snapshot.params.associated_training;
 
@@ -212,6 +212,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     this.quizflag = false;
     this.quizReportflag = false;
     this.trainingCentreData = val;
+
     // // // // // // console.log(this.trainingCentreData.lesson_content[0].lesson_attachements, 'librery')
     this.trainingCategoryData = val.trainingcenterlist;
     this.trainingLessonData = this.trainingCentreData.alllessondata;
@@ -243,7 +244,10 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
           this.trainingCategoryData[key].done = d.lessonsdone;
           this.trainingCategoryData[key].percentage = Math.floor((this.trainingCategoryData[key].done / this.trainingCategoryData[key].count) * 100);
-          this.percentage = this.trainingCategoryData[key].percentage
+          this.percentage = this.trainingCategoryData[key].percentage;
+          // console.log(this.percentage,'percentage');
+
+
         }
       }
 
@@ -260,7 +264,16 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
         this.training_cat_name = this.trainingCategoryData[i].catagory_name;
       }
     }
-    // // // console.log(this.userId, 'this.userId')
+    if (this.trainingCategoryData.length > 0) {
+      for (const key in this.trainingCategoryData) {
+        if (this.trainingCategoryData[key].percentage == 100) {
+          this.completeflag = true;
+          break;
+        }
+      }
+
+    }
+    console.log(this.trainingCategoryData, 'this.trainingCategoryData')
     if (val.done_lesson_by_user && val.done_lesson_by_user.length != 0 && typeof (val.done_lesson_by_user[0].lessonsdone) != 'undefined') {
 
       this.dividend = val.done_lesson_by_user[0].lessonsdone;
@@ -336,8 +349,14 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
 
   constructor(public router: Router, public snakBar: MatSnackBar, public activatedRoute: ActivatedRoute, public apiService: ApiService, public cookieService: CookieService, public dialog: MatDialog, public sanitizer: DomSanitizer) {
-    this.userId = JSON.parse(this.cookieService.get('userid'));
-    this.userType = JSON.parse(this.cookieService.get('type'));
+    if (this.cookieService.get('userid') && JSON.parse(this.cookieService.get('userid')) != null && typeof JSON.parse(this.cookieService.get('userid')) != undefined && JSON.parse(this.cookieService.get('userid')) != '') {
+      this.userId = JSON.parse(this.cookieService.get('userid'));
+
+    }
+    if (this.cookieService.get('type')&&this.cookieService.get('type') != null && typeof JSON.parse(this.cookieService.get('type')) != undefined && JSON.parse(this.cookieService.get('type')) != '') {
+      this.userType = JSON.parse(this.cookieService.get('type'));
+
+    }
 
 
   }
@@ -350,7 +369,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     let imptraingarray = [];
     if (this.trainingCategoryData.length > 0) {
       console.log(this.trainingCategoryData);
-      
+
       for (const key in this.trainingCategoryData) {
         if (
           this.trainingCategoryData[key].traingcompleteflag == "true"
@@ -360,7 +379,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
         }
       }
     }
-    console.log(imptraingarray.length,results.length);
+    console.log(imptraingarray.length, results.length);
 
 
     if (imptraingarray.length == results.length && this.trainingCentreData.calendar_booking_data.length == 0 && JSON.parse(this.cookieService.get('gameplancall')) == 1) {
@@ -580,17 +599,17 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       });
       dialogRef.disableClose = true;
       dialogRef.afterClosed().subscribe((result: any) => {
-       console.log(result, 'result')
+        console.log(result, 'result')
         if (result.flag != null && result.flag == true) {
           // // // // console.log(result, 'gyyyyyyyyyyygygyg', this.googlescheduleroute + result.training_id + '/' + result.lesson_id);
-          this.router.navigateByUrl(this.googlescheduleroute + result.data[result.data.length-1]._id );
+          this.router.navigateByUrl(this.googlescheduleroute + result.data[result.data.length - 1]._id);
         }
 
       })
     }
 
   }
-  nextbutton(value: any) {
+  nextbutton(value: any, i) {
     // // // console.log(value, 'value', this.lessonDataList)
     this.progressSpinner = {
       mode: 'indeterminate',
@@ -600,12 +619,14 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
     switch (value) {
       case 'next':
+        console.log(this.trainingCategoryData, 'nextbutton', i);
+
         // this.lessonDataList[this.Index].lession_title
         // // // // // // console.log(this.lesson_content, 'this.lesson_content', this.lessonDataList[0])
         // if (this.lesson_content.is_done == null && this.lesson_content.has_lessonplan == 0) {
         //   // // // // // // console.log(this.lesson_content.has_lessonplan, 'has_lessonplan')
         // }
-        this.addMarkedData(this.lessonDataList);
+        this.addMarkedData(this.lessonDataList, i);
 
         let ind: any = 0;
         setTimeout(() => {
@@ -674,13 +695,13 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   }
 
 
-  addMarkedData(value) {
+  addMarkedData(value, i) {
 
-    // console.log(value);
+    console.log(value, 'addMarkedData', i);
 
 
     let ind;
-
+    let ind1;
     let data: any = {}
 
     data = {
@@ -719,30 +740,49 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
     }
     if (value != null && typeof (value) != 'undefined' && value.length > 0) {
-      for (let i in value) {
-        ind = parseInt(i)
-        if (value[i]._id == this.paramslessonId) {
+      // for (let i in value) {
+      ind = parseInt(i)
+      if (value[i]._id == this.paramslessonId) {
 
-          // // // console.log(value[ind].lession_title, '__________________+++++++++++++++++++++')
+        // // // console.log(value[ind].lession_title, '__________________+++++++++++++++++++++')
 
-          if (value[ind + 1] != null && typeof (value[ind + 1]) != 'undefined') {
-            data.data.current_lesson_name = value[ind + 1].lession_title;
-            data.data.current_lesson_id = value[ind + 1]._id;
-          }
-
-          if (value[ind] != null && typeof (value[ind]) != 'undefined') {
-            data.data.previous_lesson_name = value[ind].lession_title;
-            data.data.previous_lesson_id = value[ind]._id;
-          }
-
-          if (value[ind + 2] != null && typeof (value[ind + 2]) != 'undefined') {
-            data.data.next_lesson_name = value[ind + 2].lession_title;
-            data.data.next_lesson_id = value[ind + 2]._id;
-          }
+        if (value[ind + 1] != null && typeof (value[ind + 1]) != 'undefined') {
+          data.data.current_lesson_name = value[ind + 1].lession_title;
+          data.data.current_lesson_id = value[ind + 1]._id;
         }
 
-        // // // console.log(data, '+++++++++++++')
+        if (value[ind] != null && typeof (value[ind]) != 'undefined') {
+          data.data.previous_lesson_name = value[ind].lession_title;
+          data.data.previous_lesson_id = value[ind]._id;
+        }
+
+        if (value[ind + 2] != null && typeof (value[ind + 2]) != 'undefined') {
+          data.data.next_lesson_name = value[ind + 2].lession_title;
+          data.data.next_lesson_id = value[ind + 2]._id;
+        }
+        if (value[ind + 1] == null || typeof (value[ind + 1]) == 'undefined' || value[ind + 1] == '' || value[ind + 2] == null || typeof (value[ind + 2]) == 'undefined') {
+          if (this.trainingCategoryData.length > 0) {
+            for (const key in this.trainingCategoryData) {
+              if (this.trainingCategoryData[key]._id == value[ind].associated_training) {
+                ind1 = parseInt(key);
+                console.log(ind, value.length);
+
+                if (this.trainingCategoryData[ind1 + 1]) {
+                  data.data.next_lesson_name = this.trainingCategoryData[ind1 + 1].fasttraining_name;
+                  data.data.next_lesson_id = this.trainingCategoryData[ind1 + 1].fasttraining_id;
+                } else {
+                  data.data.next_lesson_name = 'Elevator Pitch'
+                  data.data.next_lesson_id = '6137288badc2b40009647016';
+                }
+
+              }
+            }
+          }
+        }
       }
+
+      // // // console.log(data, '+++++++++++++')
+
     }
 
     // console.log(data);
@@ -769,8 +809,6 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
             // console.log(this.trainingCategoryData)
             if (key._id == this.complete_data[it].associated_training) {
               if (key.count == key.done) {
-                // this.reloadComponent()
-                // // console.log(this.complete_data[this.complete_data.length - 1].associated_training, 'complete_data', this.complete_data.length - 1);
                 associated_id = this.complete_data[this.complete_data.length - 1].associated_training;
                 let data2: any = {
                   "user_id": this.userId,
@@ -849,11 +887,11 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       )
     }
   }
-  gotodashbord(){
+  gotodashbord() {
     // this.formSourceVal
-    console.log( this.formSourceVal,' this.formSourceVal');
+    console.log(this.formSourceVal, ' this.formSourceVal');
     this.router.navigateByUrl(this.formSourceVal.dashbord_route);
-    
+
   }
 
   openSignupPage() {
@@ -1351,7 +1389,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     const safe_url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
 
     if (val.video_skippable == true) {
-      var video_url = val.video_url + '?rel=0&modestbranding=1&autoplay=1&showinfo=0&controls=1&listType=playlist';
+      var video_url = val.video_url + '?rel=0&modestbranding=1&autoplay=1&showinfo=0&controls=1&listType=pla xylist';
     } else {
       var video_url = val.video_url + '?rel=0&modestbranding=1&autoplay=1&showinfo=0&controls=0&listType=playlist';
     }

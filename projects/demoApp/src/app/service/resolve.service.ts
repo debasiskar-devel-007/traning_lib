@@ -81,6 +81,20 @@ export class ResolveService implements Resolve<any> {
       requestData['associated_training'] = route.params.associated_training;
 
     }
+    console.log(route.url[0].path,'route.url[0].path ');
+    
+    if (route.url[0].path == "training-center-pece") {
+      console.log(JSON.parse(this.cookiesService.get('user_details')));
+      let userdata=JSON.parse(this.cookiesService.get('user_details'))
+      
+      requestData.condition['associated_training'] = route.params.associated_training;
+      requestData['user_id'] = userdata._id;
+      requestData['type'] = userdata.user_type;
+      requestData['associated_training'] = route.params.associated_training;
+      
+
+
+    }
     if (route.url[0].path == "training-report") {
       if (this.userType == "admin") {
 

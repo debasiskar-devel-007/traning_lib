@@ -28,6 +28,7 @@ import { LessonPlanMaterialComponent } from './lesson-plan-material/lesson-plan-
 import { ListQuizComponent } from './manage-quiz/list-quiz/list-quiz.component';
 import { AddEditQuizComponent } from './manage-quiz/add-edit-quiz/add-edit-quiz.component';
 import { TrainingCentreBetoParedesComponent } from './training-centre-beto-paredes/training-centre-beto-paredes.component';
+import { TraingCenterPeceComponent } from './traing-center-pece/traing-center-pece.component';
 
 
 @NgModule({
@@ -51,6 +52,7 @@ import { TrainingCentreBetoParedesComponent } from './training-centre-beto-pared
     ListQuizComponent,
     AddEditQuizComponent,
     TrainingCentreBetoParedesComponent,
+    TraingCenterPeceComponent
   ],
   imports: [
     routing,
