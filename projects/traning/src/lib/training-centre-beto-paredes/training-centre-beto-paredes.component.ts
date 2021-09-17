@@ -1380,7 +1380,6 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   }
 
 
-
   openLessonVideo(val: any) {
     // // // // // console.log(val)
     var url = this.video_base_url + val.video_url + '?modestbranding=1&autohide=0&showinfo=0&controls=0&listType=playlist&rel=0';

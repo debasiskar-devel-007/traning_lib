@@ -15,6 +15,10 @@ export class TraingCenterPeceComponent implements OnInit {
     serverurl: "https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/",
     quizdataendpoint: 'quiz_data',
     addlessonquizdataendpoint:'addlessonquizdata',
+    gettrainingcenterdatalist:'gettrainingcenterdatalist',
+    file_endpoint: 'updateusercompletelessonfiles',
+    video_endpoint: 'updateusercompletelessonvideo',
+    audio_endpoint: 'updateusercompletelessonaudio'
   }
   constructor(public activatedRoute: ActivatedRoute) {
     console.log('lllllllllllllllllllllllllllllll');

@@ -4,6 +4,7 @@
             <div class="logowrapper">
             </div>
         </div>
+        {{data.lesson_data.test_percentage|json}}
 
         <mat-card class="lessonquizcls">
             <mat-card-content *ngIf="quizData != null && quizData != ''" class="questioncls">
@@ -34,7 +35,7 @@
                     <h2 class="quiz_data">Total Question : {{data.quiz_data.length}}</h2>
                     <h2 class="CheckedAnswer">Attempt Question : {{CheckedAnswer.length}}</h2>
                     <h2 class="correctQuizVal">Correct Answer : {{correctQuizVal.length}}</h2>
-                    <h2 class="lesson_data">Target Percentage : {{data.lesson_data.test_percentage}}%</h2>
+                    <h2 class="lesson_data">Target Percentage : {{data.lesson_data[0].test_percentage}}%</h2>
                     <h2 class="resultVal">Your Score : {{resultVal}}%</h2>
                     <h2 class="resultStatus">
                         Status : <span *ngIf="resultStatus == 'Success'" style="color: forestgreen;"> {{resultStatus}}

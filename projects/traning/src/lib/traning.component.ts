@@ -107,7 +107,6 @@ export class TraningComponent implements OnInit {
   public trainingAccessData: any = [];
   public from_type: any;
 
-  public
   @Input()
   set formdata(formdata: string) {
     this.formdataval = (formdata) || '<no name set>';
@@ -149,6 +148,8 @@ export class TraningComponent implements OnInit {
   @Input()
   set IsitBetoparedes(val: any) {
     this.betoparedesFlag = val;
+    // console.log(this.betoparedesFlag);
+
   }
   @Input()
   set TraingAccessFlag(val: any) {
@@ -265,8 +266,8 @@ export class TraningComponent implements OnInit {
 
 
   formsubmit() {
-    // // console.log("data value", this.dataForm.value);
-    // return;
+    console.log("data value", this.test_percentage);
+
     this.issubmit = 1;
     for (let y in this.dataForm.controls) {
       this.dataForm.controls[y].markAsTouched();
@@ -368,7 +369,7 @@ export class TraningComponent implements OnInit {
       if (this.betoparedesFlag == true) {
         if (this.has_test_lesson == true) {
           data.data['has_test_lesson'] = 1;
-          data.data['test_percentage'] = this.test_percentage;
+          data.data.test_percentage = this.test_percentage;
         } else {
           data.data['has_test_lesson'] = 0;
         }
@@ -405,8 +406,10 @@ export class TraningComponent implements OnInit {
         delete data.data.test_percentage;
         delete data.data.has_test_lesson;
       }
-      console.log(data, 'data++')
-
+      
+      if (data.data['has_test_lesson'] == 1) {
+        console.log(data, 'data++')
+      }
 
       this.apiService.postData(link, data).subscribe((res: any) => {
 
