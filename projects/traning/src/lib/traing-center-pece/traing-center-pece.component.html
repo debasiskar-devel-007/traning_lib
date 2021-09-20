@@ -78,7 +78,7 @@
                                                 </button>
                                             </span>
                                         </div>
-                                        <!-- <div class="mandetorycls_wrapper">
+                                        <div class="mandetorycls_wrapper">
                                             <span class="mandetorycls" *ngIf="item.video_skippable!=true">*This is a
                                                 mandetory video to
                                                 complete this lesson
@@ -89,7 +89,7 @@
                                                         alt="">
                                                 </span>
                                             </span>
-                                        </div> -->
+                                        </div>
 
                                     </div>
 
@@ -113,17 +113,17 @@
                             </mat-card>
                         </div>
 
-                        <span>
-                            <button button mat-raised-button color="accent" type="button" class="markbtncls"
-                                (click)="nextbutton(item,'next',i)">Mark
+                        <span *ngIf='item.is_done != true'>
+                            <button *ngIf="next_button_access==true" button mat-raised-button color="accent"
+                                type="button" class="markbtncls" (click)="nextbutton(item,'mark',i)">Mark
                                 As Done
                             </button>
                         </span>
 
-                        <!-- <button button mat-raised-button color="accent" type="button" class="markbtncls"
-                            (click)="nextbutton('next',i)">
+                        <button *ngIf='item.is_done == true' button mat-raised-button color="accent" type="button"
+                            class="markbtncls" (click)="nextbutton(item,'next',i)">
                             Next
-                        </button> -->
+                        </button>
                     </div>
 
 

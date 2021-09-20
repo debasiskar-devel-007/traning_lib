@@ -61,13 +61,16 @@ export class TraingCenterPeceComponent implements OnInit {
   public lessonid: any;
   public categoryid: any;
   public done_quiz_data: any = [];
+  public complete_videoflag: any = [];
+  public complete_lesson_videos: any = [];
+
 
 
   @Input()
   set formSource(val: any) {
     this.formSourcedata = val;
     this.serverDetailsVal = this.formSourcedata.serverurl
-    console.log(val);
+    //console.log(val);
 
   }
   //all traing category data
@@ -79,8 +82,9 @@ export class TraingCenterPeceComponent implements OnInit {
     this.lesson_content_data = val.lesson_content;
     this.divisor = val.total_lesson;
     this.done_quiz_data = val.done_quiz_data;
+    this.complete_lesson_videos = val.complete_lesson_videos;
     this.quizflag = false;
-    console.log(val, '@@@@@@@@@@@@!!!!!!!!!!!!!!!!!!!12334444');
+    //console.log(val, '@@@@@@@@@@@@!!!!!!!!!!!!!!!!!!!12334444');
     if (this.activatedRoute.snapshot.params._id != null && typeof this.activatedRoute.snapshot.params._id != 'undefined' && this.activatedRoute.snapshot.params._id) {
       this.paramslessonId = this.activatedRoute.snapshot.params._id;
 
@@ -91,7 +95,7 @@ export class TraingCenterPeceComponent implements OnInit {
     if (this.trainingCategoryData.length > 0) {
       for (const key in this.trainingCategoryData) {
         if (this.trainingCategoryData[key]._id == this.paramsTrainingId) {
-          console.log(this.trainingCategoryData[key].catagory_name);
+          //console.log(this.trainingCategoryData[key].catagory_name);
           this.training_cat_name = this.trainingCategoryData[key].catagory_name;
         }
       }
@@ -136,21 +140,36 @@ export class TraingCenterPeceComponent implements OnInit {
       }
       let link1 = this.formSourcedata.serverurl + this.formSourcedata.quizdataendpoint
       this.apiService.postDatawithoutToken(link1, data).subscribe((res: any) => {
-        console.log(res);
+        //console.log(res);
+        this.quizdata = res;
         if (res.status == 'success' && res.quiz_data.length > 0) {
           if (this.done_quiz_data.length > 0) {
             this.quizflag = false;
+            this.next_button_access = true;
           }
           else {
+            console.log('pPPPPPPPPPPPPPPPPPPPPPPPPP');
+
             this.quizflag = true;
-            this.quizdata = res
+
+            if (this.quizdata.quiz_data.length > 0) {
+              this.next_button_access = false;
+            }
           }
 
         }
+        this.addmrakdata(val);
 
       })
 
     }
+
+
+    this.complete_video();
+
+
+
+
   }
 
   @Input()
@@ -160,15 +179,15 @@ export class TraingCenterPeceComponent implements OnInit {
 
 
   constructor(public router: Router, public snakBar: MatSnackBar, public activatedRoute: ActivatedRoute, public apiService: ApiService, public cookieService: CookieService, public dialog: MatDialog, public sanitizer: DomSanitizer) {
-    console.log(this.donedata);
+    //console.log(this.donedata);
     if (this.cookieService.get('user_details') && JSON.parse(this.cookieService.get('user_details')) != null && typeof JSON.parse(this.cookieService.get('user_details')) != undefined && JSON.parse(this.cookieService.get('user_details')) != '') {
-      console.log(JSON.parse(this.cookieService.get('user_details')));
+      //console.log(JSON.parse(this.cookieService.get('user_details')));
 
       this.userId = JSON.parse(this.cookieService.get('user_details'))._id;
       this.userType = JSON.parse(this.cookieService.get('user_details')).user_type;
 
     }
-    console.log(router, 'router', activatedRoute.snapshot.params, 'activatedRoute');
+    //console.log(router, 'router', activatedRoute.snapshot.params, 'activatedRoute');
     this.categoryid = activatedRoute.snapshot.params.associated_training;
     if (activatedRoute.snapshot.params._id && activatedRoute.snapshot.params._id != null && typeof activatedRoute.snapshot.params._id != undefined && activatedRoute.snapshot.params._id != '') {
       this.lessonid = activatedRoute.snapshot.params._id;
@@ -179,9 +198,7 @@ export class TraingCenterPeceComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.activatedRoute.snapshot.params,
-      'kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk', this.donedata
-    );
+    //console.log(this.activatedRoute.snapshot.params,'kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk', this.donedata    );
     if (this.donedata && this.donedata.length > 0) {
       for (const key in this.donedata) {
         if (this.activatedRoute.snapshot.params.associated_training == this.donedata[key].associated_training) {
@@ -210,7 +227,7 @@ export class TraingCenterPeceComponent implements OnInit {
   // for openinglesson
   openlesson(item, flag, i) {
     if (flag == 'click') {
-      console.log(item);
+      //console.log(item);
       this.router.navigateByUrl(this.trainingCenterRoute + item.associated_training_id + '/' + item._id);
     }
   }
@@ -218,59 +235,87 @@ export class TraingCenterPeceComponent implements OnInit {
   // for mark as done
 
   nextbutton(val, flag, i) {
-    this.progressSpinner.loading = true;
-    console.log(this.trainingLessonData[i], i);
     let ind = 0;
     let ind2 = 0;
-    console.log(i + 1, this.trainingLessonData[i + 1]);
-    let userdata = JSON.parse(this.cookieService.get('user_details'));
+    if (flag == 'mark') {
+      this.progressSpinner.loading = true;
+      //console.log(this.trainingLessonData[i], i);
+
+      //console.log(i + 1, this.trainingLessonData[i + 1]);
+      let userdata = JSON.parse(this.cookieService.get('user_details'));
 
 
-    let data = {
-      data: {
-        "user_id": userdata._id,
-        "current_lesson_id": "",
-        "current_lesson_name": "",
-        "associated_training": val.associated_training_id,
-        "lesson_id": val._id,
-        "status": 1,
-        "previous_lesson_name": val.lession_title,
-        "previous_lesson_id": val._id,
-        "use_type": userdata.user_type
+      let data = {
+        data: {
+          "user_id": userdata._id,
+          "current_lesson_id": "",
+          "current_lesson_name": "",
+          "associated_training": val.associated_training_id,
+          "lesson_id": val._id,
+          "status": 1,
+          "previous_lesson_name": val.lession_title,
+          "previous_lesson_id": val._id,
+          "use_type": userdata.user_type
+        }
       }
-    }
-    if (this.trainingLessonData[i + 1]) {
-      data.data.current_lesson_id = this.trainingLessonData[i + 1]._id;
-      data.data.current_lesson_name = this.trainingLessonData[i + 1].lession_title;
-    } else {
-      if (this.trainingCategoryData.length > 0) {
-        for (const key in this.trainingCategoryData) {
-          if (this.trainingCategoryData[key]._id == val.associated_training_id) {
-            ind2 = (parseInt(key) + 1);
+      if (this.trainingLessonData[i + 1]) {
+        data.data.current_lesson_id = this.trainingLessonData[i + 1]._id;
+        data.data.current_lesson_name = this.trainingLessonData[i + 1].lession_title;
+      } else {
+        if (this.trainingCategoryData.length > 0) {
+          for (const key in this.trainingCategoryData) {
+            if (this.trainingCategoryData[key]._id == val.associated_training_id) {
+              ind2 = (parseInt(key) + 1);
 
-            if (this.trainingCategoryData[ind2]) {
-              data.data.current_lesson_id = this.trainingCategoryData[ind2].fistlesson_id;
-              data.data.current_lesson_name = this.trainingCategoryData[ind2].fistlesson;
+              if (this.trainingCategoryData[ind2]) {
+                data.data.current_lesson_id = this.trainingCategoryData[ind2].fistlesson_id;
+                data.data.current_lesson_name = this.trainingCategoryData[ind2].fistlesson;
 
+
+              }
 
             }
-
           }
         }
       }
-    }
 
-    let link1 = this.formSourcedata.serverurl + this.formSourcedata.addMarkendpoint
-    this.apiService.postDatawithoutToken(link1, data).subscribe((res: any) => {
-      console.log(res);
+      let link1 = this.formSourcedata.serverurl + this.formSourcedata.addMarkendpoint
+      this.apiService.postDatawithoutToken(link1, data).subscribe((res: any) => {
+        //console.log(res);
+        if (i + 1 >= this.trainingLessonData.length) {
+
+          if (this.trainingCategoryData.length > 0) {
+            for (const key in this.trainingCategoryData) {
+              if (this.trainingCategoryData[key]._id == val.associated_training_id) {
+                //console.log(key, typeof key);
+                ind = (parseInt(key) + 1);
+                //console.log(ind);
+                if (ind && this.trainingCategoryData[ind] && this.trainingCategoryData[ind]._id != null && typeof this.trainingCategoryData[ind]._id != 'undefined' && this.trainingCategoryData[ind]._id != '') {
+                  this.router.navigateByUrl(this.trainingCenterRoute + this.trainingCategoryData[ind]._id + '/' + this.trainingLessonData[0]._id);
+
+                } else {
+                  this.router.navigateByUrl(this.trainingCenterRoute + this.trainingCategoryData[0]._id + '/' + this.trainingLessonData[0]._id);
+
+                }
+              }
+            }
+
+          }
+        } else {
+          this.router.navigateByUrl(this.trainingCenterRoute + val.associated_training_id + '/' + this.trainingLessonData[i + 1]._id);
+        }
+      })
+    }
+    if (flag == 'next') {
+      //console.log(val, i);
       if (i + 1 >= this.trainingLessonData.length) {
 
         if (this.trainingCategoryData.length > 0) {
           for (const key in this.trainingCategoryData) {
             if (this.trainingCategoryData[key]._id == val.associated_training_id) {
-              console.log(key, typeof key);
+              //console.log(key, typeof key);
               ind = (parseInt(key) + 1);
-              console.log(ind);
+              //console.log(ind);
               if (ind && this.trainingCategoryData[ind] && this.trainingCategoryData[ind]._id != null && typeof this.trainingCategoryData[ind]._id != 'undefined' && this.trainingCategoryData[ind]._id != '') {
                 this.router.navigateByUrl(this.trainingCenterRoute + this.trainingCategoryData[ind]._id + '/' + this.trainingLessonData[0]._id);
 
@@ -285,20 +330,14 @@ export class TraingCenterPeceComponent implements OnInit {
       } else {
         this.router.navigateByUrl(this.trainingCenterRoute + val.associated_training_id + '/' + this.trainingLessonData[i + 1]._id);
       }
-    })
-
-
-
-
-
-
+    }
   }
 
   // for video open modal
   openLessonVideo(val: any) {
-    console.log(val);
+    //console.log(val);
     var url = this.video_base_url + val.video_url + '?modestbranding=1&autohide=0&showinfo=0&controls=0&listType=playlist&rel=0';
-    var server_url = this.formSourcedata.serverurl+this.formSourcedata
+    var server_url = this.formSourcedata.serverurl + this.formSourcedata.video_endpoint
 
     const safe_url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
 
@@ -313,6 +352,15 @@ export class TraingCenterPeceComponent implements OnInit {
       height: 'auto',
       data: { 'safe_url': safe_url, data: val, lesson_id: this.paramslessonId, endpoint: server_url, user_id: this.userId, video_url: video_url }
     });
+    dialogRef.afterClosed().subscribe((result: any) => {
+      //console.log(result);
+      if (result == 'yes') {
+        this.getTrainingCenterlistFunctionwithLessonId(this.categoryid, this.userType, this.userId, this.lessonid)
+        this.complete_videoflag[val.video_url] = true;
+      }
+
+
+    })
   }
 
   // for lesson quiz modal  
@@ -327,24 +375,16 @@ export class TraingCenterPeceComponent implements OnInit {
     });
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe((result: any) => {
-      // // console.log(result, 'result')
+      // // //console.log(result, 'result')
       if (result == 'yes') {
-        this.next_button_access = true;
-        this.quizflag = false;
-        // // console.log("next_button_access true++++",this.quizflag)
-
-
-        // if (this.lesson_content.is_done == null) {
-        // 
+        // this.next_button_access = true;
+        // this.quizflag = false;
+        // if (this.quizflag == false) {
+        //   this.next_button_access = true;
         // }
-        if (this.quizflag == false) {
-          this.next_button_access = true;
-          // // // // console.log("next_button_access true")
-        }
-        else {
-          this.next_button_access = false;
-          // // // // console.log("next_button_access false")
-        }
+        // else {
+        //   this.next_button_access = false;
+        // }
         this.getTrainingCenterlistFunctionwithLessonId(this.categoryid, this.userType, this.userId, this.lessonid)
 
         this.progressSpinner.loading = false;
@@ -357,8 +397,8 @@ export class TraingCenterPeceComponent implements OnInit {
 
   // for gettrainingcenterdatalist endpoint call 
   getTrainingCenterlistFunctionwithLessonId(associated_training, type: any, user_id: any, _id: any) {
-    // // // // // // console.log('associated_training', associated_training, 'type', type, 'user_id', user_id, '_id', _id)
-    // // console.log("mahitosh")
+    // // // // // // //console.log('associated_training', associated_training, 'type', type, 'user_id', user_id, '_id', _id)
+    // // //console.log("mahitosh")
     const link = this.formSourcedata.serverurl + this.formSourcedata.gettrainingcenterdatalist;
     let data: any = {
       "condition": {
@@ -375,13 +415,73 @@ export class TraingCenterPeceComponent implements OnInit {
 
       if (response.status == "success") {
 
-        // // console.log("next_button_access true", response);
+        // // //console.log("next_button_access true", response);
         this.progressSpinner.loading = false
+        this.addmrakdata(response.results);
       };
 
     });
 
   }
+
+  // for complete video Data
+  complete_video() {
+    if (this.complete_lesson_videos != null && this.complete_lesson_videos.length > 0) {
+      for (const key in this.complete_lesson_videos) {
+        if (this.lesson_content_data.length > 0) {
+          for (const i in this.lesson_content_data[0].lesson_attachements) {
+            //console.log(this.complete_lesson_videos[key].video_url, 'this.lesson_content_data[0].lesson_attachements', this.lesson_content_data[0].lesson_attachements[i].video_url);
+
+            if (this.lesson_content_data[0].lesson_attachements && this.lesson_content_data[0].lesson_attachements[i].type == 'video' && this.lesson_content_data[0].lesson_attachements[i].video_url == this.complete_lesson_videos[key].video_id) {
+              //console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+
+              this.complete_videoflag[this.lesson_content_data[0].lesson_attachements[i].video_url] = true;
+            }
+
+          }
+        }
+      }
+    }
+  }
+
+
+  // using for mark as done shown of not 
+  addmrakdata(val) {
+    this.next_button_access = false;
+    let mandetoryLessonVideo: any = [];
+    console.log(val, 'this.quizflag', this.quizdata.quiz_data.length);
+    if (val.done_quiz_data.length > 0) {
+      console.log('pppppppppppppppppppppppppppp');
+
+      this.next_button_access = true;
+      this.quizflag = false;
+    } else {
+      this.next_button_access = false;
+      this.quizflag = true;
+    }
+    if (val.lesson_content[0].video_array.length > 0) {
+      for (const key in val.lesson_content[0].video_array) {
+        if (val.lesson_content[0].video_array[key].video_skippable == false) {
+          mandetoryLessonVideo.push(val.lesson_content[0].video_array[key])
+        }
+      }
+      console.log(mandetoryLessonVideo);
+
+    } else {
+      this.next_button_access = false;
+
+    }
+    if (mandetoryLessonVideo.length == val.complete_lesson_videos.length) {
+      this.next_button_access = true;
+
+    } else {
+      this.next_button_access = false;
+
+    }
+
+  }
+
+
 
 }
 
@@ -407,11 +507,11 @@ export class LessonQuizPeceModalComponent {
   }
   constructor(public dialogRef: MatDialogRef<LessonQuizPeceModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData, public snakBar: MatSnackBar, public apiService: ApiService, public router: Router) {
-    console.log(data, 'data@@@@@@@@@@@@@@@@@@@@@@@@@')
+    //console.log(data, 'data@@@@@@@@@@@@@@@@@@@@@@@@@')
     this.quizData = data.quiz_data[0];
     this.lessonData = data.lesson_data;
     this.indexVal = 1;
-    // // // // // console.log(this.quizData, '++')
+    // // // // // //console.log(this.quizData, '++')
   }
   closedModal() {
     this.data.flag = 'no';
@@ -430,7 +530,7 @@ export class LessonQuizPeceModalComponent {
   //next quiz
   nextQuizRecord(val: any) {
     this.indexVal = this.indexVal + 1;
-    // // // // // console.log(this.CheckedAnswer, 'CheckedAnswer', this.quizVal)
+    // // // // // //console.log(this.CheckedAnswer, 'CheckedAnswer', this.quizVal)
     if (this.quizVal != '') {
       this.CheckedAnswer.push(this.quizVal)
       this.quizVal = '';
@@ -448,11 +548,11 @@ export class LessonQuizPeceModalComponent {
         } else {
           this.quizData = '';
 
-          // // // // // console.log(this.CheckedAnswer, '++== else ')
+          // // // // // //console.log(this.CheckedAnswer, '++== else ')
           if (this.CheckedAnswer.length > 0) {
             for (let i in this.CheckedAnswer) {
               if (this.CheckedAnswer[i].isCorrect == 1) {
-                // // // // // console.log(this.CheckedAnswer[i], '????chk')
+                // // // // // //console.log(this.CheckedAnswer[i], '????chk')
                 this.correctQuizVal.push(this.CheckedAnswer[i]);
               }
             }
@@ -476,7 +576,7 @@ export class LessonQuizPeceModalComponent {
   }
 
   saveQuizRecord(val) {
-    console.log(this.data, 'resultVal')
+    //console.log(this.data, 'resultVal')
     this.progressSpinner.loading = true;
     let link = this.data.server_url;
     let user_result: any = {
@@ -496,7 +596,7 @@ export class LessonQuizPeceModalComponent {
       score: this.resultVal
     }
 
-    console.log(user_result, 'user_result')
+    //console.log(user_result, 'user_result')
     this.apiService.postDatawithoutToken(link, user_result).subscribe(res => {
       let result: any = res;
       if (result.status == 'success') {
@@ -540,13 +640,13 @@ export class peceLessonVideoModalComponent {
 
   constructor(public dialogRef: MatDialogRef<peceLessonVideoModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData2, public snakBar: MatSnackBar, public apiService: ApiService, public router: Router, public activatedRoute: ActivatedRoute) {
-    // // // // console.log(data, 'data_video')
+    // // // // //console.log(data, 'data_video')
   }
   savePlayer(event) {
-    // // // // // console.log(event, 'save', this.playerVars)
+    // // // // // //console.log(event, 'save', this.playerVars)
   }
   closedModals() {
-    // // // // // console.log()
+    // // // // // //console.log()
     this.snakBar.open('Video Lesson Has Not Been Completed ...!', 'OK', {
       duration: 4000
     })
@@ -554,9 +654,9 @@ export class peceLessonVideoModalComponent {
   }
 
   onStateChange(event) {
-    // // // // // console.log(this.data.data.video_skippable, 'data_video')
-    console.log(event, 'state chn')
-    // // // // console.log(event.target.playerInfo.duration, '/\/\/\)', event.target.playerInfo.currentTime)
+    // // // // // //console.log(this.data.data.video_skippable, 'data_video')
+    //console.log(event, 'state chn')
+    // // // // //console.log(event.target.playerInfo.duration, '/\/\/\)', event.target.playerInfo.currentTime)
 
     //duration calculation
     var sec_num = parseInt(event.target.playerInfo.duration, 10);
@@ -567,43 +667,45 @@ export class peceLessonVideoModalComponent {
     if (hours < 10) { hours = "0" + hours; }
     if (minutes < 10) { minutes = "0" + minutes; }
     if (seconds < 10) { seconds = "0" + seconds; }
-    // // // // // console.log(hours + ':' + minutes + ':' + seconds);
+    // // // // // //console.log(hours + ':' + minutes + ':' + seconds);
     this.video_time = hours + ':' + minutes + ':' + seconds;
 
     // this.startTimer(event.target.playerInfo.duration);
 
-    console.log(event.data, 'data 0', this.data)
+    //console.log(event.data, 'data 0', this.data)
 
-    if (event.data == 0 ) {
+    if (event.data == 0) {
 
 
       var endpoint = this.data.endpoint;
       var video_data: any = {
         user_id: this.data.user_id,
-        
+
         training_id: this.data.training_id,
         lesson_id: this.data.lesson_id,
         video_id: event.target.playerInfo.videoData.video_id,
         video_url: event.target.playerInfo.videoUrl,
         flag: 1,
       }
-      // // // // // console.log(video_data, 'data===++')
-      // if (this.data.data.video_skippable != true) {
+      // // // // // //console.log(video_data, 'data===++')
+      if (this.data.data.video_skippable != true) {
 
-      //   this.apiService.postDatawithoutToken(endpoint, video_data).subscribe(res => {
-      //     // // // // console.log(res, 'frghjk++++++++++', event.target.playerInfo.videoData.video_id)
-      //     let result: any = res;
-      //     if (result.status == 'success') {
-      //       // getTrainingCenterlistFunctionwithLessonId(associated_training: any, type: any, user_id: any, _id: any)
-      //       this.data.flag = 'yes';
-      //       this.dialogRef.close(this.data.flag);
-      //       this.snakBar.open('Successfully Completed The Lesson Video..!', 'OK', {
-      //         duration: 5000
-      //       })
+        this.apiService.postDatawithoutToken(endpoint, video_data).subscribe(res => {
+          // // // // //console.log(res, 'frghjk++++++++++', event.target.playerInfo.videoData.video_id)
+          let result: any = res;
+          if (result.status == 'success') {
+            // getTrainingCenterlistFunctionwithLessonId(associated_training: any, type: any, user_id: any, _id: any)
+            this.data.flag = 'yes';
+            this.dialogRef.close(this.data.flag);
+            this.snakBar.open('Successfully Completed The Lesson Video..!', 'OK', {
+              duration: 5000
+            })
 
-      //     }
-      //   })
-      // }
+          }
+        })
+      } if (this.data.data.video_skippable == true) {
+        this.dialogRef.close(this.data.flag);
+      }
 
     }
 
