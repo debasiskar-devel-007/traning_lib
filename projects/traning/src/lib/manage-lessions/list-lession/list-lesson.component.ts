@@ -188,18 +188,7 @@ export class ListlessonComponent implements OnInit {
 
     }, 500);
   }
-  // detailslen(val) {
-  //   console.log(val, 'detailslen')
-  //   const dialogRef = this.dialog.open(detailslen, {
-  //     panelClass: 'lesson_videomodal',
-  //     width: '1000px',
-  //     data: { data: val }
-  //   })
-  //   dialogRef.afterClosed().subscribe(result => {
 
-  //   })
-
-  // }
 
   ngOnInit() {
     setTimeout(() => {
@@ -286,26 +275,7 @@ export class ListlessonComponent implements OnInit {
 
 
   }
-  // onKeypressEventforlession(event: any){
-  //   let link = this.serverDetailsVal.serverUrl + this.formSourceVal.searchEndpoint;
-  //   let data: any = {
-  //     "source": this.formSourceVal.source,
-  //     // "id": recordId,
-  //     "token": this.serverDetailsVal.jwttoken,
-  //     // "lesson_id": recordId,
-  //     condition:{
-  //       lession_title_search :{$regex:event.target.value.trim()},
-  //     }
-  //   }
-  //   this.apiService.postData(link, data).subscribe((res: any) => {
-  //     if (res.status = "success") {
-  //       this.lession_search=[];
-  //       this.lession_search=res.res;
-  //       // console.log(this.category_search,'category_search')
-  //     }
 
-  //   })
-  // }
   trainingCount() {
     let link = this.serverDetailsVal.serverUrl + this.formSourceVal.trainingCountEndpoint;
     this.apiService.postDatawithoutTokenReportCount(link).subscribe((response: any) => {
@@ -518,7 +488,11 @@ export class ListlessonComponent implements OnInit {
       "lessonplan_value_regex": ""
     }
     this.status_search_regex = '';
-    this.dataSource = new MatTableDataSource(this.listingData);
+    let currentUrl = this.router.url;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate([currentUrl]);
+    // this.dataSource = new MatTableDataSource(this.listingData);
 
   }
   statusUpdateModal(id: any, index: any) {

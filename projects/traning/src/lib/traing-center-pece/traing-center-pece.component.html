@@ -133,7 +133,7 @@
         </mat-card>
         <mat-card class="alltrainingcls">
             <mat-card-content class="trainingcentercls trainingcenterclsupdate">
-                <ng-container>
+                <ng-container *ngIf="reportpercent!=100">
                     <div class="trainingcentercls_group">
                         <h2>Incomplete Lesson</h2>
                         <div class="trainingcentercls_box_wrapper">
@@ -187,7 +187,7 @@
 
                     </div>
                 </ng-container>
-                <ng-container>
+                <ng-container *ngIf="cmpltlesson">
                     <div class="trainingcentercls_group">
                         <h2>Complete Lesson</h2>
                         <div class="trainingcentercls_box_wrapper">

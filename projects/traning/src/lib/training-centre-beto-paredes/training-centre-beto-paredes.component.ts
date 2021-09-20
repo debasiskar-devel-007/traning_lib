@@ -1154,6 +1154,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     }
     let t_percent: any = {}
     t_percent.associated_training = this.paramsTrainingId;
+    t_percent.lesson = this.paramslessonId;
     if (this.trainingCategoryData[0].done != null && this.trainingCategoryData[0].done != '') {
       t_percent.percentage = ((this.trainingCategoryData[0].done / this.trainingCategoryData[0].count) * 100);
     }
@@ -1162,7 +1163,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       // // console.log(res, 'trainingupdate');
       for (const key in this.trainingCategoryData) {
         if (this.trainingCategoryData[key]._id == this.paramsTrainingId && ((this.trainingCategoryData[key].done / this.trainingCategoryData[key].count) * 100) == 100) {
-          this.trainingDataListener.emit({ action: 'update-success', result: data, training_percentage: t_percent })
+          this.trainingDataListener.emit({ action: 'update-success', result: data, training_percentage: t_percent, })
         }
       }
 

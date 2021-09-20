@@ -63,6 +63,8 @@ export class TraingCenterPeceComponent implements OnInit {
   public done_quiz_data: any = [];
   public complete_videoflag: any = [];
   public complete_lesson_videos: any = [];
+  public reportpercent: any = 0;
+  public cmpltlesson: boolean = false;
 
 
 
@@ -144,6 +146,8 @@ export class TraingCenterPeceComponent implements OnInit {
         this.quizdata = res;
         if (res.status == 'success' && res.quiz_data.length > 0) {
           if (this.done_quiz_data.length > 0) {
+            console.log('llllllllllllllllllllllllll');
+
             this.quizflag = false;
             this.next_button_access = true;
           }
@@ -166,6 +170,14 @@ export class TraingCenterPeceComponent implements OnInit {
 
 
     this.complete_video();
+
+    this.reportpercent = Math.floor(this.allDonedata / this.divisor) * 100;
+
+
+    if (this.done_cat_data.length > 0 && this.done_cat_data[0].percent == 100) {
+      this.cmpltlesson = true;
+
+    }
 
 
 
@@ -455,7 +467,7 @@ export class TraingCenterPeceComponent implements OnInit {
 
       this.next_button_access = true;
       this.quizflag = false;
-    } else {
+    } else if (this.quizdata.quiz_data.length > 0) {
       this.next_button_access = false;
       this.quizflag = true;
     }
