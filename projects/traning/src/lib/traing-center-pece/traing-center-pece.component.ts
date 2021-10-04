@@ -26,6 +26,11 @@ export interface DialogData2 {
   flag: any;
   video_url: any;
 }
+
+export interface DialogData6 {
+  data: any;
+  flag: any;
+}
 @Component({
   selector: 'lib-traing-center-pece',
   templateUrl: './traing-center-pece.component.html',
@@ -63,15 +68,45 @@ export class TraingCenterPeceComponent implements OnInit {
   public done_quiz_data: any = [];
   public complete_videoflag: any = [];
   public complete_lesson_videos: any = [];
+  public complete_lesson_audio: any = [];
+  public complete_lesson_files: any = [];
+  public complete_audioflag: any = [];
   public reportpercent: any = 0;
   public cmpltlesson: boolean = false;
+  public audio_duration: any = [];
+  public audio_currenttime: any = [];
+  public audio_progress: any = [];
+  public modelval: any = [];
+  public newaudio_currenttime: any = [];
+  public audio_time: any = [];
+  public audio_end_time: any = [];
+  public disabled = [];
+  public bucket_url: any;
+  public play_flag: any = [];
+  public pause_flag: any = [];
+  // public complete_audioflag: any = [];
+  public shwmoreflg: boolean = false;
+  public previewimages: any;
+  public shwmorefileflg: boolean = false;
+  public complete_fileflag: any = [];
+
+
+
+
+
+
+
+
+
+
 
 
 
   @Input()
   set formSource(val: any) {
     this.formSourcedata = val;
-    this.serverDetailsVal = this.formSourcedata.serverurl
+    this.serverDetailsVal = this.formSourcedata.serverurl;
+    this.bucket_url = this.formSourcedata.bucket_url;
     //console.log(val);
 
   }
@@ -85,13 +120,11 @@ export class TraingCenterPeceComponent implements OnInit {
     this.divisor = val.total_lesson;
     this.done_quiz_data = val.done_quiz_data;
     this.complete_lesson_videos = val.complete_lesson_videos;
+    this.complete_lesson_audio = val.complete_lesson_audio;
+    this.complete_lesson_files = val.complete_lesson_files;
     this.quizflag = false;
-    //console.log(val, '@@@@@@@@@@@@!!!!!!!!!!!!!!!!!!!12334444');
     if (this.activatedRoute.snapshot.params._id != null && typeof this.activatedRoute.snapshot.params._id != 'undefined' && this.activatedRoute.snapshot.params._id) {
       this.paramslessonId = this.activatedRoute.snapshot.params._id;
-
-    } else {
-      // this.paramslessonId = this.lessonParamId;
 
     }
     if (this.trainingCategoryData.length > 0) {
@@ -170,6 +203,8 @@ export class TraingCenterPeceComponent implements OnInit {
 
 
     this.complete_video();
+    this.complete_audio();
+    this.complete_file();
 
     this.reportpercent = Math.floor(this.allDonedata / this.divisor) * 100;
 
@@ -236,6 +271,46 @@ export class TraingCenterPeceComponent implements OnInit {
     this.router.navigateByUrl(this.trainingCenterRoute + val);
   }
 
+
+  onprocess(val, fullval) {
+
+    var audioId: any = document.getElementById("audioPlayer_" + val); // audio id
+
+    this.audio_duration[val] = audioId.duration; //audio duration
+
+
+    this.audio_currenttime[val] = audioId.currentTime;
+    this.audio_progress[val] = (this.audio_currenttime[val] / this.audio_duration[val]) * 100; // audio progress based on current time
+
+    this.modelval[val] = 0;
+    this.modelval[val] = this.audio_progress[val];
+
+    this.audio_currenttime[val] = (this.modelval[val] * this.audio_duration[val]) / 100; // audio current val
+    this.newaudio_currenttime[val] = this.audio_currenttime[val]
+
+
+    if (fullval.skippeble == false) {
+      // // // // // console.log('true')
+      this.disabled[val] = true;
+    }
+    // this.startEndTimeCalculation(val);
+    //start time calculation
+
+    var sec_num = parseInt(this.audio_currenttime[val], 10);
+    var hours: any = Math.floor(sec_num / 3600);
+    var minutes: any = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds: any = sec_num - (hours * 3600) - (minutes * 60);
+    this.audio_time[val] = hours + ':' + minutes + ':' + seconds;
+
+    //end time calculation
+    var sec_duration_num = parseInt(this.audio_duration[val], 10);
+    var duration_hours: any = Math.floor(sec_duration_num / 3600);
+    var duration_minutes: any = Math.floor((sec_duration_num - (duration_hours * 3600)) / 60);
+    var duration_seconds: any = sec_duration_num - (duration_hours * 3600) - (duration_minutes * 60);
+    // // // // // console.log(val, 'audio_duration')
+    this.audio_end_time[val] = duration_hours + ':' + duration_minutes + ':' + duration_seconds;
+
+  }
   // for openinglesson
   openlesson(item, flag, i) {
     if (flag == 'click') {
@@ -267,7 +342,7 @@ export class TraingCenterPeceComponent implements OnInit {
           "status": 1,
           "previous_lesson_name": val.lession_title,
           "previous_lesson_id": val._id,
-          "use_type": userdata.user_type
+          "user_type": userdata.user_type
         }
       }
       if (this.trainingLessonData[i + 1]) {
@@ -292,31 +367,33 @@ export class TraingCenterPeceComponent implements OnInit {
       }
 
       let link1 = this.formSourcedata.serverurl + this.formSourcedata.addMarkendpoint
-      this.apiService.postDatawithoutToken(link1, data).subscribe((res: any) => {
-        //console.log(res);
-        if (i + 1 >= this.trainingLessonData.length) {
+      console.log(data);
+      
+      // this.apiService.postDatawithoutToken(link1, data).subscribe((res: any) => {
+      //   //console.log(res);
+      //   if (i + 1 >= this.trainingLessonData.length) {
 
-          if (this.trainingCategoryData.length > 0) {
-            for (const key in this.trainingCategoryData) {
-              if (this.trainingCategoryData[key]._id == val.associated_training_id) {
-                //console.log(key, typeof key);
-                ind = (parseInt(key) + 1);
-                //console.log(ind);
-                if (ind && this.trainingCategoryData[ind] && this.trainingCategoryData[ind]._id != null && typeof this.trainingCategoryData[ind]._id != 'undefined' && this.trainingCategoryData[ind]._id != '') {
-                  this.router.navigateByUrl(this.trainingCenterRoute + this.trainingCategoryData[ind]._id + '/' + this.trainingLessonData[0]._id);
+      //     if (this.trainingCategoryData.length > 0) {
+      //       for (const key in this.trainingCategoryData) {
+      //         if (this.trainingCategoryData[key]._id == val.associated_training_id) {
+      //           //console.log(key, typeof key);
+      //           ind = (parseInt(key) + 1);
+      //           //console.log(ind);
+      //           if (ind && this.trainingCategoryData[ind] && this.trainingCategoryData[ind]._id != null && typeof this.trainingCategoryData[ind]._id != 'undefined' && this.trainingCategoryData[ind]._id != '') {
+      //             this.router.navigateByUrl(this.trainingCenterRoute + this.trainingCategoryData[ind]._id + '/' + this.trainingLessonData[0]._id);
 
-                } else {
-                  this.router.navigateByUrl(this.trainingCenterRoute + this.trainingCategoryData[0]._id + '/' + this.trainingLessonData[0]._id);
+      //           } else {
+      //             this.router.navigateByUrl(this.trainingCenterRoute + this.trainingCategoryData[0]._id + '/' + this.trainingLessonData[0]._id);
 
-                }
-              }
-            }
+      //           }
+      //         }
+      //       }
 
-          }
-        } else {
-          this.router.navigateByUrl(this.trainingCenterRoute + val.associated_training_id + '/' + this.trainingLessonData[i + 1]._id);
-        }
-      })
+      //     }
+      //   } else {
+      //     this.router.navigateByUrl(this.trainingCenterRoute + val.associated_training_id + '/' + this.trainingLessonData[i + 1]._id);
+      //   }
+      // })
     }
     if (flag == 'next') {
       //console.log(val, i);
@@ -389,14 +466,7 @@ export class TraingCenterPeceComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => {
       // // //console.log(result, 'result')
       if (result == 'yes') {
-        // this.next_button_access = true;
-        // this.quizflag = false;
-        // if (this.quizflag == false) {
-        //   this.next_button_access = true;
-        // }
-        // else {
-        //   this.next_button_access = false;
-        // }
+
         this.getTrainingCenterlistFunctionwithLessonId(this.categoryid, this.userType, this.userId, this.lessonid)
 
         this.progressSpinner.loading = false;
@@ -427,7 +497,6 @@ export class TraingCenterPeceComponent implements OnInit {
 
       if (response.status == "success") {
 
-        // // //console.log("next_button_access true", response);
         this.progressSpinner.loading = false
         this.addmrakdata(response.results);
       };
@@ -456,11 +525,56 @@ export class TraingCenterPeceComponent implements OnInit {
     }
   }
 
+  // for complete Audio Data
+  complete_audio() {
+    if (this.complete_lesson_audio != null && this.complete_lesson_audio.length > 0) {
+      for (const key in this.complete_lesson_audio) {
+        if (this.lesson_content_data.length > 0) {
+          for (const i in this.lesson_content_data[0].lesson_attachements) {
+            //console.log(this.complete_lesson_videos[key].video_url, 'this.lesson_content_data[0].lesson_attachements', this.lesson_content_data[0].lesson_attachements[i].video_url);
+
+            if (this.lesson_content_data[0].lesson_attachements && this.lesson_content_data[0].lesson_attachements[i].type == 'audio' && this.lesson_content_data[0].lesson_attachements[i].screenshots.fileservername == this.complete_lesson_audio[key].audio_id) {
+              console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+
+
+              this.complete_audioflag[this.lesson_content_data[0].lesson_attachements[i].screenshots.fileservername] = true;
+            }
+
+          }
+        }
+      }
+    }
+  }
+  complete_file() {
+    if (this.complete_lesson_files != null && this.complete_lesson_files.length > 0) {
+      for (const key in this.complete_lesson_files) {
+        if (this.lesson_content_data.length > 0) {
+          for (const i in this.lesson_content_data[0].lesson_attachements) {
+            //console.log(this.complete_lesson_videos[key].video_url, 'this.lesson_content_data[0].lesson_attachements', this.lesson_content_data[0].lesson_attachements[i].video_url);
+
+            if (this.lesson_content_data[0].lesson_attachements && this.lesson_content_data[0].lesson_attachements[i].type == 'png' && this.lesson_content_data[0].lesson_attachements[i].screenshots.fileservername == this.complete_lesson_files[key].file_id) {
+              console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+
+
+              this.complete_fileflag[this.lesson_content_data[0].lesson_attachements[i].screenshots.fileservername] = true;
+            }
+            if (this.lesson_content_data[0].lesson_attachements && (this.lesson_content_data[0].lesson_attachements[i].type == 'pdf' || this.lesson_content_data[0].lesson_attachements[i].type == 'doc' || this.lesson_content_data[0].lesson_attachements[i].type == 'ppt' || this.lesson_content_data[0].lesson_attachements[i].type == 'pptx' || this.lesson_content_data[0].lesson_attachements[i].type == 'msword' || this.lesson_content_data[0].lesson_attachements[i].type == 'xlsx' || this.lesson_content_data[0].lesson_attachements[i].type == 'ods' || this.lesson_content_data[0].lesson_attachements[i].type == 'docx' || this.lesson_content_data[0].lesson_attachements[i].type == 'ppt') && this.lesson_content_data[0].lesson_attachements[i].screenshots.fileservername == this.complete_lesson_files[key].file_id) {
+              console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+              this.complete_fileflag[this.lesson_content_data[0].lesson_attachements[i].screenshots.fileservername] = true;
+            }
+
+          }
+        }
+      }
+    }
+  }
 
   // using for mark as done shown of not 
   addmrakdata(val) {
     this.next_button_access = false;
-    let mandetoryLessonVideo: any = [];
+
+    let mandetoryLessonfile: any = [];
+    let completeLessonFile = [];
     console.log(val, 'this.quizflag', this.quizdata.quiz_data.length);
     if (val.done_quiz_data.length > 0) {
       console.log('pppppppppppppppppppppppppppp');
@@ -474,27 +588,291 @@ export class TraingCenterPeceComponent implements OnInit {
     if (val.lesson_content[0].video_array.length > 0) {
       for (const key in val.lesson_content[0].video_array) {
         if (val.lesson_content[0].video_array[key].video_skippable == false) {
-          mandetoryLessonVideo.push(val.lesson_content[0].video_array[key])
+          mandetoryLessonfile.push(val.lesson_content[0].video_array[key])
         }
       }
-      console.log(mandetoryLessonVideo);
-
-    } else {
-      this.next_button_access = false;
+      // console.log(mandetoryLessonVideo);
 
     }
-    if (mandetoryLessonVideo.length == val.complete_lesson_videos.length) {
-      this.next_button_access = true;
+    if (val.lesson_content[0].audio_array.length > 0) {
+      for (const key in val.lesson_content[0].audio_array) {
+        if (val.lesson_content[0].audio_array[key].skippeble == false) {
+          mandetoryLessonfile.push(val.lesson_content[0].audio_array[key])
+        }
+      }
+    }
+    if (val.lesson_content[0].file_array.length > 0) {
+      for (const key in val.lesson_content[0].file_array) {
+        if (val.lesson_content[0].file_array[key].skippeble == false) {
+          mandetoryLessonfile.push(val.lesson_content[0].file_array[key])
+        }
+      }
+    }
 
-    } else {
-      this.next_button_access = false;
+
+    completeLessonFile = completeLessonFile.concat(val.complete_lesson_files, val.complete_lesson_audio, val.complete_lesson_videos);
+    console.log(this.quizdata.quiz_data.length, val.done_quiz_data.length);
+
+    if (completeLessonFile.length == mandetoryLessonfile.length) {
+      this.next_button_access = true;
+      if (this.quizdata.quiz_data.length > 0) {
+        this.next_button_access = false;
+        if (this.quizdata.quiz_data.length && val.done_quiz_data.length) {
+          this.next_button_access = true;
+
+        }
+
+      }
 
     }
 
   }
 
 
+  //load to start the audio
+  loadstart(fullval, val) {
+    setTimeout(() => {
+      // audioId.duration find audio duration
+      var audioId: any = document.getElementById("audioPlayer_" + val);
+      if (audioId.duration != null && audioId.duration != '') {
+        this.audio_duration[val] = audioId.duration;
+      }
+      //audioId.currentTime for current audio time
+      this.audio_currenttime[val] = audioId.currentTime;
+      this.audio_progress[val] = Math.floor((this.audio_currenttime[val] / this.audio_duration[val]) * 100);
 
+      //start time calculation
+      var sec_num = parseInt(this.audio_currenttime[val], 10);
+      var hours: any = Math.floor(sec_num / 3600);
+      var minutes: any = Math.floor((sec_num - (hours * 3600)) / 60);
+      var seconds: any = sec_num - (hours * 3600) - (minutes * 60);
+      // convert start time to hours minutes sec format
+      this.audio_time[val] = hours + ':' + minutes + ':' + seconds;
+
+      //end time calculation
+      var sec_duration_num = parseInt(this.audio_duration[val], 10);
+      var duration_hours: any = Math.floor(sec_duration_num / 3600);
+      var duration_minutes: any = Math.floor((sec_duration_num - (duration_hours * 3600)) / 60);
+      var duration_seconds: any = sec_duration_num - (duration_hours * 3600) - (duration_minutes * 60);
+      // convert end time to min hour sec format
+      this.audio_end_time[val] = duration_hours + ':' + duration_minutes + ':' + duration_seconds;
+      this.play_flag[val] = true;
+      this.pause_flag[val] = false;
+
+      if (fullval.skippeble == false) {
+        // // // // // console.log('true')
+        this.disabled[val] = true
+      }
+
+      this.modelval[val] = 0;
+      // // // // // console.log(this.modelval[val], 'ghjgh+++++++++');
+      this.modelval[val] = this.audio_progress[val];
+
+      this.audio_currenttime[val] = (this.modelval[val] * this.audio_duration[val]) / 100;
+      this.newaudio_currenttime[val] = this.audio_currenttime[val]
+
+      // // // // // console.log(this.audio_duration[val], 'audio_currenttime')
+
+
+    }, 1500);
+
+  }
+
+
+  audioended(item: any, i: any, j) {
+    // // // // console.log(item, 'dcnjmkxdcvf')
+
+    if (j == 1) {
+
+
+      let audioendpoint = this.serverDetailsVal + this.formSourcedata.audio_endpoint;
+
+      let audio_data = {
+        user_id: this.userId,
+        training_id: this.paramsTrainingId,
+        lesson_id: this.paramslessonId,
+        audio_type: item.type,
+        audio_id: item.screenshots.fileservername,
+        audio_name: item.screenshots.name,
+      }
+      if (item.skippeble != true) {
+        this.apiService.postDatawithoutToken(audioendpoint, audio_data).subscribe(res => {
+          // // // // console.log(res)
+          let result: any = res;
+
+          // // // // // console.log(result, '+++++++')
+          if (result.status == 'success') {
+            // // // // console.log(item, 'dcnjmkxdcvf')
+            this.complete_audioflag[item.screenshots.fileservername] = true;
+
+
+            this.snakBar.open('Successfully Completed This Lesson Audio', 'ok', {
+              duration: 3000
+            });
+            setTimeout(() => {
+              this.getTrainingCenterlistFunctionwithLessonId(this.categoryid, this.userType, this.userId, this.lessonid)
+            }, 500);
+          }
+        })
+      }
+
+
+
+    }
+  }
+  skipTensec(val, item, flag) {
+    // // // // // console.log(item, '+++++++++++====', flag)
+    if (item.skippeble == false) {
+      this.snakBar.open("You can't skip this audio", 'Ok', {
+        duration: 1000
+      });
+    }
+    else {
+      if (flag == 'previos') {
+        var audioId: any = document.getElementById("audioPlayer_" + val);
+        audioId.currentTime = audioId.currentTime - Math.floor(10);
+        // // // // // console.log(audioId.currentTime, 'previos')
+
+      }
+      if (flag == 'next') {
+        var audioId: any = document.getElementById("audioPlayer_" + val);
+        audioId.currentTime = audioId.currentTime + 10;
+        // // // // // console.log(audioId.currentTime, 'next')
+
+      }
+    }
+
+
+  }
+  playbtn(val: any, flag: any) {
+    // // // // // console.log(val, '000000796e++', flag)
+    let audioId: any = document.getElementById("audioPlayer_" + val);
+    this.play_flag[val] = false;
+    this.pause_flag[val] = true;
+    audioId.play();
+    // // // // // console.log(audioId, 'audioId')
+  }
+
+  pausebtn(val: any, flag: any) {
+    let audioId: any = document.getElementById("audioPlayer_" + val);
+    audioId.pause();
+    this.play_flag[val] = true;
+    this.pause_flag[val] = false;
+    // // // // // console.log(audioId, '+++++++++++++')
+  }
+
+  replay(val) {
+    var audioId: any = document.getElementById("audioPlayer_" + val);
+
+    audioId.currentTime = 0;
+    this.audio_currenttime[val] = audioId.currentTime;
+    var sec_num = parseInt(audioId.currentTime, 10);
+    var hours: any = Math.floor(sec_num / 3600);
+    var minutes: any = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds: any = sec_num - (hours * 3600) - (minutes * 60);
+    this.audio_time[val] = hours + ':' + minutes + ':' + seconds;
+    this.audio_progress[val] = Math.floor((this.audio_currenttime[val] / this.audio_duration[val]) * 100);
+    // // // // // console.log(this.audio_currenttime[val], 'audioId.currentTime')
+  }
+  progressbtn(val, fullval) {
+
+    if (fullval.skippeble == true) {
+
+      this.audio_progress[val] = this.modelval[val];
+
+      this.audio_currenttime[val] = (this.modelval[val] * this.audio_duration[val]) / 100;
+
+      var sec_num = parseInt(this.audio_currenttime[val], 10);
+      var hours: any = Math.floor(sec_num / 3600);
+      var minutes: any = Math.floor((sec_num - (hours * 3600)) / 60);
+      var seconds: any = sec_num - (hours * 3600) - (minutes * 60);
+      this.audio_time[val] = hours + ':' + minutes + ':' + seconds;
+      // // // // // console.log(this.audio_currenttime[val], 'audio_currenttime');
+      let audioId: any = document.getElementById("audioPlayer_" + val);
+      audioId.currentTime = this.audio_currenttime[val];
+
+      // // // // // console.log(this.audio_currenttime, 'audio_currenttime progressbtn fst__--------')
+      // // // // // console.log(this.audio_progress[val], 'audio_progress progressbtn fst__--------')
+    }
+    else {
+      this.snakBar.open("You can't skip this audio", 'Ok', {
+        duration: 1000
+      });
+    }
+    // this.audio_progress[id]=5
+  }
+
+  previewpdf(val, flag) {
+    // // // // console.log(val, 'val');
+    if (flag == 'img') {
+      this.previewimages = val
+    }
+    // if (flag == 'pdf') {
+    //   this.previewimages = val.images.converted_array;
+    //   // // // // // // console.log(this.previewimages, 'PreviewContentDialog')
+
+    // }
+    // this.previewimages = val.images.converted_array;
+    // // // // // // console.log(this.previewimages, 'PreviewContentDialog')
+
+    const dialogRef = this.dialog.open(PreviewContentDialogpece, {
+      panelClass: 'lesson_pdfmodal',
+      width: 'auto',
+      data: { data: val, flag: flag }
+    });
+    dialogRef.disableClose = true;
+    dialogRef.afterClosed().subscribe(result => {
+      // // // // // // console.log(result, '>>>>>>>>>>');
+    });
+  }
+
+  downloadPdf(file: any, i) {
+    // // // // // // console.log(file.file_type, 'fvgbnjkmgbh')
+    let fileendpoint: any;
+
+    // // // // // // console.log(this.serverDetailsVal.serverUrl, 'serverDetailsVal')
+    fileendpoint = this.serverDetailsVal + this.formSourcedata.file_endpoint;
+    let file_data = {
+      user_id: this.userId,
+      training_id: this.paramsTrainingId,
+      lesson_id: this.paramslessonId,
+      file_type: file.type,
+      file_id: file.screenshots.fileservername,
+      file_name: file.screenshots.name
+
+    }
+
+    if (file.skippeble != true) {
+      this.apiService.postDatawithoutToken(fileendpoint, file_data).subscribe(res => {
+        // // // // // console.log(res, 'res')
+        let result: any = res;
+        this.complete_fileflag[file.screenshots.fileservername] = false;
+
+        // // // // // // console.log(this.complete_fileflag[file.file._id], '+++++++_______________')
+        if (result.status == 'success') {
+          this.complete_fileflag[file.screenshots.fileservername] = true
+
+          let checked_status = 'success';
+          let pdf_url = this.bucket_url + file.screenshots.fileservername;
+          let externalWindow = window.open(
+            pdf_url
+          );
+          this.snakBar.open("You completed this file", 'Ok', {
+            duration: 1000
+          })
+        }
+      })
+    }
+    setTimeout(() => {
+      this.getTrainingCenterlistFunctionwithLessonId(this.categoryid, this.userType, this.userId, this.lessonid)
+    }, 500);
+    if (file.skippeble == true) {
+      let pdf_url = this.bucket_url + file.screenshots.fileservername;
+      let externalWindow = window.open(
+        pdf_url
+      );
+    }
+  }
 }
 
 
@@ -722,4 +1100,81 @@ export class peceLessonVideoModalComponent {
     }
 
   }
+}
+
+
+
+@Component({
+  selector: 'preview-content-dialog',
+  templateUrl: 'preview-content-dialog.html',
+  styleUrls: ['preview-content-dialog.css']
+
+})
+export class PreviewContentDialogpece {
+  public previewImg: any = [];
+  public image: any = '';
+  public indeximg = 0;
+  public page = 1;
+  public bucket_url: any = 'https://pece-training-files.s3.amazonaws.com/training/';
+  public nextflg: any = 'disabled';
+  public prevflag: any = 'disabled';
+  public pos: any;
+  public image1: any
+
+  constructor(public dialogRef: MatDialogRef<PreviewContentDialogpece>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData6, public snakBar: MatSnackBar, public apiService: ApiService, public router: Router) {
+    console.log(data, 'data')
+    if (data.flag == 'pdf' && typeof (data.data.images.converted_array) != undefined) {
+
+      this.previewImg = data.data.images.converted_array;
+      this.image = this.bucket_url + data.data.images.converted_array[this.indeximg].name //set image for pdf
+      this.pos = data.data.images.numberOfPages;
+      // // // // // // console.log(this.previewImg[this.indeximg])
+
+    }
+    if (data.flag == 'img') {
+      this.image1 = this.bucket_url + data.data.screenshots.fileservername; //set img for imagefile
+    }
+    // // // // // // // console.log(this.quizData, '++')
+  }
+  close(val) {                 //FOR MODAL CLOSE
+    this.snakBar.open(' Your Lesson  is Complete After Download This File ..!', 'OK', {
+      duration: 5000
+    })
+  }
+  //next previos btn
+  nextprevbtn(flag) {
+    // // // // // // console.log(flag, 'nextbtn',)
+    switch (flag) {
+      case 'prev': // for prevous case
+        if (this.indeximg == 0 || this.indeximg < 0) {
+          // // // // // // console.log(flag, '++++++++++++ if')
+
+        } else {
+          // // // // // // console.log(flag, '++++++++++++ else')
+          this.indeximg = this.indeximg - 1;
+          this.image = this.bucket_url + this.previewImg[this.indeximg].name
+          this.page = this.previewImg[this.indeximg].page
+          // // // // // // console.log('index+++++++', this.indeximg, this.previewImg.length)
+        }
+        break;
+      case 'next': // for next case
+
+        if (this.previewImg.length == this.indeximg + 1) {
+          // // // // // // console.log(flag, '++++++++++++ if')
+        }
+        else {
+
+          // // // // // // console.log(flag, '++++++++++++ else')
+          this.indeximg = this.indeximg + 1;
+          this.image = this.bucket_url + this.previewImg[this.indeximg].name
+          this.page = this.previewImg[this.indeximg].page
+          // // // // // // console.log('index+++++++', this.indeximg + 1, this.previewImg.length)
+        }
+        break;
+    }
+
+    // // // // // // // console.log(flag, '++++++++++++', index)
+  };
+
 }

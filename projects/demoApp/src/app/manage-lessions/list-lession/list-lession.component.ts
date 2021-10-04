@@ -96,7 +96,7 @@ export class ListLessionComponent implements OnInit {
   public manageQuizRoute: any = "/manage-quiz/list/";
   public QuizPageRoute: any = '/quiz/list/';
   public bucket_url: any = {
-    url: 'https://pece-training-files.s3.amazonaws.com/dev-files/'
+    url: 'https://pece-training-files.s3.amazonaws.com/training/'
   };
   public preview_url: any = 'https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/'
   public preview_endpoint = 'lesson-preview-data'
@@ -107,7 +107,7 @@ export class ListLessionComponent implements OnInit {
   public formSource: any = {
     "source": 'manage_lession',
     "endpoint": "lessondelete",
-    "deleteManyEndpoint": "lessondelete",
+    "deleteManyEndpoint": "lessondeletemany",
     "searchEndpoint": "getlessonlist",
     "associatedTrainingSourceName": "training_category_management",
     "statusUpdateEndpoint": "lessonstatusupdate",

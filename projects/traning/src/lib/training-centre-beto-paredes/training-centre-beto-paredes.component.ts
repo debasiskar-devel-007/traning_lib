@@ -274,9 +274,9 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
     }
     console.log(this.trainingCategoryData, 'this.trainingCategoryData')
-    if (val.done_lesson_by_user && val.done_lesson_by_user.length != 0 && typeof (val.done_lesson_by_user[0].lessonsdone) != 'undefined') {
+    if (val.done_lesson_by_user && val.done_lesson_by_user.length != 0) {
 
-      this.dividend = val.done_lesson_by_user[0].lessonsdone;
+      this.dividend = val.done_lesson_by_user;
     }
     this.divisor = val.total_lesson;
 
@@ -353,10 +353,11 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       this.userId = JSON.parse(this.cookieService.get('userid'));
 
     }
-    if (this.cookieService.get('type')&&this.cookieService.get('type') != null && typeof JSON.parse(this.cookieService.get('type')) != undefined && JSON.parse(this.cookieService.get('type')) != '') {
+    if (this.cookieService.get('type') && this.cookieService.get('type') != null && typeof JSON.parse(this.cookieService.get('type')) != undefined && JSON.parse(this.cookieService.get('type')) != '') {
       this.userType = JSON.parse(this.cookieService.get('type'));
 
     }
+    console.log(this.userType);
 
 
   }
@@ -426,67 +427,71 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     }
 
     console.log(this.trainingCategoryData, val, i);
+    if (this.userType == 'technological-consultant') {
+      if (this.activatedRoute.snapshot.params.associated_training == val) {
+        this.router.navigateByUrl(this.trainingCenterRoute + val);
+        this.progressSpinner.loading = false;
 
-    if (this.activatedRoute.snapshot.params.associated_training == val) {
-      this.router.navigateByUrl(this.trainingCenterRoute + val);
-      this.progressSpinner.loading = false;
+        return;
+      }
+      else if (i == 0) {
+        this.router.navigateByUrl(this.trainingCenterRoute + val);
+        this.progressSpinner.loading = false;
 
-      return;
-    }
-    else if (i == 0) {
-      this.router.navigateByUrl(this.trainingCenterRoute + val);
-      this.progressSpinner.loading = false;
+        return;
+      }
+      else if (this.trainingCategoryData[i].done == this.trainingCategoryData[i].count) {
+        this.router.navigateByUrl(this.trainingCenterRoute + val);
+      }
+      else if (i > 0 && this.trainingCategoryData[i - 1].done == this.trainingCategoryData[i - 1].count) {
+        this.router.navigateByUrl(this.trainingCenterRoute + val);
+      }
+      else if (training_access_flag && this.trainingCategoryData[i].traingcompleteflag == 'false' && duplicate_array.length == 0) {
+        console.log(training_access_flag);
 
-      return;
-    }
-    else if (this.trainingCategoryData[i].done == this.trainingCategoryData[i].count) {
-      this.router.navigateByUrl(this.trainingCenterRoute + val);
-    }
-    else if (i > 0 && this.trainingCategoryData[i - 1].done == this.trainingCategoryData[i - 1].count) {
-      this.router.navigateByUrl(this.trainingCenterRoute + val);
-    }
-    else if (training_access_flag && this.trainingCategoryData[i].traingcompleteflag == 'false' && duplicate_array.length == 0) {
-      console.log(training_access_flag);
+        this.router.navigateByUrl(this.trainingCenterRoute + val);
+      }
+      else {
 
-      this.router.navigateByUrl(this.trainingCenterRoute + val);
-    }
-    else {
+        console.log(duplicate_array[i - 1]);
+        let msg2 = '';
+        if (duplicate_array.length > 0) {
+          for (const key in duplicate_array) {
+            if (duplicate_array.length == i && i > 1) {
 
-      console.log(duplicate_array[i - 1]);
-      let msg2 = '';
-      if (duplicate_array.length > 0) {
-        for (const key in duplicate_array) {
-          if (duplicate_array.length == i && i > 1) {
-
-            msg = "Sorry, You cannot access this training unless you complete the " + duplicate_array[i - 2].catagory_name;
+              msg = "Sorry, You cannot access this training unless you complete the " + duplicate_array[i - 2].catagory_name;
 
 
-          } else {
-            if (duplicate_array.length > 1) {
-              let msg1 = "Sorry, You cannot access this training unless you complete the ";
-              msg2 += duplicate_array[key].catagory_name + ',';
-              msg = msg1 + msg2
+            } else {
+              if (duplicate_array.length > 1) {
+                let msg1 = "Sorry, You cannot access this training unless you complete the ";
+                msg2 += duplicate_array[key].catagory_name + ',';
+                msg = msg1 + msg2
+              }
+              else {
+                console.log(duplicate_array[0]);
+
+                let msg1 = "Sorry, You cannot access this training unless you complete the ";
+                msg2 = duplicate_array[0].catagory_name;
+                msg = msg1 + msg2
+              }
+
             }
-            else {
-              console.log(duplicate_array[0]);
-
-              let msg1 = "Sorry, You cannot access this training unless you complete the ";
-              msg2 = duplicate_array[0].catagory_name;
-              msg = msg1 + msg2
-            }
-
           }
         }
+
+
+        setTimeout(() => {
+          this.progressSpinner.loading = false;
+          this.snakBar.open(msg, 'Ok', {
+            duration: 4000
+          });
+        }, 1000);
       }
-
-
-      setTimeout(() => {
-        this.progressSpinner.loading = false;
-        this.snakBar.open(msg, 'Ok', {
-          duration: 4000
-        });
-      }, 1000);
+    } else {
+      this.router.navigateByUrl(this.trainingCenterRoute + val);
     }
+
     // if (condition) {
 
     // }
@@ -494,7 +499,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   }
 
   nochildclick(val: any, flag) {
-    // // // // // console.log(val, 'nochiuld')
+    console.log(flag, 'nochiuld')
     this.router.navigateByUrl(this.trainingCenterRoute + this.paramsTrainingId + '/' + val._id);
 
   }
@@ -609,8 +614,9 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     }
 
   }
-  nextbutton(value: any, i) {
+  nextbutton(value: any, i: number) {
     // // // console.log(value, 'value', this.lessonDataList)
+    let index;
     this.progressSpinner = {
       mode: 'indeterminate',
       loading: true,
@@ -619,8 +625,11 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
     switch (value) {
       case 'next':
-        console.log(this.trainingCategoryData, 'nextbutton', i);
-
+        console.log(this.lessonDataList.length, 'nextbutton', i);
+        let lastflag: boolean = false;
+        if (this.lessonDataList.length == i + 1) {
+          lastflag = true
+        }
         // this.lessonDataList[this.Index].lession_title
         // // // // // // console.log(this.lesson_content, 'this.lesson_content', this.lessonDataList[0])
         // if (this.lesson_content.is_done == null && this.lesson_content.has_lessonplan == 0) {
@@ -638,7 +647,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
           if (this.lessonDataList[ind] != null) {
 
             setTimeout(() => {
-              this.nochildclick(this.lessonDataList[ind], 'next');
+              this.nochildclick(this.lessonDataList[ind], lastflag);
 
             }, 500)
 
@@ -649,7 +658,13 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
               // // // // // // console.log('++>>>>', this.trainingCategoryList[n], this.trainingCategoryList[n + 1], this.trainingCategoryList[0]._id)
               if (this.paramsTrainingId == this.trainingCategoryData[n]._id && this.trainingCategoryData[n + 1] != null) {
                 // // // // // // console.log('-->>>>', this.trainingCategoryList[n + 1])
-
+                console.log(lastflag, 'lastflag');
+                if (lastflag == true) {
+                  let currentUrl = this.router.url;
+                  this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+                  this.router.onSameUrlNavigation = 'reload';
+                  this.router.navigate([currentUrl]);
+                }
                 this.router.navigateByUrl(this.trainingCenterRoute + this.trainingCategoryData[n + 1]._id);
                 this.progressSpinner = {
                   mode: 'indeterminate',
@@ -670,6 +685,29 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
         }, 500);
         // // // // // // console.log("souresh test", this.nextdata);
         // }
+        break;
+      case 'next_go':
+        if (this.trainingLessonData[i + 1]) {
+          console.log(this.trainingCenterRoute + this.trainingLessonData[i + 1].associated_training + '/' + this.trainingLessonData[i + 1]._id);
+          this.router.navigateByUrl(this.trainingCenterRoute + this.trainingLessonData[i + 1].associated_training + '/' + this.trainingLessonData[i + 1]._id);
+        } else {
+          console.log(this.trainingCategoryData)
+          if (this.paramsTrainingId && this.trainingCategoryData.length > 0) {
+            for (const key in this.trainingCategoryData) {
+              if (this.trainingCategoryData[key]._id == this.paramsTrainingId) {
+                index = parseInt(key) + 1;
+                console.log(index);
+                if (this.trainingCategoryData[index]) {
+                  this.router.navigateByUrl(this.trainingCenterRoute + this.trainingCategoryData[index]._id);
+
+                } else {
+                  this.router.navigateByUrl(this.trainingCenterRoute + this.trainingCategoryData[0]._id + '/' + this.trainingLessonData[0]._id);
+                }
+              }
+            }
+          }
+        }
+
         break;
       case 'prev':
         // // // // // // console.log(this.lessonDataList[this.Index], '>>>>>>>>>>>>')
@@ -1162,7 +1200,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     this.apiService.postDatawithoutToken(link, data).subscribe(res => {
       // // console.log(res, 'trainingupdate');
       for (const key in this.trainingCategoryData) {
-        if (this.trainingCategoryData[key]._id == this.paramsTrainingId && ((this.trainingCategoryData[key].done / this.trainingCategoryData[key].count) * 100) == 100) {
+        if (this.trainingCategoryData[key]._id == this.paramsTrainingId) {
           this.trainingDataListener.emit({ action: 'update-success', result: data, training_percentage: t_percent, })
         }
       }
@@ -1218,8 +1256,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
         // // // // // // console.log(this.complete_fileflag[file.file._id], '+++++++_______________')
         if (result.status == 'success') {
           this.complete_fileflag[file.file._id] = true
-          // // // // // // console.log(this.complete_fileflag[file.file._id], '+++++++666______________')
-          // this.next_button_access = true;
+
           let checked_status = 'success';
           let pdf_url = this.bucket_url + file.file.fileservername;
           let externalWindow = window.open(
@@ -1263,7 +1300,6 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       if (response.status == "success") {
         this.getMarkDataButton(response.results);
 
-        // // console.log("next_button_access true", response);
         this.progressSpinner = {
           mode: 'indeterminate',
           loading: false,
@@ -1420,10 +1456,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
             if (this.trainingCentreData.complete_lesson_quiz != null && this.trainingCentreData.complete_lesson_quiz[0] != null && this.trainingCentreData.lesson_content.length > 0) {
               if (this.trainingCentreData.complete_lesson_quiz[0].lesson_id == this.trainingCentreData.lesson_content[0]._id) {
-                // this.next_button_access = true;
-                // // // // console.log("next_button_access true")
 
-                // this.quizflag = false;
               }
             }
             this.complete_videoflag[val.video_url] = true

@@ -51,6 +51,8 @@ export class TraningComponent implements OnInit {
   public percentageis: any = [];
   public lengthis: any = [];
   public nameis: any = [];
+  public formfieldrefresh: any;
+  public formfieldrefreshdata:any;
   public issubmit = 0;
   public isedit: number = 0;
   public start_time: any;
@@ -106,6 +108,7 @@ export class TraningComponent implements OnInit {
   public bucket_url: any;//  = 'https://training-centre-bucket.s3.amazonaws.com/lesson-files/';
   public trainingAccessData: any = [];
   public from_type: any;
+  // public formdatas: any;
 
   @Input()
   set formdata(formdata: string) {
@@ -184,8 +187,16 @@ export class TraningComponent implements OnInit {
     this.formgroup = formgroup;
 
     this.editorconfig.extraAllowedContent = '*[class](*),span;ul;li;table;td;style;*[id];*(*);*{*}';
+
   }
 
+
+
+
+  listenFormFieldChange(val: any) {
+    console.log(val);
+
+  }
   ngOnInit() {
 
 
@@ -406,9 +417,14 @@ export class TraningComponent implements OnInit {
         delete data.data.test_percentage;
         delete data.data.has_test_lesson;
       }
-      
+
       if (data.data['has_test_lesson'] == 1) {
-        console.log(data, 'data++')
+        console.log(data, 'has_test_lesson_has_test_lesson_has_test_lessondata++')
+        if (data.data['test_percentage'] != null && typeof data.data['test_percentage'] != 'undefined' && data.data['test_percentage'] != '') {
+          data.data['test_percentage'] = data.data['test_percentage'];
+        } else {
+          data.data['test_percentage'] = 0
+        }
       }
 
       this.apiService.postData(link, data).subscribe((res: any) => {
@@ -601,7 +617,7 @@ export class TraningComponent implements OnInit {
 
     //for subscribe modal data
     dialogRef.afterClosed().subscribe(result => {
-      // // console.log(result, '++++sub')
+      console.log(result, '++++sub')
 
       if (result.flag == 'yes') {
         // this.video_array[i] = result.videoFields
@@ -674,18 +690,22 @@ export class TraningComponent implements OnInit {
 
     //for subscribe modal data
     dialogRef.afterClosed().subscribe(result => {
-      // // console.log(result, '=>>>>>', i, key);
+      console.log(result, '=>>>>>', i, key);
       if (result.flag == 'yes') {
-
+        if (result.screenshots.type && result.screenshots.type != null && result.screenshots.type != '') {
+          let type = result.screenshots.type.split('/', 3);
+          console.log(type);
+          result.type = type[1]
+        }
         if (key == 'add') {
-          this.file_array.push(result.fileFields);
+          this.file_array.push(result);
         }
         if (key == 'edit') {
           // this.file_array.splice(i, 1);
           // this.file_array.push(result.fileFields);
-          this.file_array[i] = result.fileFields
+          this.file_array[i] = result
         }
-        // // console.log(this.file_array, 'this.file_array')
+        console.log(this.file_array, 'this.file_array')
       }
     })
 
@@ -726,19 +746,19 @@ export class TraningComponent implements OnInit {
 
     //for subscribe modal data
     dialogRef.afterClosed().subscribe(result => {
-      // // console.log(result, '++++++++++.>>>>>>>>')
+      console.log(result, '++++++++++.>>>>>>>>')
       if (result.flag == 'yes') {
         // this.audio_array[i] = result.audioFields
 
-        if (result.dataObj.audio != null && key == 'add' && result.dataObj.audio != '') {
-          this.audio_array.push(result.audioFields);
-          // // console.log(this.audio_array, 'audio_array')
+        if (key == 'add' && result.type == 'audio' && result.type != null && result.flag == "yes") {
+          this.audio_array.push(result);
+          console.log(this.audio_array, 'audio_array')
         }
 
         if (key == 'edit') {
           // this.file_array.splice(i, 1);
           // this.file_array.push(result.fileFields);
-          this.audio_array[i] = result.audioFields
+          this.audio_array[i] = result;
         }
       }
     })
@@ -1003,13 +1023,21 @@ export class AddAudioVideoFileDialogComponent {
   public videoFields: any = {};
   public audioFields: any = {};
   public fileFields: any = {};
+  public formdata: any;
   public bucket_url: any;
+  public formfieldrefresh: boolean = false;
+  public formfieldrefreshdata: any = null;
+  public title: any = ''
+  public status: any = [
+    { val: 1, name: 'Active' },
+    { val: 0, name: 'Inactive' },
+  ];
   // = 'https://training-centre-bucket.s3.amazonaws.com/lesson-files/';
 
   constructor(
     public dialogRef: MatDialogRef<AddAudioVideoFileDialogComponent>, public sanitizer: DomSanitizer, public snackBar: MatSnackBar, public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: DialogData1) {
-    // // console.log(this.data.keyVal, 'jhgkj')
+    console.log(this.data.dataObj, 'jhgkj')
 
     if (this.data.type_flag == 'audio' || this.data.type_flag == 'file') {
       this.uploadConfigData = data.configFileUpload;
@@ -1026,13 +1054,92 @@ export class AddAudioVideoFileDialogComponent {
 
     if (this.data.type_flag == 'audio') {
       this.audioFields = this.data.dataObj;
+      this.title = 'Audio'
     }
     if (this.data.type_flag == 'file') {
       this.fileFields = this.data.dataObj;
-
+      this.title = 'File'
       // // console.log(data, '>++++++', this.fileFields, ">============")
     }
 
+    this.formdata = {
+      successmessage: "Added Successfully !!",
+      submitactive: true, // optional, default true
+      submittext: "Submit",
+      resettext: "Reset",
+      canceltext: "Cancel",
+      jwttoken:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJleHAiOjE1ODg0MDU3NTEsImlhdCI6MTU4ODMxOTM1MX0.M5TGx6QdtdTl5pF98CLOfv-kqU4rR1TfJ9cqvgQm6jQ',
+      fields: [
+        {
+          label: "Upload attachment: ",
+          name: "screenshots",
+          type: "file",
+          // multiple: false,
+          prefix: Date.now(),
+          path: "training/",
+          baseurl: "training/",
+          bucket: "pece-training-files",
+          apiurl: "https://57lsaxmih2.execute-api.us-east-1.amazonaws.com/dev/requestUploadURL",
+          apideleteurl: "https://57lsaxmih2.execute-api.us-east-1.amazonaws.com/dev/deletefilefromBucket",
+        },
+        {
+          label: this.title + " Title",
+          name: this.data.type_flag + "_title",
+          hint: "",
+          type: "text",
+          val: '',
+          // validations: [{ rule: "required", message: "Select User Type" }],
+        },
+        {
+          label: this.title + " Description",
+          name: this.data.type_flag + "_desc",
+          hint: "",
+          type: "textarea",
+          val: '',
+          // validations: [{ rule: "required", message: "Select User Type" }],
+        },
+        {
+          label: "Priority",
+          name: "priority",
+          hint: "",
+          type: "number",
+          val: '',
+          // validations: [{ rule: "required", message: "Select User Type" }],
+        },
+        {
+          label: "type",
+          name: "type",
+          hint: "",
+          type: "hidden",
+          value: this.data.type_flag,
+
+        },
+        {
+          label: 'Skippable ?',
+          name: 'skippeble',
+          hint: '',
+          type: 'checkbox',
+          val: this.status,
+        },
+
+      ],
+    };
+    if (this.data.keyVal == "edit") {
+      if (this.data.dataObj.type == 'file') {
+        this.formdata.fields[0].value = this.data.dataObj.screenshots
+        this.formdata.fields[1].value = this.data.dataObj.file_title
+        this.formdata.fields[2].value = this.data.dataObj.file_desc
+        this.formdata.fields[3].value = this.data.dataObj.priority
+        this.formdata.fields[5].value = this.data.dataObj.skippeble
+      } else {
+        this.formdata.fields[0].value = this.data.dataObj.screenshots
+        this.formdata.fields[1].value = this.data.dataObj.audio_title
+        this.formdata.fields[2].value = this.data.dataObj.audio_desc
+        this.formdata.fields[3].value = this.data.dataObj.priority
+        this.formdata.fields[5].value = this.data.dataObj.skippeble
+      }
+
+    }
   }
 
   onNoClick(): void {
@@ -1040,6 +1147,23 @@ export class AddAudioVideoFileDialogComponent {
     this.dialogRef.close(this.data);
   }
 
+  listenFormFieldChange(val) {
+    // console.log(val);
+
+    if (val.field == "fromsubmit") {
+      val.fromval.flag = 'yes';
+      if (val.fromval.skippeble == '') {
+        val.fromval.skippeble = false;
+      }
+      this.dialogRef.close(val.fromval);
+
+    }
+    if (val.field == "formcancel") {
+      val.fromval.flag = 'no';
+      this.dialogRef.close(val.fromval);
+    }
+
+  }
 
   // add dialog file
   addvideo(arrayName) {

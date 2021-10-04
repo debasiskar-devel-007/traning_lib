@@ -1,0 +1,53 @@
+<div *ngIf="data.flag=='pdf'" class="allcontent">
+
+    <!-- {{previewImg|json}} -->
+    <span class="filetitle">{{data.data.file_title}}</span>
+    <div class="pdftoimgcls">
+        <img [src]="image">
+    </div>
+    <p>{{data.data.file_desc}}</p>
+    <div class="allimgcountscls">
+
+        <button mat-stroked-button (click)="nextprevbtn('prev')"
+            [ngClass]="indeximg == 0?'preview_inactive':'preview_active'">
+            <span class="material-icons">
+                keyboard_arrow_left
+            </span></button>
+        <span class="paginationcls" >
+            {{page}} of {{pos}}
+        </span>
+
+        <button mat-stroked-button (click)="nextprevbtn('next')"
+            [ngClass]="page == pos?'preview_inactive':'preview_active'">
+            <span class="material-icons">
+                navigate_next
+            </span> </button>
+    </div>
+    <div mat-dialog-actions class="Lesson_Videos_Modal_footer dilogcontentcancelcls">
+        <button mat-button mat-dialog-close (click)="close('file')">
+            <span class="material-icons">
+                clear
+            </span>
+        </button>
+
+    </div>
+</div>
+<div *ngIf="data.flag=='img'">
+    <span class="filetitle">{{data.data.file_title}}</span>
+    <div class="pdftoimgcls">
+        <img [src]="image1">
+    </div>
+    <div class="titledesc">
+        <!-- <p class="File_titlecls">{{data.data.file_title }}</p>              -->
+
+        <p class="File_descriptioncls">{{ data.data.file_desc }}</p>
+    </div>
+    <div mat-dialog-actions class="Lesson_Videos_Modal_footer dilogcontentcancelcls">
+        <button mat-button mat-dialog-close (click)="close('img')">
+            <span class="material-icons">
+                clear
+            </span>
+        </button>
+
+    </div>
+</div>

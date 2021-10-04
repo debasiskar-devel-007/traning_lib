@@ -145,6 +145,8 @@ export class AddEditQuizComponent implements OnInit {
           "sourceobj": ["lesson_id"],
         }
       }
+      console.log(data);
+      
       this.apiService.postData(link, data).subscribe((res: any) => {
         if (res.status = "success") {
           if (this.paramId) {

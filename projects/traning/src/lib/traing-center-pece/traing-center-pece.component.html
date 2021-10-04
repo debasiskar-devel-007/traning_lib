@@ -96,6 +96,246 @@
 
 
                                 </div>
+                                <div class="example-card audioWrapper" *ngIf="item.type=='audio'">
+                                    <audio id="audioPlayer_{{item.screenshots.fileservername}}"
+                                        (timeupdate)="onprocess(item.screenshots.fileservername,item)"
+                                        (loadstart)="loadstart(item,item.screenshots.fileservername)"
+                                        (ended)="audioended(item,a,1)" controls class="audioprogresscls">
+                                        <source src="{{bucket_url +item.screenshots.fileservername }}" type="audio/ogg">
+                                        <source src="{{ bucket_url + item.screenshots.fileservername }}"
+                                            type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                    <div *ngIf="audio_progress!=null &&
+                                    audio_progress[item.screenshots.fileservername]!=null" class="audioseccls">
+
+                                        <div class="audioseccls_slider">
+                                            <div class="audiotitle_position">
+                                                <span class="audioseccls_title">
+
+                                                    <p>{{ item.audio_title }}</p>
+                                                </span>
+                                                <div class="descriptioncls">
+                                                    <p *ngIf='item.audio_desc.length > 120 && shwmoreflg==false'>
+                                                        {{ item.audio_desc|slice:0:120}}</p>
+                                                    <p class='greatercls'
+                                                        *ngIf='item.audio_desc.length > 120 && shwmoreflg==true'>
+                                                        {{item.audio_description }}</p>
+                                                    <p *ngIf='item.audio_desc.length < 120'>{{ item.audio_desc }}</p>
+                                                    <span class="shwmrcls"
+                                                        *ngIf='item.audio_desc.length > 120 && shwmoreflg==false'>
+                                                        <button mat-raised-button (click)="shwmoreflg=true">
+                                                            Show More ..
+                                                        </button>
+                                                    </span>
+                                                    <span class='shwlesscls'
+                                                        *ngIf='item.audio_desc.length > 120 && shwmoreflg==true'>
+                                                        <button mat-raised-button (click)="shwmoreflg=false">
+                                                            Show Less ..
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="audio_controlcls">
+                                                <span class="mataudiocls"
+                                                    (click)="progressbtn(item.screenshots.fileservername,item)">
+                                                    <mat-slider class="audioprocls"
+                                                        [(ngModel)]="modelval[item.screenshots.fileservername]"
+                                                        (click)="progressbtn(item.screenshots.fileservername,item)"
+                                                        [value]="audio_progress[item.screenshots.fileservername]"
+                                                        [disabled]="disabled[item.screenshots.fileservername]">
+                                                    </mat-slider>
+
+                                                </span>
+                                                <div class="controlcls audiocntrlbtn">
+                                                    <p class="audiotitle_STARTtime">
+                                                        {{audio_time[item.screenshots.fileservername]}}</p>
+
+                                                    <mat-card class="audiocntrlbtn_card">
+                                                        <span class="skip_cls" *ngIf="pause_flag[item.screenshots.fileservername]==true &&
+                            item.skippeble == true" (click)="skipTensec(item.screenshots.fileservername,item,'previos')">
+                                                            <img class="skip_cls"
+                                                                src="https://training-centre-bucket.s3.amazonaws.com/10sec_backward.png">
+                                                        </span>
+                                                        <span *ngIf="play_flag[item.screenshots.fileservername]==true"
+                                                            (click)="playbtn(item.screenshots.fileservername,'play')"
+                                                            class="material-icons audiocontrolcls">
+                                                            play_circle
+                                                        </span>
+
+                                                        <span *ngIf="pause_flag[item.screenshots.fileservername]==true"
+                                                            (click)="pausebtn(item.screenshots.fileservername,'pause')"
+                                                            class="material-icons audiocontrolcls">
+                                                            pause
+                                                        </span>
+
+                                                        <span class="skip_cls" *ngIf="pause_flag[item.screenshots.fileservername]==true &&
+                            item.skippeble == true" (click)="skipTensec(item.screenshots.fileservername,item,'next')">
+                                                            <img class="skip_cls"
+                                                                src="https://training-centre-bucket.s3.amazonaws.com/10sec_forward.png">
+                                                        </span>
+
+                                                        <span class="material-icons audiocontrolcls"
+                                                            (click)="replay(item.screenshots.fileservername)">
+                                                            replay
+                                                        </span>
+
+                                                    </mat-card>
+
+                                                    <p class="audiodescendtime">
+                                                        {{audio_end_time[item.screenshots.fileservername]}}</p>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+
+
+                                    </div>
+
+                                    <div class="mandetorycls_wrapper">
+                                        <span class="mandetorycls" *ngIf="item.skippeble!=true">*This is a
+                                            mandetory audio to
+                                            complete this lesson
+                                            <span *ngIf="complete_audioflag[item.screenshots.fileservername]==true"
+                                                class="donetikcls">
+                                                <img class="doneimgcls"
+                                                    src="https://all-frontend-assets.s3.amazonaws.com/dna-frontend-new/assets/images/Trainninglibary_right_icon.jpg"
+                                                    alt="">
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="file_div afvmaindiv"
+                                    *ngIf="item.type != null && item.type == 'jpeg' || item.type =='png'">
+                                    <span class="image_filetype">
+                                        <div class="previewpdfcls">
+                                            <img (click)="previewpdf(item,'img')" mat-card-image
+                                                [attr.src]="bucket_url +item.screenshots.fileservername">
+                                        </div>
+                                        <div class="fileinfocls">
+                                            <div class="File_titlecls_wrapper">
+                                                <p class="File_titlecls">{{ item.file_title }}</p>
+                                            </div>
+
+                                            <div class="descriptioncls">
+
+
+                                                <p *ngIf='item.file_desc.length > 120 && shwmorefileflg==false'>
+                                                    {{item.file_desc|slice:0:120}}yyy</p>
+
+                                                <p class='greatercls'
+                                                    *ngIf='item.file_desc.length > 120 && shwmorefileflg==true'>
+                                                    {{item.file_desc }}</p>
+                                                <p *ngIf='item.file_desc.length < 120'>{{ item.file_desc }}</p>
+                                                <span class="shwmrcls"
+                                                    *ngIf='item.file_desc.length > 120 && shwmorefileflg==false'>
+                                                    <button mat-raised-button (click)="shwmorefileflg=true">
+                                                        Show More ..
+                                                    </button>
+                                                </span>
+                                                <span class='shwlesscls'
+                                                    *ngIf='item.file_desc.length > 120 && shwmorefileflg==true'>
+                                                    <button mat-raised-button (click)="shwmorefileflg=false">
+                                                        Show Less ..
+                                                    </button>
+                                                </span>
+
+                                            </div>
+
+                                            <div class="file_btn_cls">
+                                                <button class="previewbtncls" matTooltip="Preview" mat-raised-button
+                                                    (click)="previewpdf(item,'img')">
+                                                    Preview
+                                                </button>
+                                                <button class="downloadbtncls" matTooltip="Download" mat-raised-button
+                                                    (click)="downloadPdf(item,1)">
+                                                    Download
+                                                </button>
+                                            </div>
+                                            <div class="mandetorycls_wrapper">
+                                                <span class="mandetorycls" *ngIf="item.skippeble!=true">*This is a
+                                                    mandetory image to complete this lesson (after download)
+
+                                                    <span
+                                                        *ngIf="complete_fileflag[item.screenshots.fileservername]==true"
+                                                        class="donetikcls">
+                                                        <img class="doneimgcls"
+                                                            src="https://all-frontend-assets.s3.amazonaws.com/dna-frontend-new/assets/images/Trainninglibary_right_icon.jpg"
+                                                            alt="">
+                                                    </span>
+
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    </span>
+                                </div>
+                                <div
+                                    *ngIf="item.type != null && item.type == 'pdf' || item.type =='doc' || item.type == 'ppt' || item.type == 'pptx' || item.type =='msword'||item.type =='xlsx'||item.type == 'ods'||item.type =='docx'||item.type =='ppt'">
+                                    <span class="filetype_{{item.type}}" mat-card-image>
+
+                                        <div class="documentcls_wrapper">
+                                            <span class="material-icons icon_{{item.type}}">
+                                                picture_as_pdf
+                                            </span>
+
+                                        </div>
+
+                                        <div class="fileinfocls">
+                                            <div class="File_titlecls_wrapper">
+                                                <p class="File_titlecls">{{ item.file_title }}</p>
+                                            </div>
+                                            <div class="descriptioncls">
+                                                <p *ngIf='item.file_desc.length > 120 && shwmorefileflg==false'>
+                                                    {{item.file_desc|slice:0:120}}</p>
+
+                                                <p class='greatercls'
+                                                    *ngIf='item.file_desc.length > 120 && shwmorefileflg==true'>
+                                                    {{item.file_desc }}</p>
+                                                <p *ngIf='item.file_desc.length < 120'>{{ item.file_desc}}</p>
+                                                <span class="shwmrcls"
+                                                    *ngIf='item.file_desc.length > 120 && shwmorefileflg==false'>
+                                                    <button mat-raised-button (click)="shwmorefileflg=true">
+                                                        Show More ..
+                                                    </button>
+                                                </span>
+                                                <span class='shwlesscls'
+                                                    *ngIf='item.file_desc.length > 120 && shwmorefileflg==true'>
+                                                    <button mat-raised-button (click)="shwmorefileflg=false">
+                                                        Show Less ..
+                                                    </button>
+                                                </span>
+                                            </div>
+                                            <div class="file_btn_cls">
+                                                <!-- <button class="previewbtncls" matTooltip="Preview" mat-raised-button
+                                                    (click)="previewpdf(item,'pdf')">
+                                                    Preview
+                                                </button> -->
+
+                                                <button matTooltip="Download" class="downloadbtncls" mat-raised-button
+                                                    (click)="downloadPdf(item,1)">
+                                                    Download
+                                                </button>
+                                            </div>
+                                            <div class="mandetorycls_wrapper">
+                                                <span class="mandetorycls" *ngIf="item.skippeble!=true">*This is a
+                                                    mandetory file to
+                                                    complete this lesson (after
+                                                    download)
+                                                    <span *ngIf="complete_fileflag[item.screenshots.fileservername]==true"
+                                                        class="donetikcls">
+                                                        <img class="doneimgcls"
+                                                            src="https://all-frontend-assets.s3.amazonaws.com/dna-frontend-new/assets/images/Trainninglibary_right_icon.jpg"
+                                                            alt="">
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                    </span>
+                                </div>
                             </div>
                             <mat-card class="banner1cls" *ngIf="quizflag==true">
 

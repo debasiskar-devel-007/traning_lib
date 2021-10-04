@@ -17,8 +17,9 @@
         <!-- for file  -->
         <div class="videocontainer" *ngIf="data.type_flag != null && data.type_flag == 'file'">
             <p class="mandetorycls">*Please upload Single File</p>
-
-            <lib-file-upload [config]='uploadConfigData'></lib-file-upload>
+            <lib-showform class="addeditform" *ngIf="formdata !=null" [formdata]="formdata" [formfieldrefresh]="formfieldrefresh" [formfieldrefreshdata]="formfieldrefreshdata" (onFormFieldChange)="listenFormFieldChange($event)">
+            </lib-showform>
+            <!-- <lib-file-upload [config]='uploadConfigData'></lib-file-upload>
 
             <mat-card class="example-card imgcard"
                 *ngIf="fileFields.file != null && fileFields.file.fileservername !=null">
@@ -64,7 +65,7 @@
             <button type="button" mat-raised-button color="accent" (click)="onNoClick()">Cancel</button> &nbsp;
 
             <button type="button" mat-raised-button color="primary" (click)="addfile('file_array')">
-                {{data.buttonName}}</button>
+                {{data.buttonName}}</button> -->
         </div>
 
 
@@ -72,7 +73,9 @@
 
         <div *ngIf="data.type_flag != null && data.type_flag == 'audio'" class="Lesson_Videos_Modal">
             <p class="mandetorycls">*Please upload Single Audio</p>
-            <lib-file-upload [config]='uploadConfigData'></lib-file-upload>
+            <lib-showform class="addeditform" *ngIf="formdata !=null" [formdata]="formdata" [formfieldrefresh]="formfieldrefresh" [formfieldrefreshdata]="formfieldrefreshdata" (onFormFieldChange)="listenFormFieldChange($event)">
+            </lib-showform>
+    
 
             <mat-card class="example-card imgcard"
                 *ngIf="audioFields.audio != null && audioFields.audio.fileservername !=null">
@@ -91,7 +94,7 @@
             </mat-card>
 
 
-            <mat-form-field>
+            <!-- <mat-form-field>
                 <input type="text" matInput placeholder=" Title" [(ngModel)]="audioFields.audio_title">
             </mat-form-field>
 
@@ -112,7 +115,7 @@
             <button type="button" mat-raised-button color="accent" (click)="onNoClick()">Cancel</button> &nbsp;
 
             <button type="button" mat-raised-button color="primary" (click)="addaudio('audio_array',data.buttonName)">
-                {{data.buttonName}}</button>
+                {{data.buttonName}}</button> -->
         </div>
 
 

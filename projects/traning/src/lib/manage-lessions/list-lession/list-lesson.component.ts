@@ -216,7 +216,7 @@ export class ListlessonComponent implements OnInit {
         "token": this.serverDetailsVal.jwttoken,
         // "lesson_id": recordId,
         condition: {
-          prerequisite_lession_search: { $regex: event.target.value.trim() },
+          prerequisite_lession_search: { $regex: event.target.value.toLowerCase() },
         }
       }
       this.apiService.postData(link, data).subscribe((res: any) => {
@@ -255,7 +255,7 @@ export class ListlessonComponent implements OnInit {
         "token": this.serverDetailsVal.jwttoken,
         // "lesson_id": recordId,
         condition: {
-          lession_title_search: { $regex: event.target.value.trim() },
+          lession_title_search: { $regex: event.target.value.toLowerCase() },
         }
       }
       this.apiService.postData(link, data).subscribe((res: any) => {
@@ -697,12 +697,14 @@ export class ListlessonComponent implements OnInit {
 
   }
   viewTrash() {
+    let link = this.serverDetailsVal.serverUrl + this.formSourceVal.searchEndpoint;
     this.progressSpinner.loading = true;
+    let data: any = {};
     switch (this.trashButtonText) {
       case 'View Deleted':
         this.trashFlag = 1 - this.trashFlag;
-        let link = this.serverDetailsVal.serverUrl + this.formSourceVal.searchEndpoint;
-        let data: any = {
+
+        data = {
           "source": this.formSourceVal.trashDataSource,
           "token": this.serverDetailsVal.jwttoken,
           "condition": {
@@ -722,11 +724,23 @@ export class ListlessonComponent implements OnInit {
         break;
       case 'Return to Active list':
         this.progressSpinner.loading = false;
+        data = {
+          "source": this.formSourceVal.trashDataSource,
+          "token": this.serverDetailsVal.jwttoken,
+          "condition": {
+            is_trash: { $ne: 1 }
+          }
+        }
+        this.apiService.postData(link, data).subscribe((response: any) => {
+          console.log(response, 'let data: any = {');
+          this.trashButtonText = "View Deleted";
+          this.allTrashData = response.res;
+          this.dataSource = new MatTableDataSource(this.allTrashData);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        })
+        // this.dataSource = new MatTableDataSource(this.listingData);
 
-        this.trashButtonText = "View Deleted";
-        this.dataSource = new MatTableDataSource(this.listingData);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
         break;
     }
 

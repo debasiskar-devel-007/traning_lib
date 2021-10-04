@@ -374,17 +374,27 @@
                   </div>
                 </mat-card>
               </div>
-              <span *ngIf="item.is_done!=true">
-                <button *ngIf="next_button_access==true" button mat-raised-button color="accent" type="button"
-                  class="markbtncls" (click)="nextbutton('next',i)">Mark
-                  As Done
+              <ng-container *ngIf="userType=='technological-consultant'">
+                <span *ngIf="item.is_done!=true">
+                  <button *ngIf="next_button_access==true" button mat-raised-button color="accent" type="button"
+                    class="markbtncls" (click)="nextbutton('next',i)">Mark
+                    As Done
+                  </button>
+                </span>
+  
+                <button *ngIf="item.is_done==true" button mat-raised-button color="accent" type="button"
+                  class="markbtncls" (click)="nextbutton('next',i)">
+                  Next
                 </button>
-              </span>
-
-              <button *ngIf="item.is_done==true" button mat-raised-button color="accent" type="button"
-                class="markbtncls" (click)="nextbutton('next',i)">
-                Next
-              </button>
+              </ng-container>
+              <ng-container *ngIf="userType!='technological-consultant'">
+                <button button mat-raised-button color="accent" type="button"
+                  class="markbtncls" (click)="nextbutton('next_go',i)">
+                  Next
+                </button>
+              </ng-container>
+              
+             
             </div>
 
           </div>

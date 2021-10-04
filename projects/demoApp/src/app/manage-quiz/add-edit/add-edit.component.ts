@@ -42,8 +42,9 @@ export class AddEditComponent implements OnInit {
     console.log(this.activatedRoute.snapshot.params);
     this.lessonIdInedit=this.activatedRoute.snapshot.params.lesson_id;
     this.lessonId = this.activatedRoute.snapshot.params.id;
-    this.jwtToken = cookie.get('jwtToken');
     this.serverDetails.jwttoken=this.jwtToken;
+    this.jwtToken = cookie.get('jwtToken');
+
   }
 
   ngOnInit() {

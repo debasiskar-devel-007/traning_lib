@@ -16,15 +16,7 @@
 <div class="formcls">
     <mat-card-content>
         <form class="example-form" novalidate [formGroup]="manageQuizForm" name="manageQuizForm" autocomplete="off">
-            <!-- <mat-form-field>
-            <mat-label>Choose Question Type</mat-label>
-            <mat-select formControlName="question_type" >
-              <mat-option  value="checkbox">Checkbox </mat-option>
-              <mat-option  value="dropdown">Dropdown </mat-option>
-              <mat-option  value="radio_button">Radio Button </mat-option>
-              <mat-option  value="text_box">Text Box </mat-option>
-            </mat-select>
-          </mat-form-field> -->
+       
             <mat-form-field class="example-full-width">
                 <input matInput placeholder="Question" [formControl]="manageQuizForm.controls['question']"
                     (blur)="inputUntouch(manageQuizForm,'question')">

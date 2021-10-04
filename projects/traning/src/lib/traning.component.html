@@ -51,6 +51,7 @@
                 </mat-form-field>
             </div>
 
+
             <div *ngIf="item.inputtype == 'url'">
                 <mat-form-field *ngIf="item.inputtype == 'url'">
                     <input matInput
@@ -156,25 +157,25 @@
                     <!-- <lib-file-upload [config]='uploadConfigData'></lib-file-upload> -->
 
                     <mat-card class="example-card imgcard"
-                        *ngIf="file_array[i].file != null && file_array[i].file.fileservername !=null">
+                        *ngIf="file_array[i].screenshots != null && file_array[i].screenshots.fileservername !=null">
 
                         <!-- <span>
                             <img mat-card-image [attr.src]="bucket_url + file_array[i].file.fileservername">
                         </span> -->
 
                         <span
-                            *ngIf=" file_array[i].file.file_type != null && file_array[i].file.file_type == 'jpeg' || file_array[i].file.file_type == 'png' || file_array[i].file.file_type == 'jpg'">
-                            <img mat-card-image [attr.src]="bucket_url + file_array[i].file.fileservername">
+                            *ngIf=" file_array[i].type != null && file_array[i].type == 'jpeg' || file_array[i].type == 'png' || file_array[i].type == 'jpg'">
+                            <img mat-card-image [attr.src]="bucket_url + file_array[i].screenshots.fileservername">
                         </span>
 
-                        <span class="filetype_{{file_array[i].file.file_type}} mat-card-image"
-                            *ngIf=" file_array[i].file.file_type != null && file_array[i].file.file_type == 'pdf' || file_array[i].file.file_type == 'doc' || file_array[i].file.file_type == 'ppt' || file_array[i].file.file_type == 'pptx' || file_array[i].file.file_type == 'msword'">
-                            <span class="material-icons icon_{{file_array[i].file.file_type}}">
+                        <span class="filetype_{{file_array[i].type}} mat-card-image"
+                            *ngIf=" file_array[i].type != null && file_array[i].type == 'pdf' || file_array[i].type == 'doc' || file_array[i].type == 'ppt' || file_array[i].type == 'pptx' || file_array[i].type == 'file'">
+                            <span class="material-icons icon_{{file_array[i].type}}">
                                 picture_as_pdf
                             </span>
                         </span>
 
-                        <mat-card-title>{{ file_array[i].file.fileservername }}</mat-card-title>
+                        <mat-card-title>{{ file_array[i].screenshots.name }}</mat-card-title>
 
 
                         <!-- <span class="closecard" (click)="clear_file('file_array',i)"><i
@@ -184,7 +185,7 @@
                                 <b> Title : </b> {{file_array[i].file_title}}
                             </span><br>
                             <span>
-                                <b> Description :</b> {{file_array[i].file_description}}
+                                <b> Description :</b> {{file_array[i].file_desc}}
                             </span><br>
                             <span>
                                 <b>Priority :</b> {{file_array[i].priority}}
@@ -192,10 +193,10 @@
                             <!-- <span>
                                 <b>Skippable :</b> {{file_array[i].file_skippable}}
                             </span><br> -->
-                            <span *ngIf="file_array[i].file_skippable==true">
+                            <span *ngIf="file_array[i].skippeble==true">
                                 <b>Skippable :</b> YES
                             </span><br>
-                            <span *ngIf="file_array[i].file_skippable==false">
+                            <span *ngIf="file_array[i].skippeble==false">
                                 <b>Skippable :</b> NO
                             </span><br>
                             <span class="adddeletefilecls">
@@ -219,17 +220,17 @@
 
                     <!-- <lib-file-upload [config]="uploadConfigData"></lib-file-upload> -->
 
-                    <mat-card class="example-card imgcard" *ngIf="audio_array[i].audio != null ">
+                    <mat-card class="example-card imgcard" *ngIf="audio_array[i].screenshots != null ">
 
-                        <div *ngIf="audio_array[i].audio.fileservername !=null">
+                        <div *ngIf="audio_array[i].screenshots !=null">
                             <audio controls>
 
-                                <source src="{{bucket_url + audio_array[i].audio.fileservername }}" type="audio/ogg">
-                                <source src="{{ bucket_url + audio_array[i].audio.fileservername }}" type="audio/mpeg">
+                                <source src="{{bucket_url + audio_array[i].screenshots.fileservername }}" type="audio/ogg">
+                                <source src="{{ bucket_url + audio_array[i].screenshots.fileservername }}" type="audio/mpeg">
                                 Your browser does not support the audio element.
                             </audio>
                         </div>
-                        <mat-card-title>{{ audio_array[i].audio.fileservername }}</mat-card-title>
+                        <mat-card-title>{{ audio_array[i].screenshots.name }}</mat-card-title>
                         <!-- <mat-card-subtitle>{{ audio_array[i].audio.type }}</mat-card-subtitle> -->
                         <!-- <span class="closecard" (click)="clear_file('audio_array',i)"><i
                                 class="material-icons">clear</i></span> -->
@@ -238,7 +239,7 @@
                                 <b> Title : </b> {{audio_array[i].audio_title}}
                             </span><br>
                             <span>
-                                <b> Description :</b> {{audio_array[i].audio_description}}
+                                <b> Description :</b> {{audio_array[i].audio_desc}}
                             </span><br>
                             <span>
                                 <b> Priority :</b> {{audio_array[i].priority}}
@@ -246,10 +247,10 @@
                             <!-- <span>
                                 <b>Skippable :</b> {{audio_array[i].audio_skippable}}
                             </span><br> -->
-                            <span *ngIf="audio_array[i].audio_skippable==true">
+                            <span *ngIf="audio_array[i].skippeble==true">
                                 <b>Skippable :</b> YES
                             </span><br>
-                            <span *ngIf="audio_array[i].audio_skippable==false">
+                            <span *ngIf="audio_array[i].skippeble==false">
                                 <b>Skippable :</b> NO
                             </span><br>
                             <span class="adddeleteAudiocls">

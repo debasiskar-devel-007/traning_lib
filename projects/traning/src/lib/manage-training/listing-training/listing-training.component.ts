@@ -35,7 +35,7 @@ export interface DialogData {
 })
 
 export class ListingTrainingComponent implements OnInit {
-  displayedColumns: string[] = ['select', 'no', 'parent_catagory', 'catagory_name', 'description', 'priority', 'product_name', 'type',
+  displayedColumns: string[] = ['select', 'no', 'catagory_name', 'parent_catagory', 'description', 'priority', 'product_name', 'type',
     'status', 'deleteRecord'];
 
   public progressSpinner: any = {
@@ -318,6 +318,8 @@ export class ListingTrainingComponent implements OnInit {
     } else {
       data.condition['is_trash'] = { $ne: 1 }
     }
+    console.log(data, this.trashFlag);
+
     this.apiService.postData(link, data).subscribe(response => {
       this.progressSpinner.loading = false;
 
@@ -337,7 +339,12 @@ export class ListingTrainingComponent implements OnInit {
       "catagory_name_search_regex": "",
       "parent_catagory_search_regex": ""
     }
-    this.dataSource = new MatTableDataSource(this.listingData);
+
+    this.status_search_regex = '';
+    let currentUrl = this.router.url;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate([currentUrl]);
 
   }
   onKeypressEvent(event: any, val) {
@@ -348,7 +355,7 @@ export class ListingTrainingComponent implements OnInit {
         token: this.serverDetailsVal.jwttoken,
         source: this.formSourceVal.source,
         condition: {
-          catagory_name_search: { $regex: event.target.value.trim() },
+          catagory_name_search: { $regex: event.target.value.toLowerCase() },
         }
       }
       this.apiService.postData(link1, data).subscribe((res: any) => {
@@ -585,11 +592,13 @@ export class ListingTrainingComponent implements OnInit {
   }
   viewTrash() {
     this.progressSpinner.loading = true;
+    let data: any = {};
+    let link = this.serverDetailsVal.serverUrl + this.formSourceVal.searchEndpoint;
     switch (this.trashButtonText) {
       case 'View Deleted':
         this.trashFlag = 1 - this.trashFlag;
-        let link = this.serverDetailsVal.serverUrl + this.formSourceVal.searchEndpoint;
-        let data: any = {
+
+        data = {
           "source": this.formSourceVal.trashDataSource,
           "token": this.serverDetailsVal.jwttoken,
           "condition": {
@@ -600,7 +609,7 @@ export class ListingTrainingComponent implements OnInit {
           this.progressSpinner.loading = false;
 
           this.trashButtonText = "Return to Active list";
-          this.trashFlag = 1 - this.trashFlag;
+          // this.trashFlag = 1 - this.trashFlag;
           this.allTrashData = response.res;
           this.dataSource = new MatTableDataSource(this.allTrashData);
           this.dataSource.paginator = this.paginator;
@@ -609,13 +618,26 @@ export class ListingTrainingComponent implements OnInit {
         })
         break;
       case 'Return to Active list':
-        this.trashButtonText = "View Deleted";
-        this.progressSpinner.loading = false;
+        data = {
+          "source": this.formSourceVal.trashDataSource,
+          "token": this.serverDetailsVal.jwttoken,
+          "condition": {
+            is_trash: { $ne: 1 }
+          }
+        }
+        this.apiService.postData(link, data).subscribe((response: any) => {
+          this.listingData = [];
+          this.trashFlag = 1;
+          this.trashButtonText = "View Deleted";
+          this.progressSpinner.loading = false;
+          this.listingData = response.res;
+          this.dataSource = new MatTableDataSource(this.listingData);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
 
-        this.dataSource = new MatTableDataSource(this.listingData);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+        })
         break;
+
     }
   }
   restoreTrashData(trashId: any, index: any) {

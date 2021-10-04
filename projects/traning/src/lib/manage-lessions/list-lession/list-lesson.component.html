@@ -9,7 +9,7 @@
           <h2 class="headerSpan">Lesson Management</h2>
         </mat-toolbar>
 
-<mat-progress-bar mode="indeterminate" *ngIf="progressSpinner.loading "></mat-progress-bar>
+        <mat-progress-bar mode="indeterminate" *ngIf="progressSpinner.loading "></mat-progress-bar>
         <!-- <mat-card-content class="countSection">
           <h2>{{trainingCounts.totaltrainingcount}}</h2>
           <span>Total Number Of <br>Training</span>
@@ -51,16 +51,13 @@
     </mat-form-field> -->
     <mat-form-field class="searchdiv">
       <mat-label>Search by Lesson Name</mat-label>
-      <input (keyup)="onKeypressEvent($event,'lesson')" type="text"
-             placeholder="Search by Lesson Name"
-             aria-label="Number"
-             matInput
-             [formControl]="myControl"
-             [matAutocomplete]="auto"
-             [(ngModel)]="searchjson.lession_title_search_regex">
+      <input (keyup)="onKeypressEvent($event,'lesson')" type="text" placeholder="Search by Lesson Name"
+        aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto"
+        [(ngModel)]="searchjson.lession_title_search_regex ">
       <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let items of lesson_search" [value]="items.lession_title_search">{{items.lession_title_search}}
-  
+        <mat-option *ngFor="let items of lesson_search" [value]="items.lession_title_search |titlecase">
+          {{items.lession_title_search |titlecase}}
+
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
@@ -70,16 +67,13 @@
     </mat-form-field> -->
     <mat-form-field class="searchdiv">
       <mat-label>Search by Prerequisite Lesson</mat-label>
-      <input (keyup)="onKeypressEvent($event,'prequisite')" type="text"
-             placeholder="Search by Prerequisite Lesson"
-             aria-label="Number"
-             matInput
-             [formControl]="myControl1"
-             [matAutocomplete]="autocom"
-             [(ngModel)]="searchjson.prerequisite_lession_search_regex">
+      <input (keyup)="onKeypressEvent($event,'prequisite')" type="text" placeholder="Search by Prerequisite Lesson"
+        aria-label="Number" matInput [formControl]="myControl1" [matAutocomplete]="autocom"
+        [(ngModel)]="searchjson.prerequisite_lession_search_regex">
       <mat-autocomplete #autocom="matAutocomplete">
-        <mat-option *ngFor="let option of category_search" [value]="option.prerequisite_lession_search">{{option.prerequisite_lession_search}}
-  
+        <mat-option *ngFor="let option of category_search" [value]="option.prerequisite_lession_search |titlecase">
+          {{option.prerequisite_lession_search |titlecase}}
+
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
@@ -286,7 +280,8 @@
             </span>
 
             <span class="manage_quiz" *ngIf="element.has_test_lesson == 1">
-              <button matTooltip="Manage Quiz"class="singleButton" mat-raised-button color="primary" (click)="goToManageQuizPage(element._id)">
+              <button matTooltip="Manage Quiz" class="singleButton" mat-raised-button color="primary"
+                (click)="goToManageQuizPage(element._id)">
                 Manage Quiz
               </button>
             </span>
@@ -308,7 +303,7 @@
             </span>
             <span class="videos"
               *ngIf="element.videoflag!=false && element.videoflag!=null &&  element.videoflag!='undefine'">
-              <button  matTooltip="Videos" class="singleButton" mat-raised-button color="primary"
+              <button matTooltip="Videos" class="singleButton" mat-raised-button color="primary"
                 (click)="openModalForAudioVideoFile('videoflag',element)">
                 Videos
               </button>

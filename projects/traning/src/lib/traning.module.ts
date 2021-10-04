@@ -37,7 +37,7 @@ import { AudioServiceService } from './audio-service.service';
 import {  DetailsPipe } from './pipe/details.pipe';
 import { TrainingCentreBetoParedesComponent ,PreviewContentDialogBeto, BetoparedesLessonVideoModalComponent, LessonQuizBetoparedesModalComponent, GameplanModalComponent, QuizReportmodal} from './training-centre-beto-paredes/training-centre-beto-paredes.component';
 import { PercentagePipe } from './pipe/percentage.pipe';
-import { LessonQuizPeceModalComponent, peceLessonVideoModalComponent, TraingCenterPeceComponent } from './traing-center-pece/traing-center-pece.component';
+import { LessonQuizPeceModalComponent, peceLessonVideoModalComponent, PreviewContentDialogpece, TraingCenterPeceComponent } from './traing-center-pece/traing-center-pece.component';
 
 
 
@@ -85,7 +85,8 @@ import { LessonQuizPeceModalComponent, peceLessonVideoModalComponent, TraingCent
     QuizReportmodal,
     TraingCenterPeceComponent,
     LessonQuizPeceModalComponent,
-    peceLessonVideoModalComponent
+    peceLessonVideoModalComponent,
+    PreviewContentDialogpece
   ],
   imports: [
     HttpClientModule,
@@ -106,6 +107,6 @@ import { LessonQuizPeceModalComponent, peceLessonVideoModalComponent, TraingCent
   
   schemas:[CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   providers: [CookieService, ApiService,DatePipe,AudioServiceService],
-  entryComponents:[DialogBoxComponent,Dialogtest,PurchaseModalComponent,ReviewLessonPlanComponent,ScheduleModalComponent,questionDataModalComponent,UnlockLessonModalComponent,videoDialogComponent,LessonVideoModalComponent,LessonQuizModalComponent,AddAudioVideoFileDialogComponent,AudioVideoFileDialogComponent,PreviewContentDialog,PreviewContentDialogBeto,BetoparedesLessonVideoModalComponent,LessonQuizBetoparedesModalComponent,AnswerchangeconfromDialog,GameplanModalComponent,QuizReportmodal,LessonQuizPeceModalComponent,peceLessonVideoModalComponent]
+  entryComponents:[DialogBoxComponent,Dialogtest,PurchaseModalComponent,ReviewLessonPlanComponent,ScheduleModalComponent,questionDataModalComponent,UnlockLessonModalComponent,videoDialogComponent,LessonVideoModalComponent,LessonQuizModalComponent,AddAudioVideoFileDialogComponent,AudioVideoFileDialogComponent,PreviewContentDialog,PreviewContentDialogBeto,BetoparedesLessonVideoModalComponent,LessonQuizBetoparedesModalComponent,AnswerchangeconfromDialog,GameplanModalComponent,QuizReportmodal,LessonQuizPeceModalComponent,peceLessonVideoModalComponent,PreviewContentDialogpece]
 })
 export class TraningModule { }

@@ -18,7 +18,8 @@ export class TraingCenterPeceComponent implements OnInit {
     gettrainingcenterdatalist:'gettrainingcenterdatalist',
     file_endpoint: 'updateusercompletelessonfiles',
     video_endpoint: 'updateusercompletelessonvideo',
-    audio_endpoint: 'updateusercompletelessonaudio'
+    audio_endpoint: 'updateusercompletelessonaudio',
+    bucket_url:'https://pece-training-files.s3.amazonaws.com/training/'
   }
   constructor(public activatedRoute: ActivatedRoute) {
     console.log('lllllllllllllllllllllllllllllll');
