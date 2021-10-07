@@ -14,12 +14,12 @@ export class TraingCenterPeceComponent implements OnInit {
     "addMarkendpoint": "mark-as-done",
     serverurl: "https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/",
     quizdataendpoint: 'quiz_data',
-    addlessonquizdataendpoint:'addlessonquizdata',
-    gettrainingcenterdatalist:'gettrainingcenterdatalist',
+    addlessonquizdataendpoint: 'addlessonquizdata',
+    gettrainingcenterdatalist: 'gettrainingcenterdatalist',
     file_endpoint: 'updateusercompletelessonfiles',
     video_endpoint: 'updateusercompletelessonvideo',
     audio_endpoint: 'updateusercompletelessonaudio',
-    bucket_url:'https://pece-training-files.s3.amazonaws.com/training/'
+    bucket_url: 'https://pece-training-files.s3.amazonaws.com/training/'
   }
   constructor(public activatedRoute: ActivatedRoute) {
     console.log('lllllllllllllllllllllllllllllll');
@@ -28,9 +28,13 @@ export class TraingCenterPeceComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.data.forEach(data => {
-      console.log(data, 'data')
+      // console.log(data, 'data')
       this.TrainingCentreData = data.trainingdata.results;
     })
+
+  }
+  trainingDataListener(val) {
+    console.log(val);
 
   }
 

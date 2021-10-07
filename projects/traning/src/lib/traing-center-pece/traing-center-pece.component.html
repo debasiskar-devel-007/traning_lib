@@ -41,6 +41,7 @@
                                 <div class="video_div afvmaindiv" *ngIf="item.type=='video' &&
                                         item.type!=null && item.type!=undefined">
                                     <div class="videomainwrapper">
+
                                         <img src="https://img.youtube.com/vi/{{item.video_url}}/0.jpg" class="videoimg">
                                         <img (click)="openLessonVideo(item)"
                                             src="https://awsbackend-dev-patient-files-test.s3.amazonaws.com/icon-videoplay.png"
@@ -51,6 +52,12 @@
                                         <div class="File_titlecls_wrapper">
                                             <p class="videotitlecls">{{item.video_title}}</p>
                                         </div>
+                                        <span *ngIf="complete_videoflag[item.video_url]==true" class="donetikcls">
+                                             Successfully Completed
+                                            <img class="doneimgcls"
+                                                src="https://all-frontend-assets.s3.amazonaws.com/dna-frontend-new/assets/images/Trainninglibary_right_icon.jpg"
+                                                alt="">
+                                        </span>
                                         <div class="descriptioncls">
                                             <p *ngIf='item.video_description.length > 120 && shwmorevideoflg==true'>{{
                                                 item.video_description
@@ -82,12 +89,7 @@
                                             <span class="mandetorycls" *ngIf="item.video_skippable!=true">*This is a
                                                 mandetory video to
                                                 complete this lesson
-                                                <span *ngIf="complete_videoflag[item.video_url]==true"
-                                                    class="donetikcls">
-                                                    <img class="doneimgcls"
-                                                        src="https://all-frontend-assets.s3.amazonaws.com/dna-frontend-new/assets/images/Trainninglibary_right_icon.jpg"
-                                                        alt="">
-                                                </span>
+
                                             </span>
                                         </div>
 
@@ -97,6 +99,7 @@
 
                                 </div>
                                 <div class="example-card audioWrapper" *ngIf="item.type=='audio'">
+
                                     <audio id="audioPlayer_{{item.screenshots.fileservername}}"
                                         (timeupdate)="onprocess(item.screenshots.fileservername,item)"
                                         (loadstart)="loadstart(item,item.screenshots.fileservername)"
@@ -114,6 +117,13 @@
                                                 <span class="audioseccls_title">
 
                                                     <p>{{ item.audio_title }}</p>
+                                                </span>
+                                                <span *ngIf="complete_audioflag[item.screenshots.fileservername]==true"
+                                                    class="donetikcls">
+                                                     Successfully Completed
+                                                    <img class="doneimgcls"
+                                                        src="https://all-frontend-assets.s3.amazonaws.com/dna-frontend-new/assets/images/Trainninglibary_right_icon.jpg"
+                                                        alt="">
                                                 </span>
                                                 <div class="descriptioncls">
                                                     <p *ngIf='item.audio_desc.length > 120 && shwmoreflg==false'>
@@ -198,12 +208,7 @@
                                         <span class="mandetorycls" *ngIf="item.skippeble!=true">*This is a
                                             mandetory audio to
                                             complete this lesson
-                                            <span *ngIf="complete_audioflag[item.screenshots.fileservername]==true"
-                                                class="donetikcls">
-                                                <img class="doneimgcls"
-                                                    src="https://all-frontend-assets.s3.amazonaws.com/dna-frontend-new/assets/images/Trainninglibary_right_icon.jpg"
-                                                    alt="">
-                                            </span>
+
                                         </span>
                                     </div>
                                 </div>
@@ -218,6 +223,13 @@
                                             <div class="File_titlecls_wrapper">
                                                 <p class="File_titlecls">{{ item.file_title }}</p>
                                             </div>
+                                            <span *ngIf="complete_fileflag[item.screenshots.fileservername]==true"
+                                                class="donetikcls">
+                                                 Successfully Completed
+                                                <img class="doneimgcls"
+                                                    src="https://all-frontend-assets.s3.amazonaws.com/dna-frontend-new/assets/images/Trainninglibary_right_icon.jpg"
+                                                    alt="">
+                                            </span>
 
                                             <div class="descriptioncls">
 
@@ -258,13 +270,7 @@
                                                 <span class="mandetorycls" *ngIf="item.skippeble!=true">*This is a
                                                     mandetory image to complete this lesson (after download)
 
-                                                    <span
-                                                        *ngIf="complete_fileflag[item.screenshots.fileservername]==true"
-                                                        class="donetikcls">
-                                                        <img class="doneimgcls"
-                                                            src="https://all-frontend-assets.s3.amazonaws.com/dna-frontend-new/assets/images/Trainninglibary_right_icon.jpg"
-                                                            alt="">
-                                                    </span>
+
 
                                                 </span>
                                             </div>
@@ -273,7 +279,7 @@
                                     </span>
                                 </div>
                                 <div
-                                    *ngIf="item.type != null && item.type == 'pdf' || item.type =='doc' || item.type == 'ppt' || item.type == 'pptx' || item.type =='msword'||item.type =='xlsx'||item.type == 'ods'||item.type =='docx'||item.type =='ppt'">
+                                    *ngIf="item.type != null && item.type == 'pdf' || item.type =='doc' || item.type == 'ppt' || item.type == 'pptx' || item.type =='msword'||item.type =='xlsx'||item.type == 'ods'||item.type =='docx'||item.type =='plain'||item.type =='vnd.openxmlformats-officedocument.spreadsheetml.sheet'||item.type =='vnd.openxmlformats-officedocument.wordprocessingml.document'">
                                     <span class="filetype_{{item.type}}" mat-card-image>
 
                                         <div class="documentcls_wrapper">
@@ -287,6 +293,13 @@
                                             <div class="File_titlecls_wrapper">
                                                 <p class="File_titlecls">{{ item.file_title }}</p>
                                             </div>
+                                            <span *ngIf="complete_fileflag[item.screenshots.fileservername]==true"
+                                                class="donetikcls">
+                                                 Successfully Completed
+                                                <img class="doneimgcls"
+                                                    src="https://all-frontend-assets.s3.amazonaws.com/dna-frontend-new/assets/images/Trainninglibary_right_icon.jpg"
+                                                    alt="">
+                                            </span>
                                             <div class="descriptioncls">
                                                 <p *ngIf='item.file_desc.length > 120 && shwmorefileflg==false'>
                                                     {{item.file_desc|slice:0:120}}</p>
@@ -324,12 +337,7 @@
                                                     mandetory file to
                                                     complete this lesson (after
                                                     download)
-                                                    <span *ngIf="complete_fileflag[item.screenshots.fileservername]==true"
-                                                        class="donetikcls">
-                                                        <img class="doneimgcls"
-                                                            src="https://all-frontend-assets.s3.amazonaws.com/dna-frontend-new/assets/images/Trainninglibary_right_icon.jpg"
-                                                            alt="">
-                                                    </span>
+
                                                 </span>
                                             </div>
                                         </div>
@@ -352,7 +360,7 @@
                                 </div>
                             </mat-card>
                         </div>
-
+                        {{next_button_access}}
                         <span *ngIf='item.is_done != true'>
                             <button *ngIf="next_button_access==true" button mat-raised-button color="accent"
                                 type="button" class="markbtncls" (click)="nextbutton(item,'mark',i)">Mark
@@ -382,7 +390,7 @@
 
                                 <div *ngIf="item.percentage !=100">
                                     <mat-list-item [ngClass]="paramsTrainingId == item._id ?'classongoing':'ssssss'"
-                                        (click)="clicktrcataining(item._id,item.catagory_name,i)">
+                                        (click)="clicktrcataining(item._id,item.fistlesson_id,i)">
                                         <div class="categoryname">
                                             <span class="material-icons">
                                                 folder_open
@@ -438,7 +446,7 @@
                                     <mat-list-item [ngClass]="paramsTrainingId == item._id ?
                               'classongoing':
                               ( item.percentage >=100 ? 'classdone' : 'classnotdone')"
-                                        (click)="clicktrcataining(item._id,item.catagory_name,i)">
+                                        (click)="clicktrcataining(item._id,item.fistlesson_id,i)">
                                         <div class="categoryname">
                                             <span class="material-icons">
                                                 folder_open

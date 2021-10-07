@@ -124,10 +124,12 @@
 
             </div>
 
-            <div class="main_buttoncls" *ngIf="item.inputtype == 'button' && item.buttonflag == true" style="display: inline;">
+            <div class="main_buttoncls" *ngIf="item.inputtype == 'button' && item.buttonflag == true"
+                style="display: inline;">
                 <div class="filebuttoncls" *ngFor="let i of item.sourceval;let ind=index">
                     <div class="typebtncls_{{ind}}">
-                        <button matTooltip="Add {{i.name}}" type="button" mat-raised-button color="primary" (click)="openTrainingType(i)">Add
+                        <button matTooltip="Add {{i.name}}" type="button" mat-raised-button color="primary"
+                            (click)="openTrainingType(i)">Add
                             {{i.name}} </button>
                     </div>
                 </div>
@@ -211,7 +213,11 @@
             </div>
 
             <div *ngIf="audio_array!=null && audioflag == true && audio_array.length > 0" class="fromClass">
-                <mat-label><b> Audio : </b></mat-label>
+                <div class="addAudiocls">
+                    <mat-label><b> Audio : </b></mat-label>
+                    <span class="adddeletecls">
+                    </span>
+                </div>
                 <!-- <span class="adddeletecls">
                     <i class="material-icons addbtn" (click)="addAudio()">add_box</i>
                 </span> -->
@@ -225,8 +231,10 @@
                         <div *ngIf="audio_array[i].screenshots !=null">
                             <audio controls>
 
-                                <source src="{{bucket_url + audio_array[i].screenshots.fileservername }}" type="audio/ogg">
-                                <source src="{{ bucket_url + audio_array[i].screenshots.fileservername }}" type="audio/mpeg">
+                                <source src="{{bucket_url + audio_array[i].screenshots.fileservername }}"
+                                    type="audio/ogg">
+                                <source src="{{ bucket_url + audio_array[i].screenshots.fileservername }}"
+                                    type="audio/mpeg">
                                 Your browser does not support the audio element.
                             </audio>
                         </div>
@@ -322,7 +330,8 @@
 
                 <div>
                     <span>
-                        <mat-checkbox class="quizcls" [(ngModel)]="has_test_lesson" [ngModelOptions]="{standalone: true}">Has Quiz ?
+                        <mat-checkbox class="quizcls" [(ngModel)]="has_test_lesson"
+                            [ngModelOptions]="{standalone: true}">Has Quiz ?
                         </mat-checkbox>
 
                         <div class="quiz_checkboxnew" *ngIf="has_test_lesson == true">

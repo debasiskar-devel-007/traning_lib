@@ -1,8 +1,7 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalForButtomSearch } from 'listing-angular7';
 import { CookieService } from 'ngx-cookie-service';
 import { ApiService } from '../api.service';
 
@@ -93,7 +92,7 @@ export class TraingCenterPeceComponent implements OnInit {
 
 
 
-
+  @Output() trainingDataListener = new EventEmitter<any>();
 
 
 
@@ -196,6 +195,7 @@ export class TraingCenterPeceComponent implements OnInit {
 
         }
         this.addmrakdata(val);
+        this.trainingDataListener.emit({ action: 'update-success', result: val });
 
       })
 
@@ -209,7 +209,7 @@ export class TraingCenterPeceComponent implements OnInit {
     this.reportpercent = Math.floor(this.allDonedata / this.divisor) * 100;
 
 
-    if (this.done_cat_data.length > 0 && this.done_cat_data[0].percent == 100) {
+    if (val.done_lesson_cat_user.length > 0 && val.done_lesson_cat_user[0].percent >= 100) {
       this.cmpltlesson = true;
 
     }
@@ -263,12 +263,12 @@ export class TraingCenterPeceComponent implements OnInit {
   }
 
   // for traing click
-  clicktrcataining(val, catagory_name: any, i) {
+  clicktrcataining(val, fistlesson_id: any, i) {
 
 
     this.training_cat_name = this.trainingCategoryData[i].catagory_name;
 
-    this.router.navigateByUrl(this.trainingCenterRoute + val);
+    this.router.navigateByUrl(this.trainingCenterRoute + val+'/'+fistlesson_id);
   }
 
 
@@ -357,6 +357,7 @@ export class TraingCenterPeceComponent implements OnInit {
               if (this.trainingCategoryData[ind2]) {
                 data.data.current_lesson_id = this.trainingCategoryData[ind2].fistlesson_id;
                 data.data.current_lesson_name = this.trainingCategoryData[ind2].fistlesson;
+                data.data['next_traing_id'] = this.trainingCategoryData[ind2]._id;
 
 
               }
@@ -365,35 +366,36 @@ export class TraingCenterPeceComponent implements OnInit {
           }
         }
       }
+      console.log(data);
 
       let link1 = this.formSourcedata.serverurl + this.formSourcedata.addMarkendpoint
       console.log(data);
-      
-      // this.apiService.postDatawithoutToken(link1, data).subscribe((res: any) => {
-      //   //console.log(res);
-      //   if (i + 1 >= this.trainingLessonData.length) {
 
-      //     if (this.trainingCategoryData.length > 0) {
-      //       for (const key in this.trainingCategoryData) {
-      //         if (this.trainingCategoryData[key]._id == val.associated_training_id) {
-      //           //console.log(key, typeof key);
-      //           ind = (parseInt(key) + 1);
-      //           //console.log(ind);
-      //           if (ind && this.trainingCategoryData[ind] && this.trainingCategoryData[ind]._id != null && typeof this.trainingCategoryData[ind]._id != 'undefined' && this.trainingCategoryData[ind]._id != '') {
-      //             this.router.navigateByUrl(this.trainingCenterRoute + this.trainingCategoryData[ind]._id + '/' + this.trainingLessonData[0]._id);
+      this.apiService.postDatawithoutToken(link1, data).subscribe((res: any) => {
+        //console.log(res);
+        if (i + 1 >= this.trainingLessonData.length) {
 
-      //           } else {
-      //             this.router.navigateByUrl(this.trainingCenterRoute + this.trainingCategoryData[0]._id + '/' + this.trainingLessonData[0]._id);
+          if (this.trainingCategoryData.length > 0) {
+            for (const key in this.trainingCategoryData) {
+              if (this.trainingCategoryData[key]._id == val.associated_training_id) {
+                //console.log(key, typeof key);
+                ind = (parseInt(key) + 1);
+                //console.log(ind);
+                if (ind && this.trainingCategoryData[ind] && this.trainingCategoryData[ind]._id != null && typeof this.trainingCategoryData[ind]._id != 'undefined' && this.trainingCategoryData[ind]._id != '') {
+                  this.router.navigateByUrl(this.trainingCenterRoute + this.trainingCategoryData[ind]._id + '/' + data.data.current_lesson_id);
 
-      //           }
-      //         }
-      //       }
+                } else {
+                  this.router.navigateByUrl(this.trainingCenterRoute + this.trainingCategoryData[0]._id + '/' + this.trainingLessonData[0]._id);
 
-      //     }
-      //   } else {
-      //     this.router.navigateByUrl(this.trainingCenterRoute + val.associated_training_id + '/' + this.trainingLessonData[i + 1]._id);
-      //   }
-      // })
+                }
+              }
+            }
+
+          }
+        } else {
+          this.router.navigateByUrl(this.trainingCenterRoute + val.associated_training_id + '/' + this.trainingLessonData[i + 1]._id);
+        }
+      })
     }
     if (flag == 'next') {
       //console.log(val, i);
@@ -496,8 +498,10 @@ export class TraingCenterPeceComponent implements OnInit {
     this.apiService.postDatawithoutToken(link, data).subscribe((response: any) => {
 
       if (response.status == "success") {
+        console.log('ppppppppppppppppppppppppppppppppppppppppppppppp');
 
-        this.progressSpinner.loading = false
+
+        this.progressSpinner.loading = false;
         this.addmrakdata(response.results);
       };
 
@@ -579,7 +583,7 @@ export class TraingCenterPeceComponent implements OnInit {
     if (val.done_quiz_data.length > 0) {
       console.log('pppppppppppppppppppppppppppp');
 
-      this.next_button_access = true;
+      // this.next_button_access = true;
       this.quizflag = false;
     } else if (this.quizdata.quiz_data.length > 0) {
       this.next_button_access = false;
@@ -612,8 +616,10 @@ export class TraingCenterPeceComponent implements OnInit {
 
     completeLessonFile = completeLessonFile.concat(val.complete_lesson_files, val.complete_lesson_audio, val.complete_lesson_videos);
     console.log(this.quizdata.quiz_data.length, val.done_quiz_data.length);
+console.log(completeLessonFile.length,'completeLessonFile.length',mandetoryLessonfile.length);
 
     if (completeLessonFile.length == mandetoryLessonfile.length) {
+
       this.next_button_access = true;
       if (this.quizdata.quiz_data.length > 0) {
         this.next_button_access = false;
