@@ -285,16 +285,15 @@ export class TraingCenterPeceComponent implements OnInit {
   // for traing click
   clicktrcataining(val, fistlesson_id: any, i) {
     this.training_cat_name = this.trainingCategoryData[i].catagory_name;
-
+    let flag1: boolean = false;
+    let flag2: boolean = false;
+    let current_lesson_id: any;
     console.log(val, i);
     if (this.done_cat_data.length > 0) {
       for (const key in this.done_cat_data) {
         if (this.done_cat_data[key].associated_training == val && this.done_cat_data[key].percent < 100) {
-
-          this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + this.done_cat_data[key].current_lesson_id);
-        } else {
-
-          this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + fistlesson_id);
+          flag1 = true;
+          current_lesson_id = this.done_cat_data[key].current_lesson_id;
         }
       }
 
@@ -302,7 +301,15 @@ export class TraingCenterPeceComponent implements OnInit {
 
       this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + fistlesson_id);
     }
+    console.log(flag1,flag2);
+    
+    if (flag1) {
+      this.router.navigateByUrl(this.trainingCenterRoute + val + '/' +current_lesson_id );
 
+    }
+    if (!flag1) {
+      this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + fistlesson_id);
+    }
 
   }
 
@@ -1094,7 +1101,7 @@ export class peceLessonVideoModalComponent {
     event.target.playerInfo.currentTime += 1;
 
     // // // // // //console.log(this.data.data.video_skippable, 'data_video')
-console.log(event.target.playerInfo.currentTime);
+    console.log(event.target.playerInfo.currentTime);
 
     setInterval(() => {
       if (event.data == 1 && event.data != 0 && event.target.playerInfo.currentTime <= event.target.playerInfo.duration) {
