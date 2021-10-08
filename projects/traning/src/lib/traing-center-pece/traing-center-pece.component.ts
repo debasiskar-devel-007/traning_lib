@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
+import { Component, EventEmitter, HostListener, Inject, Input, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -88,7 +89,7 @@ export class TraingCenterPeceComponent implements OnInit {
   public previewimages: any;
   public shwmorefileflg: boolean = false;
   public complete_fileflag: any = [];
-
+  public windowScrolled: boolean = false;
 
 
 
@@ -100,6 +101,16 @@ export class TraingCenterPeceComponent implements OnInit {
 
 
 
+  @HostListener('window:scroll')
+  onWindowScroll() {
+    console.log(document.documentElement['classlessonongoing'])
+    // if (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop > 100) {
+    //   this.windowScrolled = true;
+    // }
+    // else if (this.windowScrolled && window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop < 10) {
+    //   this.windowScrolled = false;
+    // }
+  }
 
   @Input()
   set formSource(val: any) {
@@ -200,6 +211,14 @@ export class TraingCenterPeceComponent implements OnInit {
       })
 
     }
+    console.log(this.paramslessonId, 'paramslessonId');
+    if (this.paramslessonId && this.paramslessonId != null && typeof this.paramslessonId != 'undefined' && this.paramslessonId != '') {
+
+      setTimeout(() => {
+        document.getElementById(this.paramslessonId + "classlessonongoing").scrollIntoView({ behavior: "smooth" });
+      }, 1000);
+    }
+
 
 
     this.complete_video();
@@ -245,6 +264,7 @@ export class TraingCenterPeceComponent implements OnInit {
   }
 
   ngOnInit() {
+    let id;
     //console.log(this.activatedRoute.snapshot.params,'kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk', this.donedata    );
     if (this.donedata && this.donedata.length > 0) {
       for (const key in this.donedata) {
@@ -252,6 +272,7 @@ export class TraingCenterPeceComponent implements OnInit {
           for (const keys in this.trainingLessonData) {
             if (this.trainingLessonData[keys]._id == this.donedata[key].lesson_id) {
               this.trainingLessonData[keys].is_done = true;
+              id = this.trainingLessonData[keys]._id;
             }
 
           }
@@ -259,16 +280,30 @@ export class TraingCenterPeceComponent implements OnInit {
       }
     }
 
-
   }
 
   // for traing click
   clicktrcataining(val, fistlesson_id: any, i) {
-
-
     this.training_cat_name = this.trainingCategoryData[i].catagory_name;
 
-    this.router.navigateByUrl(this.trainingCenterRoute + val+'/'+fistlesson_id);
+    console.log(val, i);
+    if (this.done_cat_data.length > 0) {
+      for (const key in this.done_cat_data) {
+        if (this.done_cat_data[key].associated_training == val && this.done_cat_data[key].percent < 100) {
+
+          this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + this.done_cat_data[key].current_lesson_id);
+        } else {
+
+          this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + fistlesson_id);
+        }
+      }
+
+    } else {
+
+      this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + fistlesson_id);
+    }
+
+
   }
 
 
@@ -616,7 +651,7 @@ export class TraingCenterPeceComponent implements OnInit {
 
     completeLessonFile = completeLessonFile.concat(val.complete_lesson_files, val.complete_lesson_audio, val.complete_lesson_videos);
     console.log(this.quizdata.quiz_data.length, val.done_quiz_data.length);
-console.log(completeLessonFile.length,'completeLessonFile.length',mandetoryLessonfile.length);
+    console.log(completeLessonFile.length, 'completeLessonFile.length', mandetoryLessonfile.length);
 
     if (completeLessonFile.length == mandetoryLessonfile.length) {
 
@@ -1033,13 +1068,18 @@ export class peceLessonVideoModalComponent {
   public video_time: any;
 
   public video_Count_time: any;
-
+  public video_current_time: any;
+  public percent: any = 0;
   constructor(public dialogRef: MatDialogRef<peceLessonVideoModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData2, public snakBar: MatSnackBar, public apiService: ApiService, public router: Router, public activatedRoute: ActivatedRoute) {
-    // // // // //console.log(data, 'data_video')
+    console.log(data, 'data_video')
   }
+  ngOnInit() {
+
+  }
+
   savePlayer(event) {
-    // // // // // //console.log(event, 'save', this.playerVars)
+    console.log(event, 'save', this.playerVars)
   }
   closedModals() {
     // // // // // //console.log()
@@ -1050,21 +1090,51 @@ export class peceLessonVideoModalComponent {
   }
 
   onStateChange(event) {
+    // this.percent = 0;
+    event.target.playerInfo.currentTime += 1;
+
     // // // // // //console.log(this.data.data.video_skippable, 'data_video')
-    //console.log(event, 'state chn')
+console.log(event.target.playerInfo.currentTime);
+
+    setInterval(() => {
+      if (event.data == 1 && event.data != 0 && event.target.playerInfo.currentTime <= event.target.playerInfo.duration) {
+        // console.log(event.target.playerInfo.currentTime, 'state chn')
+        var sec_num1 = parseInt(event.target.playerInfo.currentTime, 10);
+
+        var hours1: any = Math.floor(sec_num1 / 3600);
+        var minutes1: any = Math.floor((sec_num1 - (hours1 * 3600)) / 60);
+        var second1: any = sec_num1 - (hours1 * 3600) - (minutes1 * 60);
+        if (hours1 < 10) { hours = "0" + hours; }
+        if (minutes1 < 10) { minutes = "0" + minutes; }
+        if (second1 < 10) { seconds = "0" + seconds; }
+        this.video_current_time = hours1 + ':' + minutes1 + ':' + second1;
+
+        var sec_num = parseInt(event.target.playerInfo.duration, 10);
+        var hours: any = Math.floor(sec_num / 3600);
+        var minutes: any = Math.floor((sec_num - (hours * 3600)) / 60);
+        var seconds: any = sec_num - (hours * 3600) - (minutes * 60);
+
+        if (hours < 10) { hours = "0" + hours; }
+        if (minutes < 10) { minutes = "0" + minutes; }
+        if (seconds < 10) { seconds = "0" + seconds; }
+        // // // // // //console.log(hours + ':' + minutes + ':' + seconds);
+        this.video_time = hours + ':' + minutes + ':' + seconds;
+        this.percent = (event.target.playerInfo.currentTime / event.target.playerInfo.duration) * 100
+        this.percent = Math.round(this.percent)
+        console.log(this.video_current_time, 'video_current_time', this.video_time, 'percent', this.percent);
+      }
+    }, 500);
+
+
+
+    console.log(event, 'state chn')
+    let ytplayer;
+    // ytplayer = document.getElementById("player");
+    // ytplayer.getCurrentTime();
     // // // // //console.log(event.target.playerInfo.duration, '/\/\/\)', event.target.playerInfo.currentTime)
 
     //duration calculation
-    var sec_num = parseInt(event.target.playerInfo.duration, 10);
-    var hours: any = Math.floor(sec_num / 3600);
-    var minutes: any = Math.floor((sec_num - (hours * 3600)) / 60);
-    var seconds: any = sec_num - (hours * 3600) - (minutes * 60);
 
-    if (hours < 10) { hours = "0" + hours; }
-    if (minutes < 10) { minutes = "0" + minutes; }
-    if (seconds < 10) { seconds = "0" + seconds; }
-    // // // // // //console.log(hours + ':' + minutes + ':' + seconds);
-    this.video_time = hours + ':' + minutes + ':' + seconds;
 
     // this.startTimer(event.target.playerInfo.duration);
 

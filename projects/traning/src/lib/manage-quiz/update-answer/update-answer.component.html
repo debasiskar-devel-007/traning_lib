@@ -34,17 +34,17 @@
 
       <ng-container matColumnDef="No">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>No.</th>
-        <td mat-cell *matCellDef="let element;let i =index"> {{i+1}} </td>
+        <td mat-cell *matCellDef="let element;let i =index" title="No."> {{i+1}} </td>
       </ng-container>
 
       <ng-container matColumnDef="answers">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Answer</th>
-        <td mat-cell *matCellDef="let element"> {{element.answer}} </td>
+        <td mat-cell *matCellDef="let element"title="Answer"> {{element.answer}} </td>
       </ng-container>
 
       <ng-container matColumnDef="Correct">
         <th mat-header-cell *matHeaderCellDef>Is Correct?</th>
-        <td mat-cell *matCellDef="let element">
+        <td mat-cell *matCellDef="let element" title="Is Correct?">
           <span class="rightcls" *ngIf="element.isCorrect ==1">
             <span class="material-icons">
               check
@@ -60,7 +60,7 @@
 
       <ng-container cdkColumnDef="action">
         <th mat-header-cell th *matHeaderCellDef> Action </th>
-        <td mat-cell td *matCellDef="let element ;let i = index;">
+        <td mat-cell td *matCellDef="let element ;let i = index;" title="Action">
 
           <!-- <span class="cursor">
             <i class="material-icons" (click)="edit(element._id,i)">edit</i>

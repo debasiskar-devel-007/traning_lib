@@ -896,6 +896,9 @@ mat-slider {
     left: 816px;
     position: relative;
 }
+ .endtime{
+    float: right;
+}
 
 lib-training-centre-pece {
     position: relative;

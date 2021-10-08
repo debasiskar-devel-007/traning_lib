@@ -25,7 +25,7 @@
                 <div fxLayout="row" class="rowinner_block" *ngFor="let item of trainingLessonData
                   ; let i=index;">
 
-                    <div (click)="openlesson(item,'click',i)" id={{item._id}} [ngClass]="paramslessonId == item._id
+                    <div (click)="openlesson(item,'click',i)" id={{item._id}}classlessonongoing [ngClass]="paramslessonId == item._id
                   ? 'classlessonongoing':(item.is_done == true ? 'classlessondone' : 'classlessonnotdone')">
                         {{item.lession_title}}
 
@@ -360,7 +360,7 @@
                                 </div>
                             </mat-card>
                         </div>
-                        {{next_button_access}}
+                        <!-- {{next_button_access}} -->
                         <span *ngIf='item.is_done != true'>
                             <button *ngIf="next_button_access==true" button mat-raised-button color="accent"
                                 type="button" class="markbtncls" (click)="nextbutton(item,'mark',i)">Mark

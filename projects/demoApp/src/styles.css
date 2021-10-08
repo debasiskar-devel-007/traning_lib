@@ -7,3 +7,6 @@ height: 100%;}
 .trainingcenterclsnew .trainingCategoryList .mat-list-item-content{width: 100%;}
 .trainingcenterclsnew .trainingCategoryList > .mat-list-item-content{padding: 0 !important;}
 p:empty {display: none !important;}
+.endtime{
+    float: right;
+}
