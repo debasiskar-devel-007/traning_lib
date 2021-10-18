@@ -31,7 +31,7 @@
         <div fxLayout="row" class="rowinner_block" *ngFor="let item of trainingLessonData
             ; let i=index;">
 
-          <div (click)="nochildclick(item,'click')" id={{item._id}} [ngClass]="paramslessonId == item._id
+          <div (click)="nochildclick(item,'click')" id={{item._id}}classlessonongoing [ngClass]="paramslessonId == item._id
               ? 'classlessonongoing':
               
               (item.is_done == true ? 'classlessondone' : 'classlessonnotdone')">{{item.lession_title}}

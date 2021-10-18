@@ -344,6 +344,14 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       loading: false,
       bookingStatus: 'Sending request'
     };
+    console.log(this.paramslessonId,'paramslessonId');
+
+    if (this.paramslessonId && this.paramslessonId != null && typeof this.paramslessonId != 'undefined' && this.paramslessonId != ''&& this.paramslessonId !='<no name set>') {
+
+      setTimeout(() => {
+        document.getElementById(this.paramslessonId + "classlessonongoing").scrollIntoView({ behavior: "smooth" });
+      }, 1000);
+    }
 
   }
 
@@ -395,6 +403,8 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
 
   clicktrcataining(val, catagory_name: any, i) {
+    console.log(val);
+    
 
     this.progressSpinner.loading = true;
     let training_access_flag: boolean = false;
@@ -429,27 +439,27 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     console.log(this.trainingCategoryData, val, i);
     if (this.userType == 'technological-consultant') {
       if (this.activatedRoute.snapshot.params.associated_training == val) {
-        this.router.navigateByUrl(this.trainingCenterRoute + val);
+        this.router.navigateByUrl(this.trainingCenterRoute + val+'/'+this.trainingCategoryData[i].fasttraining_id);
         this.progressSpinner.loading = false;
 
         return;
       }
       else if (i == 0) {
-        this.router.navigateByUrl(this.trainingCenterRoute + val);
+        this.router.navigateByUrl(this.trainingCenterRoute + val+'/'+this.trainingCategoryData[i].fasttraining_id);
         this.progressSpinner.loading = false;
 
         return;
       }
       else if (this.trainingCategoryData[i].done == this.trainingCategoryData[i].count) {
-        this.router.navigateByUrl(this.trainingCenterRoute + val);
+        this.router.navigateByUrl(this.trainingCenterRoute + val+'/'+this.trainingCategoryData[i].fasttraining_id);
       }
       else if (i > 0 && this.trainingCategoryData[i - 1].done == this.trainingCategoryData[i - 1].count) {
-        this.router.navigateByUrl(this.trainingCenterRoute + val);
+        this.router.navigateByUrl(this.trainingCenterRoute + val+'/'+this.trainingCategoryData[i].fasttraining_id);
       }
       else if (training_access_flag && this.trainingCategoryData[i].traingcompleteflag == 'false' && duplicate_array.length == 0) {
         console.log(training_access_flag);
 
-        this.router.navigateByUrl(this.trainingCenterRoute + val);
+        this.router.navigateByUrl(this.trainingCenterRoute + val+'/'+this.trainingCategoryData[i].fasttraining_id);
       }
       else {
 

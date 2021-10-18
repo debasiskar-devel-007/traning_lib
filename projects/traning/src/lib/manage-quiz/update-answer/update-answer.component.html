@@ -71,12 +71,12 @@
           </span>
           <span class="isCorrect">
             <button class="changerigtcls" *ngIf="element.isCorrect ==1" (click)="isCorrect(element,1)" mat-button>
-              <span  matTooltip="Change Answer " class="material-icons">
+              <span  matTooltip="Change Answer 1" class="material-icons">
                 clear
               </span>
             </button>
             <button class="changewrongcls" (click)="isCorrect(element,0)" mat-button>
-              <span *ngIf="element.isCorrect ==0" matTooltip="Change Answer " class="material-icons">
+              <span *ngIf="element.isCorrect ==0" matTooltip="Change Answer 2" class="material-icons">
                 check
               </span>
             </button>

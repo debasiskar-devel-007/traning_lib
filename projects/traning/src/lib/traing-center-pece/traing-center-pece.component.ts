@@ -103,13 +103,8 @@ export class TraingCenterPeceComponent implements OnInit {
 
   @HostListener('window:scroll')
   onWindowScroll() {
-    console.log(document.documentElement['classlessonongoing'])
-    // if (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop > 100) {
-    //   this.windowScrolled = true;
-    // }
-    // else if (this.windowScrolled && window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop < 10) {
-    //   this.windowScrolled = false;
-    // }
+    // console.log(document.documentElement['classlessonongoing'])
+  
   }
 
   @Input()

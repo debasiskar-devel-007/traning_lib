@@ -95,9 +95,12 @@ console.log(val,'val')
       }
       this.apiService.postData(link, dataquiz).subscribe((res: any) => {
         if (res.status == 'success') {
-          this.quizAnswerData[i].isCorrect = val.isCorrect
-          let allData: PeriodicElement[] = this.quizAnswerData;
-          this.dataSource = new MatTableDataSource(allData);
+          console.log('pppppppppppppppppppppppppp');
+          
+          let currentUrl = this.router.url;
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+          this.router.onSameUrlNavigation = 'reload';
+          this.router.navigate([currentUrl]);
         }
       })
     } if (i == 1) {
@@ -109,9 +112,12 @@ console.log(val,'val')
       }
       this.apiService.postData(link, dataquiz).subscribe((res: any) => {
         if (res.status == 'success') {
-          this.quizAnswerData[i].isCorrect = val.isCorrect
-          let allData: PeriodicElement[] = this.quizAnswerData;
-          this.dataSource = new MatTableDataSource(allData);
+          console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbb');
+
+          let currentUrl = this.router.url;
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+          this.router.onSameUrlNavigation = 'reload';
+          this.router.navigate([currentUrl]);
         }
       })
     }
