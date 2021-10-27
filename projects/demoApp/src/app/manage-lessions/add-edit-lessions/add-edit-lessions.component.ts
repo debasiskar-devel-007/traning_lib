@@ -128,13 +128,13 @@ export class AddEditLessionsComponent implements OnInit {
   public bucket_url: any = {
     url: 'https://pece-training-files.s3.amazonaws.com/training/'
   }
-  public showfieldflag : boolean= true;
-  public traingaccessflag : boolean=false;
+  public showfieldflag: boolean = true;
+  public traingaccessflag: boolean = false;
   public serverDetails: any = {
     "serverUrl": 'https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/',
     "jwttoken": ""
   };
-  public from_type:any='lesson';
+  public from_type: any = 'lesson';
   // public formSource: any = {
   //   "source": 'manage_lession',
   //   "endpoint": "addorupdatelessondata",
@@ -151,25 +151,37 @@ export class AddEditLessionsComponent implements OnInit {
     AddheaderText: 'Add Lesson',
     EditheaderText: 'Edit Lesson',
     lessonDataEndpoint: 'getlessondatabytrainingid',
-    
+
   };
   public additionalData: any = {
     objectId: 'associated_training',
     objectId2: 'prerequisite_lession'
   };
 
-  public configFileUpload: any = {
-    baseUrl: "https://fileupload.influxhostserver.com/",
-    endpoint: "uploads",
-    size: "51200", // kb
-    format: ["jpg", "jpeg", "png", "bmp", "zip", 'html', 'mp3', 'mp4', 'txt', 'mpeg', 'doc', 'ppt', 'pptx', 'pdf', 'docx', 'xlsx', 'ods', 'csv'], // use all small font
-    type: "lesson-file",
-    path: "lesson-files",
-    prefix: "lesson_file_",
-    formSubmit: false,
-    conversionNeeded: 1,
-    bucketName: "pece-training-files",
+  // public configFileUpload: any = {
+  //   baseUrl: "https://fileupload.influxhostserver.com/",
+  //   endpoint: "uploads",
+  //   size: "51200", // kb
+  //   format: ["jpg", "jpeg", "png", "bmp", "zip", 'html', 'mp3', 'mp4', 'txt', 'mpeg', 'doc', 'ppt', 'pptx', 'pdf', 'docx', 'xlsx', 'ods', 'csv'], // use all small font
+  //   type: "lesson-file",
+  //   path: "lesson-files",
+  //   prefix: "lesson_file_",
+  //   formSubmit: false,
+  //   conversionNeeded: 1,
+  //   bucketName: "pece-training-files",
+  // }
+  public configFileUpload: any ={
+    label: 'Upload Image:',
+    name: 'product_file',
+    type: 'file',
+    prefix: 'image-' + Date.now(),
+    path: "lesson-files/",
+    baseurl: "lesson-files/",
+    bucket: "beto-paredes-training-centre",
+    apiurl: 'https://tge24bc2ne.execute-api.us-east-1.amazonaws.com/dev/requestUploadURL',
+    apideleteurl: 'https://tge24bc2ne.execute-api.us-east-1.amazonaws.com/dev/deletefilefromBucket',
   }
+  
   public lesson_attachment_flag: boolean = true;
 
 

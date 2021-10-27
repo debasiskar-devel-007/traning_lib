@@ -21,7 +21,18 @@
     <mat-card class="maincartcls_row">
         <mat-card class="alllession_cls">
             <mat-card-content class="trainingcentercls trainingcenterclsupdate">
-                <mat-card-title class="mentortitle" id="lessonData">{{training_cat_name}}</mat-card-title>
+                <mat-card-title class="mentortitle" id="lessonData">{{training_cat_name}}
+                    <ng-container *ngIf="userType=='admin'">
+                        <span
+                        *ngIf="sequential_lock==0" matTooltip="Click to Lock" (click)="sequentiallock(1)"
+                        class="material-icons">
+                        lock
+                    </span> <span *ngIf="sequential_lock==1" matTooltip="Click to UnLock" (click)="sequentiallock(0)"
+                        class="material-icons">
+                        lock_open
+                    </span>
+                    </ng-container>
+                    </mat-card-title>
                 <div fxLayout="row" class="rowinner_block" *ngFor="let item of trainingLessonData
                   ; let i=index;">
 
@@ -53,7 +64,7 @@
                                             <p class="videotitlecls">{{item.video_title}}</p>
                                         </div>
                                         <span *ngIf="complete_videoflag[item.video_url]==true" class="donetikcls">
-                                             Successfully Completed
+                                            Successfully Completed
                                             <img class="doneimgcls"
                                                 src="https://all-frontend-assets.s3.amazonaws.com/dna-frontend-new/assets/images/Trainninglibary_right_icon.jpg"
                                                 alt="">
@@ -120,7 +131,7 @@
                                                 </span>
                                                 <span *ngIf="complete_audioflag[item.screenshots.fileservername]==true"
                                                     class="donetikcls">
-                                                     Successfully Completed
+                                                    Successfully Completed
                                                     <img class="doneimgcls"
                                                         src="https://all-frontend-assets.s3.amazonaws.com/dna-frontend-new/assets/images/Trainninglibary_right_icon.jpg"
                                                         alt="">
@@ -225,7 +236,7 @@
                                             </div>
                                             <span *ngIf="complete_fileflag[item.screenshots.fileservername]==true"
                                                 class="donetikcls">
-                                                 Successfully Completed
+                                                Successfully Completed
                                                 <img class="doneimgcls"
                                                     src="https://all-frontend-assets.s3.amazonaws.com/dna-frontend-new/assets/images/Trainninglibary_right_icon.jpg"
                                                     alt="">
@@ -295,7 +306,7 @@
                                             </div>
                                             <span *ngIf="complete_fileflag[item.screenshots.fileservername]==true"
                                                 class="donetikcls">
-                                                 Successfully Completed
+                                                Successfully Completed
                                                 <img class="doneimgcls"
                                                     src="https://all-frontend-assets.s3.amazonaws.com/dna-frontend-new/assets/images/Trainninglibary_right_icon.jpg"
                                                     alt="">

@@ -1061,6 +1061,8 @@ export class AddAudioVideoFileDialogComponent {
       this.title = 'File'
       // // console.log(data, '>++++++', this.fileFields, ">============")
     }
+console.log(this.uploadConfigData);
+
 
     this.formdata = {
       successmessage: "Added Successfully !!",
@@ -1070,18 +1072,7 @@ export class AddAudioVideoFileDialogComponent {
       canceltext: "Cancel",
       jwttoken:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJleHAiOjE1ODg0MDU3NTEsImlhdCI6MTU4ODMxOTM1MX0.M5TGx6QdtdTl5pF98CLOfv-kqU4rR1TfJ9cqvgQm6jQ',
       fields: [
-        {
-          label: "Upload attachment: ",
-          name: "screenshots",
-          type: "file",
-          // multiple: false,
-          prefix: Date.now(),
-          path: "training/",
-          baseurl: "training/",
-          bucket: "pece-training-files",
-          apiurl: "https://57lsaxmih2.execute-api.us-east-1.amazonaws.com/dev/requestUploadURL",
-          apideleteurl: "https://57lsaxmih2.execute-api.us-east-1.amazonaws.com/dev/deletefilefromBucket",
-        },
+        this.uploadConfigData,
         {
           label: this.title + " Title",
           name: this.data.type_flag + "_title",

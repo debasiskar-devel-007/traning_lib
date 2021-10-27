@@ -90,6 +90,7 @@ export class TraingCenterPeceComponent implements OnInit {
   public shwmorefileflg: boolean = false;
   public complete_fileflag: any = [];
   public windowScrolled: boolean = false;
+  public sequential_lock: any = 0;
 
 
 
@@ -104,7 +105,7 @@ export class TraingCenterPeceComponent implements OnInit {
   @HostListener('window:scroll')
   onWindowScroll() {
     // console.log(document.documentElement['classlessonongoing'])
-  
+
   }
 
   @Input()
@@ -246,6 +247,12 @@ export class TraingCenterPeceComponent implements OnInit {
 
       this.userId = JSON.parse(this.cookieService.get('user_details'))._id;
       this.userType = JSON.parse(this.cookieService.get('user_details')).user_type;
+      if (this.cookieService.get('sequentiallock') && JSON.parse(this.cookieService.get('sequentiallock')) != null && typeof JSON.parse(this.cookieService.get('sequentiallock')) != undefined && JSON.parse(this.cookieService.get('sequentiallock')) != '' && JSON.parse(this.cookieService.get('sequentiallock')) == 1 && this.userType == "admin") {
+        console.log(JSON.parse(this.cookieService.get('sequentiallock')));
+        this.sequential_lock = JSON.parse(this.cookieService.get('sequentiallock'));
+      } if (this.userType != "admin") {
+        this.sequential_lock = 1;
+      }
 
     }
     //console.log(router, 'router', activatedRoute.snapshot.params, 'activatedRoute');
@@ -279,31 +286,97 @@ export class TraingCenterPeceComponent implements OnInit {
 
   // for traing click
   clicktrcataining(val, fistlesson_id: any, i) {
-    this.training_cat_name = this.trainingCategoryData[i].catagory_name;
     let flag1: boolean = false;
     let flag2: boolean = false;
     let current_lesson_id: any;
     console.log(val, i);
-    if (this.done_cat_data.length > 0) {
-      for (const key in this.done_cat_data) {
-        if (this.done_cat_data[key].associated_training == val && this.done_cat_data[key].percent < 100) {
-          flag1 = true;
-          current_lesson_id = this.done_cat_data[key].current_lesson_id;
+    if (this.userType == 'admin') {
+      this.training_cat_name = this.trainingCategoryData[i].catagory_name;
+      if (this.done_cat_data.length > 0) {
+        for (const key in this.done_cat_data) {
+          if (this.done_cat_data[key].associated_training == val && this.done_cat_data[key].percent < 100) {
+            flag1 = true;
+            current_lesson_id = this.done_cat_data[key].current_lesson_id;
+          }
+        }
+
+      } else {
+
+        this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + fistlesson_id);
+      }
+      // console.log(flag1, flag2);
+      console.log(i);
+      if (flag1) {
+        this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + current_lesson_id);
+
+      }
+      if (!flag1) {
+        this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + fistlesson_id);
+      }
+    } else {
+      if (i == 0) {
+        this.training_cat_name = this.trainingCategoryData[i].catagory_name;
+        if (this.done_cat_data.length > 0) {
+          for (const key in this.done_cat_data) {
+            if (this.done_cat_data[key].associated_training == val && this.done_cat_data[key].percent < 100) {
+              flag1 = true;
+              current_lesson_id = this.done_cat_data[key].current_lesson_id;
+            }
+          }
+
+        } else {
+          flag2 = true;
+          this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + fistlesson_id);
+        }
+        // console.log(flag1, flag2);
+        if (flag1) {
+          flag2 = true;
+          this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + current_lesson_id);
+
+        }
+        if (!flag1) {
+          flag2 = true;
+          this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + fistlesson_id);
         }
       }
 
-    } else {
+      if (i > 0) {
+        console.log(this.trainingCategoryData[i - 1]);
+        if (this.trainingCategoryData[i - 1].percentage == 100) {
+          this.training_cat_name = this.trainingCategoryData[i].catagory_name;
+          if (this.done_cat_data.length > 0) {
+            for (const key in this.done_cat_data) {
+              if (this.done_cat_data[key].associated_training == val && this.done_cat_data[key].percent < 100) {
+                flag1 = true;
+                current_lesson_id = this.done_cat_data[key].current_lesson_id;
+              }
+            }
 
-      this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + fistlesson_id);
-    }
-    console.log(flag1,flag2);
-    
-    if (flag1) {
-      this.router.navigateByUrl(this.trainingCenterRoute + val + '/' +current_lesson_id );
+          } else {
+            flag2 = true;
+            this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + fistlesson_id);
+          }
+          // console.log(flag1, flag2);
+          console.log(i);
+          if (flag1) {
+            flag2 = true;
+            this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + current_lesson_id);
 
-    }
-    if (!flag1) {
-      this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + fistlesson_id);
+          }
+          if (!flag1) {
+            flag2 = true;
+            this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + fistlesson_id);
+          }
+        } else {
+          flag2 = false;
+        }
+      }
+      console.log(flag2, 'flag2');
+      if (!flag2 && i != 0) {
+        this.snakBar.open('Please Complete  Previous Trainings', 'OK', {
+          duration: 5000
+        })
+      }
     }
 
   }
@@ -350,10 +423,48 @@ export class TraingCenterPeceComponent implements OnInit {
   }
   // for openinglesson
   openlesson(item, flag, i) {
-    if (flag == 'click') {
-      //console.log(item);
-      this.router.navigateByUrl(this.trainingCenterRoute + item.associated_training_id + '/' + item._id);
+    console.log(this.sequential_lock, i, this.trainingLessonData, this.donedata);
+    let next_flag = false
+    if (this.sequential_lock == 1) {
+      if (this.donedata.length > 0) {
+        for (const key in this.donedata) {
+          if (this.donedata[key].lesson_id == this.trainingLessonData[i]._id) {
+            if (flag == 'click') {
+              next_flag = true;
+              console.log(key);
+              this.router.navigateByUrl(this.trainingCenterRoute + item.associated_training_id + '/' + item._id);
+            }
+          } if (this.donedata[key].lesson_id == this.trainingLessonData[i].prerequisite_lession_id) {
+            if (flag == 'click') {
+              next_flag = true;
+              console.log(key);
+              this.router.navigateByUrl(this.trainingCenterRoute + item.associated_training_id + '/' + item._id);
+            }
+          }
+        }
+      } else {
+        if (i == 0) {
+          if (flag == 'click') {
+            //console.log(item);
+            this.router.navigateByUrl(this.trainingCenterRoute + item.associated_training_id + '/' + item._id);
+          }
+        }
+      }
+
+    } else {
+      if (flag == 'click') {
+        next_flag = true;
+        this.router.navigateByUrl(this.trainingCenterRoute + item.associated_training_id + '/' + item._id);
+      }
     }
+    console.log(next_flag);
+
+    if (next_flag == false && i != 0) {
+      this.snakBar.open('Please Complete  Previous Lessons', 'OK', {
+        duration: 5000
+      })
+    }
+
   }
 
   // for mark as done
@@ -386,7 +497,10 @@ export class TraingCenterPeceComponent implements OnInit {
         data.data.current_lesson_id = this.trainingLessonData[i + 1]._id;
         data.data.current_lesson_name = this.trainingLessonData[i + 1].lession_title;
       } else {
+
         if (this.trainingCategoryData.length > 0) {
+          console.log('inelse part', this.trainingCategoryData);
+
           for (const key in this.trainingCategoryData) {
             if (this.trainingCategoryData[key]._id == val.associated_training_id) {
               ind2 = (parseInt(key) + 1);
@@ -400,10 +514,16 @@ export class TraingCenterPeceComponent implements OnInit {
               }
 
             }
+            if (data.data.current_lesson_id == '') {
+              data.data.current_lesson_id = this.trainingCategoryData[key].fistlesson_id;
+              data.data.current_lesson_name = this.trainingCategoryData[key].fistlesson;
+
+            }
           }
         }
       }
       console.log(data);
+
 
       let link1 = this.formSourcedata.serverurl + this.formSourcedata.addMarkendpoint
       console.log(data);
@@ -461,6 +581,20 @@ export class TraingCenterPeceComponent implements OnInit {
     }
   }
 
+
+  //for sequentiallock
+  sequentiallock(i) {
+    console.log(i);
+    this.cookieService.set('sequentiallock', JSON.stringify(i), undefined, '/');
+    setTimeout(() => {
+      let currentUrl = this.router.url;
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate([currentUrl]);
+    }, 50);
+
+  }
+
   // for video open modal
   openLessonVideo(val: any) {
     //console.log(val);
@@ -503,7 +637,7 @@ export class TraingCenterPeceComponent implements OnInit {
     });
     dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe((result: any) => {
-      // // //console.log(result, 'result')
+      console.log(result, 'result')
       if (result == 'yes') {
 
         this.getTrainingCenterlistFunctionwithLessonId(this.categoryid, this.userType, this.userId, this.lessonid)
@@ -815,7 +949,7 @@ export class TraingCenterPeceComponent implements OnInit {
     var seconds: any = sec_num - (hours * 3600) - (minutes * 60);
     this.audio_time[val] = hours + ':' + minutes + ':' + seconds;
     this.audio_progress[val] = Math.floor((this.audio_currenttime[val] / this.audio_duration[val]) * 100);
-    // // // // // console.log(this.audio_currenttime[val], 'audioId.currentTime')
+
   }
   progressbtn(val, fullval) {
 
@@ -948,7 +1082,7 @@ export class LessonQuizPeceModalComponent {
   }
   closedModal() {
     this.data.flag = 'no';
-    this.dialogRef.close(this.data.flag);
+    this.dialogRef.close();
 
     if (this.data.quiz_data.length > 0) {
       this.snakBar.open(' Your Lesson Quiz is Incomplete..!', 'OK', {
