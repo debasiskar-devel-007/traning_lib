@@ -10,7 +10,7 @@ import { CookieService } from 'ngx-cookie-service';
 export class UpdateAnswerComponent implements OnInit {
 public quizAnswerList : any=[];
 public serverDetails: any = {
-  "serverUrl": "https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/",
+  "serverUrl": "https://z2oo2a8oq9.execute-api.us-east-1.amazonaws.com/dev/api1/",
   // "serverUrl": 'https://obq0e0nxhk.execute-api.us-east-1.amazonaws.com/production/api/',
   "jwttoken": ""
 };

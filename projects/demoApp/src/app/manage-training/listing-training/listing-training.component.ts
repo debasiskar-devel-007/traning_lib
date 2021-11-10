@@ -14,7 +14,8 @@ export class ListingTrainingComponent implements OnInit {
   public addPageRoute: any = "/manage-training/add";
   public searchSourceName: any = "training_category_management_view";
   public serverDetails: any = {
-    "serverUrl": "https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/",
+    // "serverUrl": "https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/",
+    "serverUrl": "https://z2oo2a8oq9.execute-api.us-east-1.amazonaws.com/dev/api1/",
     "jwttoken": ""
   };
   public formSource: Object = {

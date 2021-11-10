@@ -16,7 +16,13 @@
     </div>
   </div>
 </div>
+<div class="traing_class_status">
 
+  <div class="traing_class_status_yellow"><label>Completed Lessons</label></div>
+  <div class="traing_class_status_green"><label>Completed Training</label></div>
+  <div class="traing_class_status_blue"><label>Ongoing Lesson and Training</label></div>
+
+</div>
 
 <!-- new design -->
 <div class="maincartcls_row_wrapper">
@@ -30,17 +36,21 @@
           </button> </mat-card-title>
         <div fxLayout="row" class="rowinner_block" *ngFor="let item of trainingLessonData
             ; let i=index;">
+          <!-- <ng-container (click)='trainingshwflag=false'> -->
 
-          <div (click)="nochildclick(item,'click')" id={{item._id}}classlessonongoing [ngClass]="paramslessonId == item._id
+          <div (click)="nochildclick(item,trainingshwflag)" id={{item._id}}classlessonongoing [ngClass]="paramslessonId == item._id
               ? 'classlessonongoing':
               
-              (item.is_done == true ? 'classlessondone' : 'classlessonnotdone')">{{item.lession_title}}
-            <!-- <span>{{item | json}}</span> -->
+              (item.is_done == true ? 'classlessondone' : 'classlessonnotdone')">
+            Lesson {{i+1}}: {{item.lession_title}}
+
           </div>
+          <!-- </ng-container> -->
 
 
 
-          <div class="" *ngIf="item._id==paramslessonId">
+
+          <div class="" *ngIf="item.trainingshwflag&&item._id==paramslessonId">
 
             <div class="lessoncontent">
 
@@ -102,7 +112,7 @@
 
 
                   </div>
-                  <div class="example-card audioWrapper" *ngIf="item.type=='audio' &&
+                  <!-- <div class="example-card audioWrapper" *ngIf="item.type=='audio' &&
                   item.type!=null && item.audio!=null && item.audio.fileservername!=null">
 
                     <audio id="audioPlayer_{{item.audio._id}}" (timeupdate)="onprocess(item.audio._id,item)"
@@ -202,17 +212,16 @@
                         </span>
                       </span>
                     </div>
-                  </div>
-                  <div class="file_div afvmaindiv" *ngIf="item.type=='file' &&
-                  item.type!=null && item.type!=undefined">
-                    <span *ngIf="item.file.file_type != null &&
-                    item.file.file_type == 'jpeg' || item.file.file_type ==
-                    'png' || item.file.file_type == 'jpg'" class="image_filetype">
+                  </div> -->
+                  <!-- <div class="file_div afvmaindiv" *ngIf="item.type!=null && item.type!=undefined && item.type == 'jpeg' || item.type ==
+                  'png' || item.type == 'jpg' ">
+                    <span *ngIf="item.type == 'jpeg' || item.type ==
+                    'png' || item.type == 'jpg'" class="image_filetype">
                       <div class="previewpdfcls">
                         <img (click)="previewpdf(item,'img')" mat-card-image
-                          [attr.src]="bucket_url +item.file.fileservername">
-                      </div>
-                      <div class="fileinfocls">
+                          [attr.src]="bucket_url +item.screenshots.fileservername">
+                      </div> -->
+                      <!-- <div class="fileinfocls">
                         <div class="File_titlecls_wrapper">
                           <p class="File_titlecls">{{ item.file_title }}</p>
                         </div>
@@ -264,10 +273,10 @@
                           </span>
                         </div>
 
-                      </div>
-                    </span>
+                      </div> -->
+                    <!-- </span> -->
 
-                    <span class="filetype_{{item.file.file_type}}
+                    <!-- <span class="filetype_{{item.file.file_type}}
                     mat-card-image" *ngIf="item.file.file_type != null &&
                     item.file.file_type == 'pdf' || item.file.file_type ==
                     'doc' || item.file.file_type == 'ppt' ||
@@ -338,10 +347,10 @@
                           </span>
                         </div>
                       </div>
-                      <!-- <p class="File_descriptioncls">{{ item.file_description }} </p> -->
-                    </span>
+                      
+                    </span> -->
 
-                  </div>
+                  <!-- </div> -->
 
                 </div>
 
@@ -376,25 +385,26 @@
               </div>
               <ng-container *ngIf="userType=='technological-consultant'">
                 <span *ngIf="item.is_done!=true">
+                  <span>If you have completed the lesson, please click on "Mark as done" to proceed to the next lesson.</span>
                   <button *ngIf="next_button_access==true" button mat-raised-button color="accent" type="button"
                     class="markbtncls" (click)="nextbutton('next',i)">Mark
                     As Done
                   </button>
                 </span>
-  
+
                 <button *ngIf="item.is_done==true" button mat-raised-button color="accent" type="button"
                   class="markbtncls" (click)="nextbutton('next',i)">
                   Next
                 </button>
               </ng-container>
               <ng-container *ngIf="userType!='technological-consultant'">
-                <button button mat-raised-button color="accent" type="button"
-                  class="markbtncls" (click)="nextbutton('next_go',i)">
+                <button button mat-raised-button color="accent" type="button" class="markbtncls"
+                  (click)="nextbutton('next_go',i)">
                   Next
                 </button>
               </ng-container>
-              
-             
+
+
             </div>
 
           </div>

@@ -98,17 +98,17 @@ export class ListLessionComponent implements OnInit {
   public bucket_url: any = {
     url: 'https://pece-training-files.s3.amazonaws.com/training/'
   };
-  public preview_url: any = 'https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/'
+  public preview_url: any = 'https://z2oo2a8oq9.execute-api.us-east-1.amazonaws.com/dev/api1/'
   public preview_endpoint = 'lesson-preview-data'
   public serverDetails: any = {
-    "serverUrl": 'https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/',
+    "serverUrl": 'https://z2oo2a8oq9.execute-api.us-east-1.amazonaws.com/dev/api1/',
     "jwttoken": ""
   };
   public formSource: any = {
     "source": 'manage_lession',
     "endpoint": "lessondelete",
     "deleteManyEndpoint": "lessondeletemany",
-    "searchEndpoint": "getlessonlist",
+    "searchEndpoint": "getlessondata",
     "associatedTrainingSourceName": "training_category_management",
     "statusUpdateEndpoint": "lessonstatusupdate",
     "statusUpdateManyEndpoint": "lessonstatusupdate",

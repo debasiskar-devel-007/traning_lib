@@ -126,12 +126,12 @@ export class AddEditLessionsComponent implements OnInit {
   // public isitdna: any = true;
   public isitBetoparedes: any = true;
   public bucket_url: any = {
-    url: 'https://pece-training-files.s3.amazonaws.com/training/'
+    url: 'https://beto-paredes-training-centre.s3.amazonaws.com/lesson-files/'
   }
   public showfieldflag: boolean = true;
   public traingaccessflag: boolean = false;
   public serverDetails: any = {
-    "serverUrl": 'https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/',
+    "serverUrl": 'https://z2oo2a8oq9.execute-api.us-east-1.amazonaws.com/dev/api1/',
     "jwttoken": ""
   };
   public from_type: any = 'lesson';
@@ -146,7 +146,7 @@ export class AddEditLessionsComponent implements OnInit {
 
   public formSource: any = {
     source: 'manage_lession',
-    endpoint: 'add-edit-lesson',
+    endpoint: 'addorupdatelessondata',
     showEndpoint: 'getlessondatabyid',
     AddheaderText: 'Add Lesson',
     EditheaderText: 'Edit Lesson',
@@ -172,7 +172,7 @@ export class AddEditLessionsComponent implements OnInit {
   // }
   public configFileUpload: any ={
     label: 'Upload Image:',
-    name: 'product_file',
+    name: 'screenshots',
     type: 'file',
     prefix: 'image-' + Date.now(),
     path: "lesson-files/",
@@ -208,7 +208,7 @@ export class AddEditLessionsComponent implements OnInit {
 
       { inputtype: 'select', name: 'associated_training', label: 'Associated Training', defaultchoice: 'Select Training Category :', sourceview: 'training_category_management_view', endpoint: 'getlisttraining', selectvalue: 'catagory_name', selectid: '_id', validationrule: { required: true }, validationerrormsg: 'is required' },
 
-      { inputtype: 'select', name: 'prerequisite_lession', label: 'Prerequisite Lesson', defaultchoice: 'Select a Prerequisite Lesson :', sourceview: 'manage_lession_null', endpoint: 'getlessonlist', selectvalue: 'lession_title', selectid: '_id' },
+      { inputtype: 'select', name: 'prerequisite_lession', label: 'Prerequisite Lesson', defaultchoice: 'Select a Prerequisite Lesson :', sourceview: 'manage_lession_null', endpoint: 'getlessondata', selectvalue: 'lession_title', selectid: '_id' },
 
       // { inputtype: 'radio', name: 'test_associate_training', value: ["Yes", "No"], valuelabel: '', label: "Is there a test associated with training ", placeholder: "", validationrule: { required: true }, validationerrormsg: '', class: 'radioclass' },
 
