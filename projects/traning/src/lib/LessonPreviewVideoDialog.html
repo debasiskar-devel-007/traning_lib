@@ -5,10 +5,14 @@
               </div>
           </div>  
 
-          <div mat-dialog-content class="headercls">
+          <!-- <div mat-dialog-content class="headercls">
             <iframe width="700" height="400" [src]="data.safe_url" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div> 
-
+          </div>  -->
+          <video width="400" controls>
+            <source [src]="data.safe_url" type="video/mp4">
+            <!-- <source [src]="data.safe_url" type="video/ogg"> -->
+            Your browser does not support HTML video.
+          </video>
 
           <mat-dialog-actions class="modalbtncls">
             <button class="btncancelcls" mat-raised-button color="accent" mat-dialog-close="no" cdkFocusInitial><span class="material-icons">

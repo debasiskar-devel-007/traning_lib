@@ -23,16 +23,15 @@
             <mat-card-content class="trainingcentercls trainingcenterclsupdate">
                 <mat-card-title class="mentortitle" id="lessonData">{{training_cat_name}}
                     <ng-container *ngIf="userType=='admin'">
-                        <span
-                        *ngIf="sequential_lock==0" matTooltip="Click to Lock" (click)="sequentiallock(1)"
-                        class="material-icons">
-                        lock
-                    </span> <span *ngIf="sequential_lock==1" matTooltip="Click to UnLock" (click)="sequentiallock(0)"
-                        class="material-icons">
-                        lock_open
-                    </span>
+                        <span *ngIf="sequential_lock==0" matTooltip="Click to Lock" (click)="sequentiallock(1)"
+                            class="material-icons">
+                            lock
+                        </span> <span *ngIf="sequential_lock==1" matTooltip="Click to UnLock"
+                            (click)="sequentiallock(0)" class="material-icons">
+                            lock_open
+                        </span>
                     </ng-container>
-                    </mat-card-title>
+                </mat-card-title>
                 <div fxLayout="row" class="rowinner_block" *ngFor="let item of trainingLessonData
                   ; let i=index;">
 
@@ -53,7 +52,8 @@
                                         item.type!=null && item.type!=undefined">
                                     <div class="videomainwrapper">
 
-                                        <img src="https://img.youtube.com/vi/{{item.video_url}}/0.jpg" class="videoimg">
+                                        <img src="https://all-frontend-assets.s3.amazonaws.com/AWS-Physicians/images/dr_banner1.jpg"
+                                            class="videoimg">
                                         <img (click)="openLessonVideo(item)"
                                             src="https://awsbackend-dev-patient-files-test.s3.amazonaws.com/icon-videoplay.png"
                                             class="videoplayimg">

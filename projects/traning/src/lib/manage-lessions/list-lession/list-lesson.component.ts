@@ -544,13 +544,13 @@ export class ListlessonComponent implements OnInit {
         // this.dataSource = new MatTableDataSource(allData);
         // // this.dataSource.paginator = this.paginator;
         // // this.dataSource.sort = this.sort;
-        this.getLessonData()
+        this.getlessonlist()
       }
 
     })
   }
 
-  getLessonData() {
+  getlessonlist() {
     let link = this.serverDetailsVal.serverUrl + this.formSourceVal.searchEndpoint;
     let data: any = {
       "source": this.formSourceVal.associatedTrainingSourceName,
@@ -864,14 +864,14 @@ export class AudioVideoFileDialogComponent {
 
     if (data.type_flag == 'preview') {
       for (const i in this.previewData) {
-
-        for (let j in this.previewData[i].lesson_attachements) {
-          if (this.previewData[i].lesson_attachements[j].type == 'video') {
-
-            this.previewData[i].lesson_attachements[j].safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.video_base_url + this.previewData[i].lesson_attachements[j].video_url + '?rel=0&modestbranding=1&autoplay=0&showinfo=0&listType=playlist');
-          }
+        if (this.previewData[i].lesson_attachements) {
+          for (let j in this.previewData[i].lesson_attachements) {
+            if (this.previewData[i].lesson_attachements[j].type === 'video') {
+              // this.previewData[i].lesson_attachements[j].safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.video_base_url + this.previewData[i].lesson_attachements[j].video_url + '?rel=0&modestbranding=1&autoplay=0&showinfo=0&listType=playlist');    
+              this.previewData[i].lesson_attachements[j].safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.previewData[i].lesson_attachements[j].video_url);
+            }
+          };
         }
-        console.log(this.previewData, 'gggggggggggggggggg')
       }
     }
     console.log(data.bucket_url.url, 'data.bucket_url')
@@ -890,8 +890,8 @@ export class AudioVideoFileDialogComponent {
 
       for (let i in data.data_array) {
         console.log(data.data_array[i])
-
-        var url = this.video_base_url + data.data_array[i].video_url + '?rel=0&modestbranding=1&autoplay=0';
+        // var url = this.video_base_url + data.data_array[i].video_url + '?rel=0&modestbranding=1&autoplay=0';
+        var url = data.data_array[i].video_url;
 
         // console.log(url, 'url')
 

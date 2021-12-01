@@ -22,7 +22,7 @@ export class ListingTrainingComponent implements OnInit {
     "source": 'training_category_management',
     "endpoint": "trainingcatdelete",
     "deleteManyEndpoint": "trainingcatdeletemany",
-    "searchEndpoint": "getlisttraining",
+    "searchEndpoint": "getalltrainingdata",
     "statusUpdateEndpoint": "trainingcatstatusupdate",
     "statusUpdateManyEndpoint": "trainingcatstatusupdate",
     "statusUpdateSourceName": "training_category_management",

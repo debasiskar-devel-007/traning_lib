@@ -11,25 +11,64 @@
             </div> -->
             <div class="mainvdcls">
                 <div class="mt-1" id="player"></div>
+                <video width="560" height="315" id="my-video-modal" *ngIf="videoplayflag"
+                class="video-js videothwrapper-item videothwrapper-16by9" (timeupdate)="onprocess()" preload="auto"
+                poster="https://all-frontend-assets.s3.amazonaws.com/AWS-Physicians/images/dr_banner1.jpg"
+                data-setup="{}">
+                <source [src]="video_url1" type="video/mp4" />
+                <p class="vjs-no-js">
+                    To view this video please enable JavaScript, and consider upgrading to a
+                    web browser that
+                    <!-- <a href="https://videojs.com/html5-video-support/" target="_blank">
+                        supports HTML5 video
+                    </a> -->
+                </p>
+            </video>
+            <mat-progress-bar class="loaderprogress" mode="determinate" value="{{ video_percent }}">
+            </mat-progress-bar>
+            <ng-container *ngIf="videotimeflag&&data.data.video_skippable">
+                <mat-progress-bar class="loaderprogress" mode="determinate" value="{{ video_percent }}">
+                </mat-progress-bar>
 
+                <div class="actioncontrol">
+                    <span class="videotime">{{ video_time }}/{{ video_end_time }}</span>
+
+                    <button (click)="playbtn()" *ngIf='!playpauseflag' class="playbtn">
+                        <mat-icon>play_arrow</mat-icon>
+                    </button>
+                    <button (click)="pausebtn()" *ngIf='playpauseflag' class="pausebtn">
+                        <mat-icon>pause</mat-icon>
+
+                    </button>
+                    <div class="playbtnlessplus">
+                        <button (click)="skip(-10)" class="playbtnless">
+                            <img src="https://img.icons8.com/ios-glyphs/30/000000/replay-10.png" />
+                        </button>
+                        <button (click)="skip(10)" class="playbtnplus">
+                            <img src="https://img.icons8.com/ios-glyphs/60/000000/forward-10.png" />
+                        </button>
+                    </div>
+
+                </div>
+            </ng-container>
                 <!-- <iframe width="700" height="400" [src]="data.safe_url" frameborder="0"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen></iframe> -->
-                <youtube-player id="ytplayer" [videoId]="data.video_url" (ready)="savePlayer($event)"
+                <!-- <youtube-player id="ytplayer" [videoId]="data.video_url" (ready)="savePlayer($event)"
                     (change)="onStateChange($event)" [playerVars]="playerVars" [height]=500 [autoplay]=true [width]=850>
-                </youtube-player>
+                </youtube-player> -->
             </div>
             <!-- {{data.data.video_skippable}} -->
-            <ng-container *ngIf="data.data.video_skippable!=true">
+            <!-- <ng-container *ngIf="data.data.video_skippable!=true">
                 <mat-progress-bar mode="determinate" value={{percent}}></mat-progress-bar>
                 <span class="currenttime">{{video_current_time}}</span><span class="endtime">{{video_time}}</span>
-            </ng-container>
+            </ng-container> -->
 
-            <div class="videocls">
+            <!-- <div class="videocls">
                 <p class="videotitlecls">{{data?.data?.video_title}}</p>
 
                 <div class="video_descriptioncls" [innerHTML]="data.data.video_description"></div>
-            </div>
+            </div> -->
         </div>
 
 

@@ -10,3 +10,20 @@ p:empty {display: none !important;}
 .endtime{
     float: right;
 }
+
+
+.vjs-text-track-display{ display: none;}
+
+.my-video-modal-dimensions{ width: 100%!important;}
+
+#ofc video {
+  object-fit: cover;
+}
+
+#off video {
+  object-fit: fill;
+}
+video{
+    height: 100%;
+    width: 100%;
+}

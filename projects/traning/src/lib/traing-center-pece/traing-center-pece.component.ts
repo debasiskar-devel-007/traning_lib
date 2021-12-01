@@ -5,6 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { ApiService } from '../api.service';
+import videojs from 'video.js';
 
 
 export interface DialogData {
@@ -686,9 +687,7 @@ export class TraingCenterPeceComponent implements OnInit {
       for (const key in this.complete_lesson_videos) {
         if (this.lesson_content_data.length > 0) {
           for (const i in this.lesson_content_data[0].lesson_attachements) {
-            //console.log(this.complete_lesson_videos[key].video_url, 'this.lesson_content_data[0].lesson_attachements', this.lesson_content_data[0].lesson_attachements[i].video_url);
-
-            if (this.lesson_content_data[0].lesson_attachements && this.lesson_content_data[0].lesson_attachements[i].type == 'video' && this.lesson_content_data[0].lesson_attachements[i].video_url == this.complete_lesson_videos[key].video_id) {
+            if (this.lesson_content_data[0].lesson_attachements && this.lesson_content_data[0].lesson_attachements[i].type == 'video' && this.lesson_content_data[0].lesson_attachements[i].video_url == this.complete_lesson_videos[key].video_url) {
               //console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@');
 
               this.complete_videoflag[this.lesson_content_data[0].lesson_attachements[i].video_url] = true;
@@ -1198,25 +1197,167 @@ export class LessonQuizPeceModalComponent {
 
 export class peceLessonVideoModalComponent {
 
-  playerVars = {
-    cc_lang_pref: 'en'
-  };
   public video_time: any;
-
+  public videoplayflag: boolean = false;
   public video_Count_time: any;
-  public video_current_time: any;
-  public percent: any = 0;
+  public video_url: any = '';
+  public video_url1: any = '';
+  public playerid: any = '';
+  player: videojs.Player;
+  video_currenttime: any = '';
+  public video_duration: any = '';
+  public video_end_time: any = '';
+  public videotimeflag: boolean = false;
+  public video_percent: Number = 0;
+  public playpauseflag: boolean = false;
+  public videoJsConfigObj = {
+    preload: "metadata",
+    controls: false,
+    autoplay: true,
+    overrideNative: true,
+    techOrder: ["html5", "flash"],
+    html5: {
+      nativeVideoTracks: false,
+      nativeAudioTracks: false,
+      nativeTextTracks: false,
+      hls: {
+        withCredentials: false,
+        overrideNative: true,
+        debug: true
+      }
+    }
+  };
   constructor(public dialogRef: MatDialogRef<peceLessonVideoModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData2, public snakBar: MatSnackBar, public apiService: ApiService, public router: Router, public activatedRoute: ActivatedRoute) {
+    @Inject(MAT_DIALOG_DATA) public data: DialogData2,
+    private sanitizer: DomSanitizer,
+    public snakBar: MatSnackBar, public apiService: ApiService, public router: Router, public activatedRoute: ActivatedRoute) {
     console.log(data, 'data_video')
+    const myArray = data.data.video_url.split('https://betoparedesallvideos.s3.amazonaws.com/');
+    myArray[0] = 'https://d291rlacfzbauk.cloudfront.net';
+    this.video_url = myArray.join('/');
+    this.video_url1 = this.sanitizer.bypassSecurityTrustResourceUrl(this.video_url);
+    this.videoplayflag = true;
+    setTimeout(() => {
+      this.player = videojs('#my-video-modal');
+      this.player.controls(false); // TO CONTROL FALSE
+      this.playerid = this.player.id_;
+      this.onprocess();
+    }, 1000);
+
+
+
+    if (this.data.data.video_skippable !== true) {
+      setTimeout(() => {
+        // let videoPlayer = <HTMLVideoElement>document.getElementById('my-video-modal');
+
+
+        this.player.play();
+
+
+      }, 2000);
+    }
   }
   ngOnInit() {
 
   }
+  onprocess() {
+    setTimeout(() => {
+      this.video_currenttime = parseInt(this.player.currentTime());
+      const sec_num = parseInt(this.video_currenttime, 10);
+      const hours: any = Math.floor(sec_num / 3600);
+      const minutes: any = Math.floor((sec_num - (hours * 3600)) / 60);
+      const seconds: any = sec_num - (hours * 3600) - (minutes * 60);
+      this.video_time = hours + ':' + minutes + ':' + seconds;
+      setTimeout(() => {
+        this.video_duration = parseInt(this.player.duration());
+        const sec_duration_num = parseInt(this.video_duration, 10);
+        const duration_hours: any = Math.floor(sec_duration_num / 3600);
+        const duration_minutes: any = Math.floor((sec_duration_num - (duration_hours * 3600)) / 60);
+        const duration_seconds: any = sec_duration_num - (duration_hours * 3600) - (duration_minutes * 60);
+        this.video_end_time = duration_hours + ':' + duration_minutes + ':' + duration_seconds;
+        this.videotimeflag = true;
+      }, 500);
 
-  savePlayer(event) {
-    console.log(event, 'save', this.playerVars)
+      // console.log(this.video_currenttime, 'audio_duration', this.video_duration)
+
+
+      this.video_percent = (this.video_currenttime / this.video_duration) * 100;
+
+    }, 1000);
+    let completeflag = false;
+    if (this.video_percent === 100) {
+      // this.close_video();
+      completeflag = true;
+      this.close_video();
+      return;
+
+    }
+    // if (completeflag) {
+
+    // }
+
   }
+  savePlayer(event) {
+    console.log(event, 'save');
+  }
+
+  close_video() {
+    var endpoint = this.data.endpoint;
+    var video_data: any = {
+      user_id: this.data.user_id,
+
+      training_id: this.data.training_id,
+      lesson_id: this.data.lesson_id,
+      // video_id: event.target.playerInfo.videoData.video_id,
+      // video_url: event.target.playerInfo.videoUrl,
+      flag: 1,
+    }
+    // // // // // //console.log(video_data, 'data===++')
+    if (this.data.data.video_skippable !== true) {
+
+      this.apiService.postDatawithoutToken(endpoint, video_data).subscribe(res => {
+        // // // // //console.log(res, 'frghjk++++++++++', event.target.playerInfo.videoData.video_id)
+        let result: any = res;
+        if (result.status === 'success') {
+          // getTrainingCenterlistFunctionwithLessonId(associated_training: any, type: any, user_id: any, _id: any)
+          this.data.flag = 'yes';
+          this.dialogRef.close(this.data.flag);
+          this.snakBar.open('Successfully Completed The Lesson Video..!', 'OK', {
+            duration: 5000
+          });
+
+        }
+      });
+    }
+    if (this.data.data.video_skippable === true) {
+      this.dialogRef.close(this.data.flag);
+    }
+
+  }
+
+  skip(value) {
+
+    this.player.currentTime(parseInt(this.player.currentTime() + value));
+    // console.log('currentTime', this.player.currentTime());
+  }
+
+  playbtn() {   // FOR PLAY THE VIDEO
+    // console.log(this.player);
+    this.playpauseflag = true;
+
+    this.onprocess();
+
+    this.player.play();
+    // console.log(this.player.cache_.currentTime, this.player.cache_.duration);
+
+  }
+  pausebtn() {  // FOR PAUSE THE VIDEO.
+    // console.log(this.player.cache_.currentTime, this.player.cache_.duration);
+    this.playpauseflag = false;
+
+    this.player.pause();
+  }
+
   closedModals() {
     // // // // // //console.log()
     this.snakBar.open('Video Lesson Has Not Been Completed ...!', 'OK', {
@@ -1225,93 +1366,93 @@ export class peceLessonVideoModalComponent {
     this.dialogRef.close()
   }
 
-  onStateChange(event) {
-    // this.percent = 0;
-    event.target.playerInfo.currentTime += 1;
+  // onStateChange(event) {
+  //   // this.percent = 0;
+  //   event.target.playerInfo.currentTime += 1;
 
-    // // // // // //console.log(this.data.data.video_skippable, 'data_video')
-    console.log(event.target.playerInfo.currentTime);
+  //   // // // // // //console.log(this.data.data.video_skippable, 'data_video')
+  //   console.log(event.target.playerInfo.currentTime);
 
-    setInterval(() => {
-      if (event.data == 1 && event.data != 0 && event.target.playerInfo.currentTime <= event.target.playerInfo.duration) {
-        // console.log(event.target.playerInfo.currentTime, 'state chn')
-        var sec_num1 = parseInt(event.target.playerInfo.currentTime, 10);
+  //   setInterval(() => {
+  //     if (event.data == 1 && event.data != 0 && event.target.playerInfo.currentTime <= event.target.playerInfo.duration) {
+  //       // console.log(event.target.playerInfo.currentTime, 'state chn')
+  //       var sec_num1 = parseInt(event.target.playerInfo.currentTime, 10);
 
-        var hours1: any = Math.floor(sec_num1 / 3600);
-        var minutes1: any = Math.floor((sec_num1 - (hours1 * 3600)) / 60);
-        var second1: any = sec_num1 - (hours1 * 3600) - (minutes1 * 60);
-        if (hours1 < 10) { hours = "0" + hours; }
-        if (minutes1 < 10) { minutes = "0" + minutes; }
-        if (second1 < 10) { seconds = "0" + seconds; }
-        this.video_current_time = hours1 + ':' + minutes1 + ':' + second1;
+  //       var hours1: any = Math.floor(sec_num1 / 3600);
+  //       var minutes1: any = Math.floor((sec_num1 - (hours1 * 3600)) / 60);
+  //       var second1: any = sec_num1 - (hours1 * 3600) - (minutes1 * 60);
+  //       if (hours1 < 10) { hours = "0" + hours; }
+  //       if (minutes1 < 10) { minutes = "0" + minutes; }
+  //       if (second1 < 10) { seconds = "0" + seconds; }
+  //       this.video_current_time = hours1 + ':' + minutes1 + ':' + second1;
 
-        var sec_num = parseInt(event.target.playerInfo.duration, 10);
-        var hours: any = Math.floor(sec_num / 3600);
-        var minutes: any = Math.floor((sec_num - (hours * 3600)) / 60);
-        var seconds: any = sec_num - (hours * 3600) - (minutes * 60);
+  //       var sec_num = parseInt(event.target.playerInfo.duration, 10);
+  //       var hours: any = Math.floor(sec_num / 3600);
+  //       var minutes: any = Math.floor((sec_num - (hours * 3600)) / 60);
+  //       var seconds: any = sec_num - (hours * 3600) - (minutes * 60);
 
-        if (hours < 10) { hours = "0" + hours; }
-        if (minutes < 10) { minutes = "0" + minutes; }
-        if (seconds < 10) { seconds = "0" + seconds; }
-        // // // // // //console.log(hours + ':' + minutes + ':' + seconds);
-        this.video_time = hours + ':' + minutes + ':' + seconds;
-        this.percent = (event.target.playerInfo.currentTime / event.target.playerInfo.duration) * 100
-        this.percent = Math.round(this.percent)
-        console.log(this.video_current_time, 'video_current_time', this.video_time, 'percent', this.percent);
-      }
-    }, 500);
-
-
-
-    console.log(event, 'state chn')
-    let ytplayer;
-    // ytplayer = document.getElementById("player");
-    // ytplayer.getCurrentTime();
-    // // // // //console.log(event.target.playerInfo.duration, '/\/\/\)', event.target.playerInfo.currentTime)
-
-    //duration calculation
+  //       if (hours < 10) { hours = "0" + hours; }
+  //       if (minutes < 10) { minutes = "0" + minutes; }
+  //       if (seconds < 10) { seconds = "0" + seconds; }
+  //       // // // // // //console.log(hours + ':' + minutes + ':' + seconds);
+  //       this.video_time = hours + ':' + minutes + ':' + seconds;
+  //       this.percent = (event.target.playerInfo.currentTime / event.target.playerInfo.duration) * 100
+  //       this.percent = Math.round(this.percent)
+  //       console.log(this.video_current_time, 'video_current_time', this.video_time, 'percent', this.percent);
+  //     }
+  //   }, 500);
 
 
-    // this.startTimer(event.target.playerInfo.duration);
 
-    //console.log(event.data, 'data 0', this.data)
+  //   console.log(event, 'state chn')
+  //   let ytplayer;
+  //   // ytplayer = document.getElementById("player");
+  //   // ytplayer.getCurrentTime();
+  //   // // // // //console.log(event.target.playerInfo.duration, '/\/\/\)', event.target.playerInfo.currentTime)
 
-    if (event.data == 0) {
+  //   //duration calculation
 
 
-      var endpoint = this.data.endpoint;
-      var video_data: any = {
-        user_id: this.data.user_id,
+  //   // this.startTimer(event.target.playerInfo.duration);
 
-        training_id: this.data.training_id,
-        lesson_id: this.data.lesson_id,
-        video_id: event.target.playerInfo.videoData.video_id,
-        video_url: event.target.playerInfo.videoUrl,
-        flag: 1,
-      }
-      // // // // // //console.log(video_data, 'data===++')
-      if (this.data.data.video_skippable != true) {
+  //   //console.log(event.data, 'data 0', this.data)
 
-        this.apiService.postDatawithoutToken(endpoint, video_data).subscribe(res => {
-          // // // // //console.log(res, 'frghjk++++++++++', event.target.playerInfo.videoData.video_id)
-          let result: any = res;
-          if (result.status == 'success') {
-            // getTrainingCenterlistFunctionwithLessonId(associated_training: any, type: any, user_id: any, _id: any)
-            this.data.flag = 'yes';
-            this.dialogRef.close(this.data.flag);
-            this.snakBar.open('Successfully Completed The Lesson Video..!', 'OK', {
-              duration: 5000
-            })
+  //   if (event.data == 0) {
 
-          }
-        })
-      } if (this.data.data.video_skippable == true) {
-        this.dialogRef.close(this.data.flag);
-      }
 
-    }
+  //     var endpoint = this.data.endpoint;
+  //     var video_data: any = {
+  //       user_id: this.data.user_id,
 
-  }
+  //       training_id: this.data.training_id,
+  //       lesson_id: this.data.lesson_id,
+  //       video_id: event.target.playerInfo.videoData.video_id,
+  //       video_url: event.target.playerInfo.videoUrl,
+  //       flag: 1,
+  //     }
+  //     // // // // // //console.log(video_data, 'data===++')
+  //     if (this.data.data.video_skippable != true) {
+
+  //       this.apiService.postDatawithoutToken(endpoint, video_data).subscribe(res => {
+  //         // // // // //console.log(res, 'frghjk++++++++++', event.target.playerInfo.videoData.video_id)
+  //         let result: any = res;
+  //         if (result.status == 'success') {
+  //           // getTrainingCenterlistFunctionwithLessonId(associated_training: any, type: any, user_id: any, _id: any)
+  //           this.data.flag = 'yes';
+  //           this.dialogRef.close(this.data.flag);
+  //           this.snakBar.open('Successfully Completed The Lesson Video..!', 'OK', {
+  //             duration: 5000
+  //           })
+
+  //         }
+  //       })
+  //     } if (this.data.data.video_skippable == true) {
+  //       this.dialogRef.close(this.data.flag);
+  //     }
+
+  //   }
+
+  // }
 }
 
 

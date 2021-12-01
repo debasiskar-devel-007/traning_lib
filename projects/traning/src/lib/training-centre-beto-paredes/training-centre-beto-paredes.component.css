@@ -891,9 +891,11 @@ mat-slider {
 }
 
 .markbtncls {
-    left: 816px;
+    
     position: relative;
 }
+
+
 
 lib-training-centre-beto-paredes {
     position: relative;
@@ -906,4 +908,6 @@ lib-training-centre-beto-paredes {
     overflow: hidden;
     top: 0;
 }
+
+@import '~video.js/dist/video-js.css';
 

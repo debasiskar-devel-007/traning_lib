@@ -87,7 +87,7 @@ const appRoutes: Routes = [
     {
         path: 'manage-lesson/list', component: ListLessionComponent,
         resolve: { lessionData: ResolveService },
-        data: { requestcondition: { source: 'manage_lession_view', condition: { 'is_trash': { $ne: 1 } } }, endpoint: 'getlessondata' }
+        data: { requestcondition: { source: 'manage_lession_view', condition: { 'is_trash': { $ne: 1 } } }, endpoint: 'getlessonlist' }
     },
 
     { path: 'manage-lesson/edit/:id', component: AddEditLessionsComponent },
@@ -97,7 +97,7 @@ const appRoutes: Routes = [
     {
         path: 'manage-training/list', component: ListingTrainingComponent,
         resolve: { trainingdata: ResolveService },
-        data: { requestcondition: { source: 'training_category_management_view', condition: { 'is_trash': { $ne: 1 } } }, endpoint: 'getlisttraining' }
+        data: { requestcondition: { source: 'training_category_management_view', condition: { 'is_trash': { $ne: 1 } } }, endpoint: 'getalltrainingdata' }
     },
 
     { path: 'manage-training/edit/:id', component: AddEditTrainingComponent },

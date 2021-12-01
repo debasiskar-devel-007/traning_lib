@@ -32,7 +32,7 @@
 //   //   "showEndpoint": "getlessondatabyid",
 //   //   "AddheaderText": "Add Lesson",
 //   //   "EditheaderText": "Edit Lesson",
-//   //   "lessonDataEndpoint":"getlessondatabytrainingid"
+//   //   "lessonDataEndpoint":"getlessonlistbytrainingid"
 //   // }
 
 //   public formSource: any = {
@@ -41,7 +41,7 @@
 //     showEndpoint: 'datalist',
 //     AddheaderText: 'Add Lesson',
 //     EditheaderText: 'Edit Lesson',
-//     lessonDataEndpoint: 'getlessondatabytrainingid'
+//     lessonDataEndpoint: 'getlessonlistbytrainingid'
 //   };
 //   public additionalData: any = {
 //     objectId: 'associated_training',
@@ -131,7 +131,7 @@ export class AddEditLessionsComponent implements OnInit {
   public showfieldflag: boolean = true;
   public traingaccessflag: boolean = false;
   public serverDetails: any = {
-    "serverUrl": 'https://z2oo2a8oq9.execute-api.us-east-1.amazonaws.com/dev/api1/',
+    "serverUrl": 'https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/',
     "jwttoken": ""
   };
   public from_type: any = 'lesson';
@@ -141,16 +141,16 @@ export class AddEditLessionsComponent implements OnInit {
   //   "showEndpoint": "getlessondatabyid",
   //   "AddheaderText": "Add Lesson",
   //   "EditheaderText": "Edit Lesson",
-  //   "lessonDataEndpoint":"getlessondatabytrainingid"
+  //   "lessonDataEndpoint":"getlessonlistbytrainingid"
   // }
 
   public formSource: any = {
     source: 'manage_lession',
-    endpoint: 'addorupdatelessondata',
+    endpoint: 'add-edit-lesson',
     showEndpoint: 'getlessondatabyid',
     AddheaderText: 'Add Lesson',
     EditheaderText: 'Edit Lesson',
-    lessonDataEndpoint: 'getlessondatabytrainingid',
+    lessonDataEndpoint: 'getlessonlistbytrainingid',
 
   };
   public additionalData: any = {
@@ -206,9 +206,9 @@ export class AddEditLessionsComponent implements OnInit {
 
       { inputtype: 'textarea', name: 'description', label: 'Lesson Description', placeholder: 'Enter Description' },
 
-      { inputtype: 'select', name: 'associated_training', label: 'Associated Training', defaultchoice: 'Select Training Category :', sourceview: 'training_category_management_view', endpoint: 'getlisttraining', selectvalue: 'catagory_name', selectid: '_id', validationrule: { required: true }, validationerrormsg: 'is required' },
+      { inputtype: 'select', name: 'associated_training', label: 'Associated Training', defaultchoice: 'Select Training Category :', sourceview: 'training_category_management_view', endpoint: 'getlessondatabyid', selectvalue: 'catagory_name', selectid: '_id', validationrule: { required: true }, validationerrormsg: 'is required' },
 
-      { inputtype: 'select', name: 'prerequisite_lession', label: 'Prerequisite Lesson', defaultchoice: 'Select a Prerequisite Lesson :', sourceview: 'manage_lession_null', endpoint: 'getlessondata', selectvalue: 'lession_title', selectid: '_id' },
+      { inputtype: 'select', name: 'prerequisite_lession', label: 'Prerequisite Lesson', defaultchoice: 'Select a Prerequisite Lesson :', sourceview: 'manage_lession_null', endpoint: 'getlessonlist', selectvalue: 'lession_title', selectid: '_id' },
 
       // { inputtype: 'radio', name: 'test_associate_training', value: ["Yes", "No"], valuelabel: '', label: "Is there a test associated with training ", placeholder: "", validationrule: { required: true }, validationerrormsg: '', class: 'radioclass' },
 

@@ -52,7 +52,7 @@ export class TraningComponent implements OnInit {
   public lengthis: any = [];
   public nameis: any = [];
   public formfieldrefresh: any;
-  public formfieldrefreshdata:any;
+  public formfieldrefreshdata: any;
   public issubmit = 0;
   public isedit: number = 0;
   public start_time: any;
@@ -863,7 +863,8 @@ export class TraningComponent implements OnInit {
 
   preview_video(val) {
     if (val != null && val != '') {
-      var url = this.video_base_url + val + '?rel=0&modestbranding=1&autoplay=1';
+      // var url = this.video_base_url + val + '?rel=0&modestbranding=1&autoplay=1';
+      var url = val;
 
       const safe_url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
 
@@ -1061,7 +1062,7 @@ export class AddAudioVideoFileDialogComponent {
       this.title = 'File'
       // // console.log(data, '>++++++', this.fileFields, ">============")
     }
-console.log(this.uploadConfigData);
+    console.log(this.uploadConfigData);
 
 
     this.formdata = {
@@ -1070,7 +1071,7 @@ console.log(this.uploadConfigData);
       submittext: "Submit",
       resettext: "Reset",
       canceltext: "Cancel",
-      jwttoken:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJleHAiOjE1ODg0MDU3NTEsImlhdCI6MTU4ODMxOTM1MX0.M5TGx6QdtdTl5pF98CLOfv-kqU4rR1TfJ9cqvgQm6jQ',
+      jwttoken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJleHAiOjE1ODg0MDU3NTEsImlhdCI6MTU4ODMxOTM1MX0.M5TGx6QdtdTl5pF98CLOfv-kqU4rR1TfJ9cqvgQm6jQ',
       fields: [
         this.uploadConfigData,
         {
@@ -1272,10 +1273,11 @@ export class videoDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<videoDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+    console.log(data);
     // // // console.log(data)
   }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
-}
+};

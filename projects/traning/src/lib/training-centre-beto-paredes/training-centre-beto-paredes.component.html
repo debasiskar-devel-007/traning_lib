@@ -63,7 +63,7 @@
                   <div class="video_div afvmaindiv" *ngIf="item.type=='video' &&
                         item.type!=null && item.type!=undefined">
                     <div class="videomainwrapper">
-                      <img src="https://img.youtube.com/vi/{{item.video_url}}/0.jpg" class="videoimg">
+                      <img src="https://all-frontend-assets.s3.amazonaws.com/AWS-Physicians/images/dr_banner1.jpg" class="videoimg">
                       <img (click)="openLessonVideo(item)"
                         src="https://awsbackend-dev-patient-files-test.s3.amazonaws.com/icon-videoplay.png"
                         class="videoplayimg">
@@ -92,7 +92,7 @@
                         </span>
                         <span class='shwlesscls' *ngIf='item.video_description.length > 120 && shwmorevideoflg==true'>
                           <button mat-raised-button (click)="shwmorevideoflg=false">
-                            Show Less ..
+                            Show Less ...
                           </button>
                         </span>
                       </div>
@@ -221,7 +221,7 @@
                         <img (click)="previewpdf(item,'img')" mat-card-image
                           [attr.src]="bucket_url +item.screenshots.fileservername">
                       </div> -->
-                      <!-- <div class="fileinfocls">
+                  <!-- <div class="fileinfocls">
                         <div class="File_titlecls_wrapper">
                           <p class="File_titlecls">{{ item.file_title }}</p>
                         </div>
@@ -274,9 +274,9 @@
                         </div>
 
                       </div> -->
-                    <!-- </span> -->
+                  <!-- </span> -->
 
-                    <!-- <span class="filetype_{{item.file.file_type}}
+                  <!-- <span class="filetype_{{item.file.file_type}}
                     mat-card-image" *ngIf="item.file.file_type != null &&
                     item.file.file_type == 'pdf' || item.file.file_type ==
                     'doc' || item.file.file_type == 'ppt' ||
@@ -383,9 +383,11 @@
                   </div>
                 </mat-card>
               </div>
+              
               <ng-container *ngIf="userType=='technological-consultant'">
                 <span *ngIf="item.is_done!=true">
-                  <span>If you have completed the lesson, please click on "Mark as done" to proceed to the next lesson.</span>
+                  <span *ngIf="next_button_access==true">If you have completed the lesson, please click on "Mark as done" to proceed to the next
+                    lesson.</span>
                   <button *ngIf="next_button_access==true" button mat-raised-button color="accent" type="button"
                     class="markbtncls" (click)="nextbutton('next',i)">Mark
                     As Done
