@@ -128,6 +128,8 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   public completeQuizData: any = [];
   public complete_data: any = [];
   public completeflag: boolean = false;
+  public singleflag: boolean = false;
+
   @Output() trainingDataListener = new EventEmitter<any>();
 
 
@@ -192,8 +194,13 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     this.lessonParamId = (lessid) || '<no name set>';
     // // // // // // console.log(this.lessonParamId, 'lessionParamId1111111')
     if (this.activatedRoute.snapshot.params._id != null) {
-      this.paramslessonId = this.activatedRoute.snapshot.params._id
+      console.log('in if ');
+      
+      this.paramslessonId = this.activatedRoute.snapshot.params._id;
+
     } else {
+      console.log('in else ');
+
       this.paramslessonId = this.lessonParamId;
 
     }
@@ -223,10 +230,12 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
 
     if (this.activatedRoute.snapshot.params._id != null) {
-      this.paramslessonId = this.activatedRoute.snapshot.params._id
+      this.paramslessonId = this.activatedRoute.snapshot.params._id;
+
     } else {
       if (typeof (val.lesson_content) != 'undefined' && val.lesson_content.length > 0) {
         this.paramslessonId = val.lesson_content[0]._id;
+
       }
     }
     // // // // // console.log(this.paramslessonId, '_______________')
@@ -363,7 +372,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
 
   constructor(public router: Router, public snakBar: MatSnackBar, public activatedRoute: ActivatedRoute, public apiService: ApiService, public cookieService: CookieService, public dialog: MatDialog, public sanitizer: DomSanitizer) {
-    // console.log(this.activatedRoute.snapshot.params.associated_training);
+    console.log(this.activatedRoute.snapshot);
     if (this.cookieService.get('userid') && JSON.parse(this.cookieService.get('userid')) != null && typeof JSON.parse(this.cookieService.get('userid')) != undefined && JSON.parse(this.cookieService.get('userid')) != '') {
       this.userId = JSON.parse(this.cookieService.get('userid'));
 
@@ -371,6 +380,9 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     if (this.cookieService.get('type') && this.cookieService.get('type') != null && typeof JSON.parse(this.cookieService.get('type')) != undefined && JSON.parse(this.cookieService.get('type')) != '') {
       this.userType = JSON.parse(this.cookieService.get('type'));
 
+    }
+    if (this.activatedRoute.snapshot.queryParams && this.activatedRoute.snapshot.queryParams.singletraining && this.activatedRoute.snapshot.queryParams.singletraining != null && typeof this.activatedRoute.snapshot.queryParams.singletraining != 'undefined' && this.activatedRoute.snapshot.queryParams.singletraining != '') {
+      this.singleflag = true;
     }
     // console.log(this.userType);
 
@@ -1316,11 +1328,13 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   getTrainingCenterlistFunctionwithLessonId(associated_training: any, type: any, user_id: any, _id: any) {
     // // // // // // // console.log('associated_training', associated_training, 'type', type, 'user_id', user_id, '_id', _id)
     // // // console.log("mahitosh")
+    console.log(this.activatedRoute.snapshot,this.paramslessonId);
+
     const link = this.serverDetailsVal.serverUrl + this.formSourceVal.gettrainingcenterlistendpoint;
     const data: any = {
       "condition": {
         "associated_training": this.paramsTrainingId,
-        "_id": _id,
+        "_id": this.paramslessonId,
         lessionId: this.paramslessonId
       },
       "user_id": this.userId,
@@ -1472,13 +1486,19 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       data: { 'safe_url': safe_url, data: val, training_id: this.activatedRoute.snapshot.params.associated_training, lesson_id: this.paramslessonId, endpoint: server_url, user_id: this.userId, video_url: video_url }
     });
     dialogRef.afterClosed().subscribe((result: any) => {
+      location.reload();
+      return;
       let currentUrl = this.router.url;
+      console.log(this.router.url,'this.router.url');
+      // return
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
       this.router.onSameUrlNavigation = 'reload';
-      this.router.navigate([currentUrl]);
+      this.router.navigateByUrl('training-center-beto-paredes/61c317b79defb40009ca27d1/61c32ac765d1510008609e58?singletraining=true');
       // console.log(result, 'result********************', val)
       if (result != null && result === 'yes') {
         // // // // // // // console.log()
+      console.log(this.activatedRoute.snapshot,this.paramslessonId);
+
         this.getTrainingCenterlistFunctionwithLessonId(this.paramsId, this.userType, this.userId, this.paramslessonId);
 
 
@@ -1611,10 +1631,11 @@ export class BetoparedesLessonVideoModalComponent {
   player: videojs.Player;
   video_currenttime: any = '';
   public video_duration: any = '';
-  public video_end_time: any = '';
+  public video_end_time: any = '0:0:0';
   public videotimeflag: boolean = false;
-  public video_percent: Number = 0;
-  public playpauseflag: boolean = false;
+  public video_percent: any = 0;
+  public playpauseflag: any = false;
+  public playpausedata: any = 0;
   public videoJsConfigObj = {
     preload: "metadata",
     controls: false,
@@ -1633,43 +1654,53 @@ export class BetoparedesLessonVideoModalComponent {
     }
   };
   constructor(public dialogRef: MatDialogRef<BetoparedesLessonVideoModalComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData4,
-              public snakBar: MatSnackBar,
-              private sanitizer: DomSanitizer,
-              public apiService: ApiService,
-              public router: Router,
-              public activatedRoute: ActivatedRoute) {
+    @Inject(MAT_DIALOG_DATA) public data: DialogData4,
+    public snakBar: MatSnackBar,
+    private sanitizer: DomSanitizer,
+    public apiService: ApiService,
+    public router: Router,
+    public activatedRoute: ActivatedRoute) {
 
     console.log(data, 'data_video', this.activatedRoute.snapshot.params);
     const myArray = data.data.video_url.split('https://betoparedesallvideos.s3.amazonaws.com/');
     myArray[0] = 'https://d291rlacfzbauk.cloudfront.net';
     this.video_url = myArray.join('/');
     this.video_url1 = this.sanitizer.bypassSecurityTrustResourceUrl(this.video_url);
+    console.log(this.video_url1);
+
     this.videoplayflag = true;
     setTimeout(() => {
       this.player = videojs('#my-video-modal');
       this.player.controls(false); // TO CONTROL FALSE
       this.playerid = this.player.id_;
-      this.onprocess();
+      // this.onprocess();
+      console.log('pppppppppppp', parseInt(this.player.currentTime()));
+      setTimeout(() => {
+        this.videotimeflag = true;
+        this.video_percent = parseInt(this.player.currentTime());
+        this.video_time = '0:0:0';
+        this.video_duration = parseInt(this.player.duration());
+        const sec_duration_num = parseInt(this.video_duration, 10);
+        const duration_hours: any = Math.floor(sec_duration_num / 3600);
+        const duration_minutes: any = Math.floor((sec_duration_num - (duration_hours * 3600)) / 60);
+        const duration_seconds: any = sec_duration_num - (duration_hours * 3600) - (duration_minutes * 60);
+        this.video_end_time = duration_hours + ':' + duration_minutes + ':' + duration_seconds;
+      }, 500);
+
+
     }, 1000);
 
 
 
     if (this.data.data.video_skippable !== true) {
       setTimeout(() => {
-        // let videoPlayer = <HTMLVideoElement>document.getElementById('my-video-modal');
-
-
         this.player.play();
-
-
       }, 2000);
     }
   }
-  savePlayer(event) {
-    // // // // // // console.log(event, 'save', this.playerconsts)
-  }
+
   onprocess() {
+    // this.video_percent = 0;
     setTimeout(() => {
       this.video_currenttime = parseInt(this.player.currentTime());
       const sec_num = parseInt(this.video_currenttime, 10);
@@ -1685,6 +1716,7 @@ export class BetoparedesLessonVideoModalComponent {
         const duration_seconds: any = sec_duration_num - (duration_hours * 3600) - (duration_minutes * 60);
         this.video_end_time = duration_hours + ':' + duration_minutes + ':' + duration_seconds;
         this.videotimeflag = true;
+
       }, 500);
 
       // console.log(this.video_currenttime, 'audio_duration', this.video_duration)
@@ -1697,6 +1729,13 @@ export class BetoparedesLessonVideoModalComponent {
     if (this.video_percent === 100) {
       // this.close_video();
       completeflag = true;
+      // this.playpauseflag = false;
+      setTimeout(() => {
+        // this.playpausedata = 0;
+        // this.video_percent = 0;
+
+      }, 500);
+
       this.close_video();
       return;
 
@@ -1708,9 +1747,12 @@ export class BetoparedesLessonVideoModalComponent {
   }
   closedModals() {
     // // // // // // console.log()
-    this.snakBar.open('Video Lesson Has Not Been Completed ...!', 'OK', {
-      duration: 4000
-    });
+    if (this.data.data.video_skippable !== true) {
+      this.snakBar.open('Video Lesson Has Not Been Completed ...!', 'OK', {
+        duration: 4000
+      });
+    }
+
     this.dialogRef.close();
     this.player.dispose();
     this.player.currentTime(0);
@@ -1751,8 +1793,9 @@ export class BetoparedesLessonVideoModalComponent {
     }
   }
   playbtn() {   // FOR PLAY THE VIDEO
-    // console.log(this.player);
-    this.playpauseflag = true;
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+    // this.playpauseflag.patchValue(true);
+    this.playpausedata = 1;
 
     this.onprocess();
 
@@ -1761,9 +1804,10 @@ export class BetoparedesLessonVideoModalComponent {
 
   }
   pausebtn() {  // FOR PAUSE THE VIDEO.
-    // console.log(this.player.cache_.currentTime, this.player.cache_.duration);
-    this.playpauseflag = false;
+    console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
 
+    // this.playpauseflag = false;
+    this.playpausedata = 0;
     this.player.pause();
   }
   skip(value) {

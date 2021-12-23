@@ -63,14 +63,14 @@ export class ResolveService implements Resolve<any> {
       // requestData.condition['type'] = "admin";
     }
 
-    
+
 
 
     if (route.url[0].path == "training-center-dna") {
       requestData.condition['associated_training'] = route.params.associated_training;
       requestData['user_id'] = this.userId;
       requestData['type'] = this.userType;
-        //  requestData['type'] = "mentor";
+      //  requestData['type'] = "mentor";
       requestData['associated_training'] = route.params.associated_training;
 
     }
@@ -81,17 +81,17 @@ export class ResolveService implements Resolve<any> {
       requestData['associated_training'] = route.params.associated_training;
 
     }
-    console.log(route.url[0].path,'route.url[0].path ');
-    
+    console.log(route.url[0].path, 'route.url[0].path ');
+
     if (route.url[0].path == "training-center-pece") {
       console.log(JSON.parse(this.cookiesService.get('user_details')));
-      let userdata=JSON.parse(this.cookiesService.get('user_details'))
-      
+      let userdata = JSON.parse(this.cookiesService.get('user_details'))
+
       requestData.condition['associated_training'] = route.params.associated_training;
       requestData['user_id'] = userdata._id;
       requestData['type'] = userdata.user_type;
       requestData['associated_training'] = route.params.associated_training;
-      
+
 
 
     }
@@ -111,9 +111,9 @@ export class ResolveService implements Resolve<any> {
 
 
       // console.log(JSON.parse(localStorage.getItem('productarray'))[0]);
-    let product: any
+      let product: any
 
-      if (this.cookiesService.get('productarray') &&this.cookiesService.get('productarray')!=null&& this.cookiesService.get('productarray') != '') {
+      if (this.cookiesService.get('productarray') && this.cookiesService.get('productarray') != null && this.cookiesService.get('productarray') != '') {
         product = this.cookiesService.get('productarray');
         // console.log(product,'First');
         let products = product.split(',')
@@ -125,6 +125,28 @@ export class ResolveService implements Resolve<any> {
       console.log(route);
 
     }
+    // return
+    // if (route.params._id.hasOwnProperty("?")) {
+    //   console.log('kkkkkkkkkkkkkk');
+
+    // }
+    let format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+
+    if (format.test(route.params._id)) {
+      console.log('true');
+
+    } else {
+      // return false;
+      console.log('false',format.test('sbc?bbb'));
+
+    }
+    // let myArray = route.params._id.split('?');
+    // console.log(myArray);
+
+    // if (route.params && route.params._id && route.params._id != null && typeof route.params._id != 'undefined' && route.params._id != '') {
+
+    //   // route.params._id = myArray[0];
+    // }
     return new Promise((resolve) => {
       this._apiService.CustomRequest(route.data.requestcondition, route.data.endpoint).subscribe(api_object => {
         if (api_object) {

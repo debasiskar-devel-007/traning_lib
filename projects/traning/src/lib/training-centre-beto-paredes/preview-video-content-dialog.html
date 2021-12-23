@@ -16,7 +16,6 @@
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen></iframe> -->
                 <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
-              
                 <video width="560" height="315" id="my-video-modal" *ngIf="videoplayflag"
                     class="video-js videothwrapper-item videothwrapper-16by9" (timeupdate)="onprocess()" preload="auto"
                     poster="https://all-frontend-assets.s3.amazonaws.com/AWS-Physicians/images/dr_banner1.jpg"
@@ -30,18 +29,20 @@
                         </a> -->
                     </p>
                 </video>
+                <mat-progress-bar class="loaderprogress" mode="determinate" value="{{ video_percent }}">
+                </mat-progress-bar>
                 <ng-container *ngIf="videotimeflag&&data.data.video_skippable">
                     <mat-progress-bar class="loaderprogress" mode="determinate" value="{{ video_percent }}">
                     </mat-progress-bar>
-
+<!-- {{video_percent}} -->
                     <div class="actioncontrol">
                         <span class="videotime">{{ video_time }}/{{ video_end_time }}</span>
 
-                        <button (click)="playbtn()" *ngIf='!playpauseflag' class="playbtn">
-                            <mat-icon>play_arrow</mat-icon>
+                        <button (click)="playbtn()" *ngIf='playpausedata==0' class="playbtn">
+                            <mat-icon>play_arrowaa</mat-icon>
                         </button>
-                        <button (click)="pausebtn()" *ngIf='playpauseflag' class="pausebtn">
-                            <mat-icon>pause</mat-icon>
+                        <button (click)="pausebtn()" *ngIf='playpausedata==1' class="pausebtn">
+                            <mat-icon>pausess</mat-icon>
 
                         </button>
                         <div class="playbtnlessplus">

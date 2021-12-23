@@ -11,8 +11,8 @@ export class TraingCenterPeceComponent implements OnInit {
   public trainingCenterRoute: any = "/training-center-pece/";
 
   public formSource: any = {
-    "addMarkendpoint": "mark-as-done",
-    serverurl: "https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/",
+    addMarkendpoint: 'mark-as-done',
+    serverurl: 'https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/',
     quizdataendpoint: 'quiz_data',
     addlessonquizdataendpoint: 'addlessonquizdata',
     gettrainingcenterdatalist: 'gettrainingcenterdatalist',
@@ -20,7 +20,7 @@ export class TraingCenterPeceComponent implements OnInit {
     video_endpoint: 'updateusercompletelessonvideo',
     audio_endpoint: 'updateusercompletelessonaudio',
     bucket_url: 'https://pece-training-files.s3.amazonaws.com/training/'
-  }
+  };
   constructor(public activatedRoute: ActivatedRoute) {
     console.log('lllllllllllllllllllllllllllllll');
 

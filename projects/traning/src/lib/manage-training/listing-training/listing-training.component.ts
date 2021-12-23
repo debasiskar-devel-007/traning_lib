@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { HttpClient } from '@angular/common/http';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatSnackBar } from "@angular/material";
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
 import { ApiService } from '../../api.service';
 import { DialogBoxComponent } from '../../common/dialog-box/dialog-box.component';
 import { Router } from '@angular/router';
@@ -64,7 +64,7 @@ export class ListingTrainingComponent implements OnInit {
   public trashFlag: any = 0;
   public status_search_regex: any = '';
   public product_name_serach: any = [];
-  public trashButtonText: any = "View Deleted";
+  public trashButtonText: any = 'View Deleted';
   public productEndpoint: any;
   public category_search: any = [];
   public parent_catagory_search: any = [];
@@ -72,17 +72,17 @@ export class ListingTrainingComponent implements OnInit {
   public myControl1 = new FormControl();
   public uniqueCardArr: any = [];
   public trainingCounts: any = {
-    "activatedtrainingcount": "",
-    "activatedlessoncount": "",
-    "trashedtrainingcount": "",
-    "trashedlessoncount": "",
-    "totaltrainingcount": " ",
-    "totallessoncount": " "
+    activatedtrainingcount: '',
+    activatedlessoncount: '',
+    trashedtrainingcount: '',
+    trashedlessoncount: '',
+    totaltrainingcount: ' ',
+    totallessoncount: ' '
   };
   public searchjson: any = {
-    "catagory_name_search_regex": "",
-    "parent_catagory_search_regex": ""
-  }
+    catagory_name_search_regex: '',
+    parent_catagory_search_regex: ''
+  };
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   selection = new SelectionModel<PeriodicElement>(true, []);
@@ -123,7 +123,7 @@ export class ListingTrainingComponent implements OnInit {
   @Input()
   set formSource(formSource: any) {
     this.formSourceVal = (formSource) || '<no name set>';
-    // console.log("formsourceval", this.formSourceVal);
+    // console.log('formsourceval', this.formSourceVal);
   }
   @Input()
   set EditPageRoute(val: any) {
@@ -170,6 +170,8 @@ export class ListingTrainingComponent implements OnInit {
     }
 
   }
+
+  // for show traing count
   trainingCount() {
     let link = this.serverDetailsVal.serverUrl + this.formSourceVal.trainingCountEndpoint;
     this.apiService.postDatawithoutTokenReportCount(link).subscribe((response: any) => {
@@ -179,7 +181,7 @@ export class ListingTrainingComponent implements OnInit {
       this.trainingCounts.trashedlessoncount = response.results.trashedlessoncount;
       this.trainingCounts.totaltrainingcount = response.results.totaltraining;
       this.trainingCounts.totallessoncount = response.results.totallesson;
-    })
+    });
   }
 
   deleteRecord(id: any, index: any) {
@@ -188,19 +190,19 @@ export class ListingTrainingComponent implements OnInit {
     let modalData: any = {
       panelClass: 'delete-dialog',
       data: {
-        header: "Are you want to delete these record ?",
-        message: "",
-        button1: { text: "No" },
-        button2: { text: "Yes" },
+        header: 'Are you want to delete these record ?',
+        message: '',
+        button1: { text: 'No' },
+        button2: { text: 'Yes' },
       }
     }
     this.dialogRef = this.dialog.open(DialogBoxComponent, modalData);
     this.dialogRef.afterClosed().subscribe(result => {
 
       switch (result) {
-        case "No":
+        case 'No':
           break;
-        case "Yes":
+        case 'Yes':
           this.deleteFunction(id, index);
           break;
       }
@@ -209,20 +211,20 @@ export class ListingTrainingComponent implements OnInit {
   }
 
   deleteFunction(recordId: any, index: number) {
-    // // console.log("single delete fUNCTION", recordId, index);
+    // // console.log('single delete fUNCTION', recordId, index);
 
     let link = this.serverDetailsVal.serverUrl + this.formSourceVal.endpoint;
     let data: any = {
-      "source": this.formSourceVal.source,
-      "id": recordId,
-      "token": this.serverDetailsVal.jwttoken,
-      "associated_training": recordId
+      'source': this.formSourceVal.source,
+      'id': recordId,
+      'token': this.serverDetailsVal.jwttoken,
+      'associated_training': recordId
     }
-    // // console.log("singledel link and data", data, link);
+    // // console.log('singledel link and data', data, link);
 
     this.apiService.postData(link, data).subscribe((res: any) => {
-      // // console.log("delete response", res);
-      if (res.status = "success") {
+      // // console.log('delete response', res);
+      if (res.status = 'success') {
         this.listingData.splice(index, 1);
         let allData: PeriodicElement[] = this.listingData;
         this.dataSource = new MatTableDataSource(allData);
@@ -234,19 +236,19 @@ export class ListingTrainingComponent implements OnInit {
   productListData() {
     let link = this.serverDetailsVal.serverUrl + this.productEndpoint;
     let data: any = {
-      source: "training_category_management",
+      source: 'training_category_management',
       condition: {
-        "is_trash": {
-          "$ne": 1
+        'is_trash': {
+          '$ne': 1
         }
       },
       token: this.serverDetailsVal.jwttoken,
     }
-    // // console.log("singledel link and data", data, link);
+    // // console.log('singledel link and data', data, link);
 
     this.apiService.postData(link, data).subscribe((res: any) => {
-      // console.log("delete response", res);
-      if (res.status = "success") {
+      // console.log('delete response', res);
+      if (res.status = 'success') {
         this.product_name_serach = res.res;
 
         // for (const iterator of res.res) {
@@ -274,20 +276,20 @@ export class ListingTrainingComponent implements OnInit {
     console.log(this.status_search_regex, 'this.status_search_regex')
 
     if (typeof (this.status_search_regex) != undefined && this.status_search_regex != null) {
-      searchval["status_search"] = this.status_search_regex;
+      searchval['status_search'] = this.status_search_regex;
     } else {
-      searchval["status_search"] = 1;
+      searchval['status_search'] = 1;
     }
 
     console.log(this.searchjson, 'this.status_search_regex')
     if (this.searchjson.catagory_name_search_regex != null && typeof (this.searchjson.catagory_name_search_regex != 'undefined')) {
-      searchval["catagory_name_search"] = { $regex: this.searchjson.catagory_name_search_regex.toLowerCase() }
+      searchval['catagory_name_search'] = { $regex: this.searchjson.catagory_name_search_regex.toLowerCase() }
     }
     if (this.searchjson.parent_catagory_search_regex != null && typeof (this.searchjson.parent_catagory_search_regex != 'undefined')) {
-      searchval["parent_catagory_search"] = { $regex: this.searchjson.parent_catagory_search_regex.toLowerCase() }
+      searchval['parent_catagory_search'] = { $regex: this.searchjson.parent_catagory_search_regex.toLowerCase() }
     }
     if (this.searchjson.product_name_serach != null && typeof (this.searchjson.product_name_serach != 'undefined')) {
-      searchval["product_name_serach"] = { $regex: this.searchjson.product_name_serach.toLowerCase() }
+      searchval['product_name_serach'] = { $regex: this.searchjson.product_name_serach.toLowerCase() }
 
     }
     console.log(searchval, 'searchval')
@@ -309,9 +311,9 @@ export class ListingTrainingComponent implements OnInit {
 
     let link = this.serverDetailsVal.serverUrl + this.formSourceVal.searchEndpoint;
     var data = {
-      "source": this.searchSourceName,
-      "condition": searchval,
-      "token": this.serverDetailsVal.jwttoken
+      'source': this.searchSourceName,
+      'condition': searchval,
+      'token': this.serverDetailsVal.jwttoken
     }
     if (this.trashFlag == 1) {
       data.condition['is_trash'] = { $eq: 1 }
@@ -336,8 +338,8 @@ export class ListingTrainingComponent implements OnInit {
   resetSearch() {
     this.status_search_regex = '';
     this.searchjson = {
-      "catagory_name_search_regex": "",
-      "parent_catagory_search_regex": ""
+      'catagory_name_search_regex': '',
+      'parent_catagory_search_regex': ''
     }
 
     this.status_search_regex = '';
@@ -359,7 +361,7 @@ export class ListingTrainingComponent implements OnInit {
         }
       }
       this.apiService.postData(link1, data).subscribe((res: any) => {
-        if (res.status = "success") {
+        if (res.status = 'success') {
           // console.log(res)
           // this.category_search
           this.category_search = [];
@@ -382,7 +384,7 @@ export class ListingTrainingComponent implements OnInit {
       }
       let arr = []
       this.apiService.postData(link1, data2).subscribe((res: any) => {
-        if (res.status = "success") {
+        if (res.status = 'success') {
           // console.log(res)
           // this.category_search
           this.parent_catagory_search = [];
@@ -407,10 +409,10 @@ export class ListingTrainingComponent implements OnInit {
     let modalData: any = {
       panelClass: 'dialog',
       data: {
-        header: "You are about to change status of these record(s)",
-        message: "",
-        button1: { text: "Inactive" },
-        button2: { text: "Active" },
+        header: 'You are about to change status of these record(s)',
+        message: '',
+        button1: { text: 'Inactive' },
+        button2: { text: 'Active' },
       }
     }
     this.dialogRef = this.dialog.open(DialogBoxComponent, modalData);
@@ -422,10 +424,10 @@ export class ListingTrainingComponent implements OnInit {
         currentStatus = 1
       }
       switch (result) {
-        case "Inactive":
+        case 'Inactive':
           this.statusChange(id, index, currentStatus);
           break;
-        case "Active":
+        case 'Active':
           this.statusChange(id, index, currentStatus);
           break;
       }
@@ -435,9 +437,9 @@ export class ListingTrainingComponent implements OnInit {
   statusChange(id: any, index: any, statusval: any) {
     let link = this.serverDetailsVal.serverUrl + this.formSourceVal.statusUpdateEndpoint;
     let data: any = {
-      "source": this.formSourceVal.statusUpdateSourceName,
-      "_id": id,
-      "status": statusval
+      'source': this.formSourceVal.statusUpdateSourceName,
+      '_id': id,
+      'status': statusval
 
     }
     this.apiService.postDatawithoutToken(link, data).subscribe((response: any) => {
@@ -460,19 +462,19 @@ export class ListingTrainingComponent implements OnInit {
     let modalData: any = {
       panelClass: 'delete-dialog',
       data: {
-        header: "Are you want to delete these all record ?",
-        message: "",
-        button1: { text: "No" },
-        button2: { text: "Yes" },
+        header: 'Are you want to delete these all record ?',
+        message: '',
+        button1: { text: 'No' },
+        button2: { text: 'Yes' },
       }
     }
     this.dialogRef = this.dialog.open(DialogBoxComponent, modalData);
     this.dialogRef.afterClosed().subscribe(result => {
 
       switch (result) {
-        case "No":
+        case 'No':
           break;
-        case "Yes":
+        case 'Yes':
           this.deleteAllRecords();
           break;
       }
@@ -501,7 +503,7 @@ export class ListingTrainingComponent implements OnInit {
     this.apiService.deteteManyTrainingData(link, this.idArray, token, source).subscribe((res: any) => {
 
       // res.data.ids;
-      if (res.status == "success") {
+      if (res.status == 'success') {
         setTimeout(() => {
           for (let i in temparr) {
             let tval: any = temparr[i] - parseInt(i);
@@ -529,10 +531,10 @@ export class ListingTrainingComponent implements OnInit {
     let modalData: any = {
       panelClass: 'statusupdate-dialog',
       data: {
-        header: "You are about to change status of these record(s)",
-        message: "",
-        button1: { text: "Inactive" },
-        button2: { text: "Active" },
+        header: 'You are about to change status of these record(s)',
+        message: '',
+        button1: { text: 'Inactive' },
+        button2: { text: 'Active' },
       }
     }
     this.dialogRef = this.dialog.open(DialogBoxComponent, modalData);
@@ -540,10 +542,10 @@ export class ListingTrainingComponent implements OnInit {
       // // console.log('>>', result)
 
       var resval = result;
-      if (result == "Active") {
+      if (result == 'Active') {
         result = 1;
       }
-      if (result == "Inactive") {
+      if (result == 'Inactive') {
         result = 0;
       }
 
@@ -552,10 +554,10 @@ export class ListingTrainingComponent implements OnInit {
       let token: any = this.serverDetailsVal.jwttoken;
 
       this.apiService.togglestatusmany(link, ids, result, token, source).subscribe((response: any) => {
-        if (response.status == "success") {
-          let message: any = "Status Updated Successfully";
+        if (response.status == 'success') {
+          let message: any = 'Status Updated Successfully';
 
-          let action: any = "Ok";
+          let action: any = 'Ok';
           this.snakBar.open(message, action, {
             duration: 3000
           })
@@ -599,16 +601,16 @@ export class ListingTrainingComponent implements OnInit {
         this.trashFlag = 1 - this.trashFlag;
 
         data = {
-          "source": this.formSourceVal.trashDataSource,
-          "token": this.serverDetailsVal.jwttoken,
-          "condition": {
+          'source': this.formSourceVal.trashDataSource,
+          'token': this.serverDetailsVal.jwttoken,
+          'condition': {
             is_trash: { $eq: 1 }
           }
         }
         this.apiService.postData(link, data).subscribe((response: any) => {
           this.progressSpinner.loading = false;
 
-          this.trashButtonText = "Return to Active list";
+          this.trashButtonText = 'Return to Active list';
           // this.trashFlag = 1 - this.trashFlag;
           this.allTrashData = response.res;
           this.dataSource = new MatTableDataSource(this.allTrashData);
@@ -619,16 +621,16 @@ export class ListingTrainingComponent implements OnInit {
         break;
       case 'Return to Active list':
         data = {
-          "source": this.formSourceVal.trashDataSource,
-          "token": this.serverDetailsVal.jwttoken,
-          "condition": {
+          'source': this.formSourceVal.trashDataSource,
+          'token': this.serverDetailsVal.jwttoken,
+          'condition': {
             is_trash: { $ne: 1 }
           }
         }
         this.apiService.postData(link, data).subscribe((response: any) => {
           this.listingData = [];
           this.trashFlag = 1;
-          this.trashButtonText = "View Deleted";
+          this.trashButtonText = 'View Deleted';
           this.progressSpinner.loading = false;
           this.listingData = response.res;
           this.dataSource = new MatTableDataSource(this.listingData);
@@ -643,18 +645,18 @@ export class ListingTrainingComponent implements OnInit {
   restoreTrashData(trashId: any, index: any) {
     let link = this.serverDetailsVal.serverUrl + this.formSourceVal.retriveTrashDataEndpoint;
     let data: any = {
-      "source": this.formSourceVal.retriveTrashDataSourceName,
-      "token": this.serverDetailsVal.jwttoken,
-      "id": trashId,
-      "associated_training": trashId
+      'source': this.formSourceVal.retriveTrashDataSourceName,
+      'token': this.serverDetailsVal.jwttoken,
+      'id': trashId,
+      'associated_training': trashId
     }
     this.apiService.postData(link, data).subscribe((response: any) => {
-      if (response.status == "success") {
+      if (response.status == 'success') {
         this.allTrashData.splice(index, 1);
         let allTrashData: PeriodicElement[] = this.allTrashData;
         this.dataSource = new MatTableDataSource(allTrashData);
-        let message: any = "Successfully Restored This Record";
-        let action: any = "Ok";
+        let message: any = 'Successfully Restored This Record';
+        let action: any = 'Ok';
         this.snakBar.open(message, action, {
           duration: 3000
         })

@@ -414,7 +414,7 @@
         </div>
       </mat-card-content>
     </mat-card>
-    <mat-card class="alltrainingcls">
+    <mat-card class="alltrainingcls" *ngIf='!singleflag' >
       <mat-card-content class="trainingcentercls trainingcenterclsupdate">
         <ng-container *ngIf="dividend/divisor!=1">
 

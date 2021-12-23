@@ -14,9 +14,9 @@
 // public manageLessionList : any=[];
 // public isitdna:any=true;
 // public manageTrainingList : any = [];
-// public editPageRoute : any="/manage-lesson/edit/";
-// public addPageRoute : any="/manage-lesson/add";
-// public manageQuizRoute:any="/manage-quiz/list/";
+// public editPageRoute : any='/manage-lesson/edit/';
+// public addPageRoute : any='/manage-lesson/add';
+// public manageQuizRoute:any='/manage-quiz/list/';
 // public QuizPageRoute:any='/quiz/list/';
 // public bucket_url: any = {
 //   url: 'https://training-centre-bucket.s3.amazonaws.com/lesson-files/'
@@ -24,22 +24,22 @@
 //  public preview_url:any = 'https://obq0e0nxhk.execute-api.us-east-1.amazonaws.com/production/'
 //  public preview_endpoint= 'lesson-preview-data'
 // public serverDetails: any = {
-//   "serverUrl": "https://obq0e0nxhk.execute-api.us-east-1.amazonaws.com/production/api/",
-//   "jwttoken": ""
+//   'serverUrl': 'https://obq0e0nxhk.execute-api.us-east-1.amazonaws.com/production/api/',
+//   'jwttoken': ''
 // };
 // // public formSource: any = {
-// //   "source":'manage_lession',
-// //   "endpoint": "lessondelete",
-// //   "deleteManyEndpoint":"lessondeletemany",
-// //   "searchEndpoint":"getlessonlist",
-// //   "associatedTrainingSourceName":"training_category_management",
-// //   "statusUpdateEndpoint":"lessonstatusupdate",
-// //   "statusUpdateManyEndpoint":"lessonstatusupdate",
-// //   "statusUpdateSourceName":"manage_lession",
-// //   "trashDataSource":"manage_lession_view",
-// //   "retriveTrashDataEndpoint":"lessonrestoredata",
-// //   "retriveTrashDataSourceName":"manage_lession",
-// //   "trainingCountEndpoint" : "trainingcounts"
+// //   'source':'manage_lession',
+// //   'endpoint': 'lessondelete',
+// //   'deleteManyEndpoint':'lessondeletemany',
+// //   'searchEndpoint':'getlessonlist',
+// //   'associatedTrainingSourceName':'training_category_management',
+// //   'statusUpdateEndpoint':'lessonstatusupdate',
+// //   'statusUpdateManyEndpoint':'lessonstatusupdate',
+// //   'statusUpdateSourceName':'manage_lession',
+// //   'trashDataSource':'manage_lession_view',
+// //   'retriveTrashDataEndpoint':'lessonrestoredata',
+// //   'retriveTrashDataSourceName':'manage_lession',
+// //   'trainingCountEndpoint' : 'trainingcounts'
 // // }
 
 // public formSource: any = {
@@ -57,7 +57,7 @@
 //   trainingCountEndpoint : 'trainingcounts'
 // };
 // public jwtToken:any;
-// public searchSourceName :any="manage_lession_view";
+// public searchSourceName :any='manage_lession_view';
 //   constructor(public activatedRoute : ActivatedRoute,public cookie:CookieService) { 
 //     this.jwtToken = cookie.get('jwtToken');
 //     this.serverDetails.jwttoken=this.jwtToken;
@@ -91,9 +91,9 @@ export class ListLessionComponent implements OnInit {
   // public isitdna:any=false;
   public isitBetoparedes = true;
   public manageTrainingList: any = [];
-  public editPageRoute: any = "/manage-lesson/edit/";
-  public addPageRoute: any = "/manage-lesson/add";
-  public manageQuizRoute: any = "/manage-quiz/list/";
+  public editPageRoute: any = '/manage-lesson/edit/';
+  public addPageRoute: any = '/manage-lesson/add';
+  public manageQuizRoute: any = '/manage-quiz/list/';
   public QuizPageRoute: any = '/quiz/list/';
   public bucket_url: any = {
     url: 'https://pece-training-files.s3.amazonaws.com/training/'
@@ -101,27 +101,26 @@ export class ListLessionComponent implements OnInit {
   public preview_url: any = 'https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/'
   public preview_endpoint = 'lesson-preview-data'
   public serverDetails: any = {
-    "serverUrl": 'https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/',
-    "jwttoken": ""
+    serverUrl: 'https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/',
+    jwttoken: ''
   };
   public formSource: any = {
-    "source": 'manage_lession',
-    "endpoint": "lessondelete",
-    "deleteManyEndpoint": "lessondeletemany",
-    "searchEndpoint": "getlessonlist",
-    "associatedTrainingSourceName": "training_category_management",
-    "statusUpdateEndpoint": "lessonstatusupdate",
-    "statusUpdateManyEndpoint": "lessonstatusupdate",
-    "statusUpdateSourceName": "manage_lession",
-    "trashDataSource": "manage_lession_view",
-    "retriveTrashDataEndpoint": "lessonrestoredata",
-    "retriveTrashDataSourceName": "manage_lession",
-    "trainingCountEndpoint": "trainingcounts"
-  }
+    endpoint: 'lessondelete',
+    source: 'manage_lession',
+    deleteManyEndpoint: 'lessondeletemany',
+    searchEndpoint: 'getlessonlist',
+    associatedTrainingSourceName: 'training_category_management',
+    statusUpdateEndpoint: 'lessonstatusupdate',
+    statusUpdateManyEndpoint: 'lessonstatusupdate',
+    statusUpdateSourceName: 'manage_lession',
+    trashDataSource: 'manage_lession_view',
+    retriveTrashDataEndpoint: 'lessonrestoredata',
+    retriveTrashDataSourceName: 'manage_lession',
+    trainingCountEndpoint: 'trainingcounts'
+  };
 
-  
   public jwtToken: any;
-  public searchSourceName: any = "manage_lession_view";
+  public searchSourceName: any = 'manage_lession_view';
   constructor(public activatedRoute: ActivatedRoute, public cookie: CookieService) {
     this.jwtToken = cookie.get('jwtToken');
     this.serverDetails.jwttoken = this.jwtToken;
@@ -129,11 +128,10 @@ export class ListLessionComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.data.forEach(data => {
-      console.log(data)
       let result: any;
       result = data.lessionData.res;
       this.manageLessonList = result;
-    })
+    });
   }
 
 

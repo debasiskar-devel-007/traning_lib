@@ -8,55 +8,55 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrls: ['./add-edit.component.css']
 })
 export class AddEditComponent implements OnInit {
-  public lessonIdInedit:any;
-  public quizQuestionSingleDataList:any=[];
-  public lessonId:any
+  public lessonIdInedit: any;
+  public quizQuestionSingleDataList: any = [];
+  public lessonId: any;
   public serverDetails: any = {
-    // "serverUrl": "https://obq0e0nxhk.execute-api.us-east-1.amazonaws.com/production/api/",
-    "serverUrl": "https://z2oo2a8oq9.execute-api.us-east-1.amazonaws.com/dev/api1/",
-    "jwttoken": ""
+    // 'serverUrl': 'https://obq0e0nxhk.execute-api.us-east-1.amazonaws.com/production/api/',
+    serverUrl: 'https://z2oo2a8oq9.execute-api.us-east-1.amazonaws.com/dev/api1/',
+    jwttoken: ''
   };
   public formSource: any = {
-    "source":"manage_quiz_question",
-    "endpoint": "addorupdatelessonquestion",
-    "showEndpoint":"datalist",
-    "formTitleName": 'Training'
-  }
+    source: 'manage_quiz_question',
+    endpoint: 'addorupdatelessonquestion',
+    showEndpoint: 'datalist',
+    formTitleName: 'Training'
+  };
 
   public configData: any = {
-    baseUrl: "https://fileupload.influxhostserver.com/",
-    endpoint: "uploads",
-    size: "51200", // kb
-    format:["jpg", "jpeg", "png"],  // use all small font
-    type: "question-picture",
-    path: "training-question",
-    prefix: "question-picture_",
+    baseUrl: 'https://fileupload.influxhostserver.com/',
+    endpoint: 'uploads',
+    size: '51200', // kb
+    format: ['jpg', 'jpeg', 'png'],  // use all small font
+    type: 'question-picture',
+    path: 'training-question',
+    prefix: 'question-picture_',
     formSubmit: false,
     conversionNeeded: 0,
-    bucketName:"crmfiles.influxhostserver"
-  }
+    bucketName: 'crmfiles.influxhostserver'
+  };
 
-  public listingPageRoute : any="/manage-quiz/list/";
-  public jwtToken:any
-  constructor(public activatedRoute : ActivatedRoute,public cookie:CookieService) { 
+  public listingPageRoute: any = '/manage-quiz/list/';
+  public jwtToken: any;
+  constructor(public activatedRoute: ActivatedRoute, public cookie: CookieService) {
     console.log(this.activatedRoute.snapshot.params);
-    this.lessonIdInedit=this.activatedRoute.snapshot.params.lesson_id;
+    this.lessonIdInedit = this.activatedRoute.snapshot.params.lesson_id;
     this.lessonId = this.activatedRoute.snapshot.params.id;
-    this.serverDetails.jwttoken=this.jwtToken;
+    this.serverDetails.jwttoken = this.jwtToken;
     this.jwtToken = cookie.get('jwtToken');
 
   }
 
   ngOnInit() {
-    if(this.activatedRoute.snapshot.params._id){
+    if (this.activatedRoute.snapshot.params._id) {
       this.activatedRoute.data.forEach(data => {
         let result: any;
         result = data.quizQuestionData.res;
         this.quizQuestionSingleDataList = result;
-  
-      })
+
+      });
     }
-  
+
   }
 
 }

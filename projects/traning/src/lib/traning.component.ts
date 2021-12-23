@@ -275,7 +275,7 @@ export class TraningComponent implements OnInit {
 
   }
 
-
+// used for from  data submit 
   formsubmit() {
     console.log("data value", this.test_percentage);
 
@@ -436,6 +436,8 @@ export class TraningComponent implements OnInit {
     }
   }
 
+  // used for category user  checking 
+
   checkCheckBoxvalue(event: any, value) {
     // // console.log(value, 'subtask', event)
 
@@ -462,26 +464,25 @@ export class TraningComponent implements OnInit {
   }
 
 
-  equalToPass(fieldname): ValidatorFn {                                 //password match custom function
-    return (control: AbstractControl): { [key: string]: any } => {      ///abstractcontrol function call here with key string any type
-
-      let input = control.value;      //class create here
-      let isValid = control.root.value[fieldname] == input;       //value valid or not
+  equalToPass(fieldname): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } => {
+      let input = control.value;      // class create here
+      let isValid = control.root.value[fieldname] === input;       // value valid or not
       if (!isValid)
         return {
-          equalTo: true            //this value will be called
+          equalTo: true            // this value will be called
         };
     };
   }
 
   getselectdata(source: any, endpoint: string, c: any) {
-    if (this.formdataval[c].sourcetype == null || this.formdataval[c].sourcetype != 'static') {
+    if (this.formdataval[c].sourcetype == null || this.formdataval[c].sourcetype !== 'static') {
       const link = this.serverDetailsVal.serverUrl + endpoint;
-      let data: any = {
+      const data: any = {
         source: source,
-        condition: { 'is_trash': { $ne: 1 } },
+        condition: { is_trash: { $ne: 1 } },
         token: this.serverDetailsVal.jwttoken,
-      }
+      };
 
 
       this.apiService.getData(link, data)
@@ -511,6 +512,8 @@ export class TraningComponent implements OnInit {
     }
 
   }
+
+
   getMediaTypeVal(value: any, name: any) {
     this.imagePath = null;
     if (name == 'mediaType') {
@@ -536,9 +539,11 @@ export class TraningComponent implements OnInit {
       })
     }
   }
+  // used for cancel from route
   cancelButton() {
     this.router.navigateByUrl(this.listingPageRoute);
   }
+  // used for clear data
   clear() {
     this.imagePath = '';
     this.audioVideoFlag = false;
@@ -882,14 +887,14 @@ export class TraningComponent implements OnInit {
     } else {
       this.snackBar.open('Please Enter Video ID', 'OK', {
         duration: 3000
-      })
+      });
     }
   }
 
 
 
 
-
+// for edit data loaded
   geteditdata() {
 
     const link = this.serverDetailsVal.serverUrl + this.formSourceVal.showEndpoint;
@@ -1000,14 +1005,14 @@ export class TraningComponent implements OnInit {
 
   getchkboxval(val: any) {
     this.hasLessonVal = val;
-    if (this.hasLessonVal == false) {
-      this.lessonplanValue = "";
+    if (this.hasLessonVal === false) {
+      this.lessonplanValue = '';
     }
   }
 
 }
 
-//preview lesson videos
+// preview lesson videos
 @Component({
   selector: 'AddAudioVideoFileDialog',
   templateUrl: 'AddAudioVideoFileDialog.html',
