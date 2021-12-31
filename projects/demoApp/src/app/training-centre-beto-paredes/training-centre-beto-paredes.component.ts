@@ -42,10 +42,10 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     "getUpdatedTrainingPercentageByUserEndpoint": "getupdatedtrainingpercentagebyuserid",
     "trainingCompletEmailEndpoint": "trainingcompletemail",
     "trainingcatcompletemailendpoint": "trainingcatcompletemail",
-    "complete_traing_data":"complete-traing-data",
+    "complete_traing_data": "complete-traing-data",
     gettrainingcenterlistendpoint: 'gettrainingcenterlist',
     traingupdateendpoint: 'update-training-percentage',
-    dashbord_route:'/technological-consultant/dashboard'
+    dashbord_route: '/technological-consultant/dashboard'
   }
   public traingupdateendpoint: any = 'done-training-sort-data'
   public trainingCenterRoute: any = "/training-center-beto-paredes/";
@@ -57,7 +57,13 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     this.paramsId = this.activatedRoute.snapshot.params.associated_training;
     this.jwtToken = cookie.get('jwtToken');
     this.serverDetails.jwttoken = this.jwtToken;
-    // console.log(this.activatedRoute.snapshot.params)
+    console.log(this.activatedRoute.snapshot);
+    if (this.activatedRoute.snapshot.queryParams && this.activatedRoute.snapshot.queryParams.singletraining && typeof this.activatedRoute.snapshot.queryParams.singletraining != 'undefined' && this.activatedRoute.snapshot.queryParams.singletraining != null && this.activatedRoute.snapshot.queryParams.singletraining != '') {
+      this.formSource.addMarkendpoint = 'getsingletraingcompletes'
+    }
+    if (this.activatedRoute.snapshot.queryParams && this.activatedRoute.snapshot.queryParams.catname && typeof this.activatedRoute.snapshot.queryParams.catname != 'undefined' && this.activatedRoute.snapshot.queryParams.catname != null && this.activatedRoute.snapshot.queryParams.catname != '') {
+      this.cookie.set('catname', this.activatedRoute.snapshot.queryParams.catname, undefined, '/');
+    }
   }
 
   ngOnInit() {

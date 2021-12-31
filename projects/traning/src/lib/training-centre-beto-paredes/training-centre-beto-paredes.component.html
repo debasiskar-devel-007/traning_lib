@@ -1,6 +1,6 @@
 <div class="training_progresscls">
   <div class="trainingheadercls_wrapper">
-    <div class="trainingheadercls_inner">
+    <div class="trainingheadercls_inner" *ngIf='!singleflag'>
       <h2>You Have {{ dividend }}/{{divisor}} Lesson Completed</h2>
       <div class="trainingheadercls">
 
@@ -96,7 +96,7 @@
                           </button>
                         </span>
                       </div>
-                      <div class="mandetorycls_wrapper">
+                      <div class="mandetorycls_wrapper" *ngIf="userType=='technological-consultant'">
                         <span class="mandetorycls" *ngIf="item.video_skippable!=true">*This is a mandetory video to
                           complete this lesson
                           <span *ngIf="complete_videoflag[item.video_url]==true" class="donetikcls">
@@ -276,14 +276,14 @@
                       </div> -->
                   <!-- </span> -->
 
-                  <!-- <span class="filetype_{{item.file.file_type}}
-                    mat-card-image" *ngIf="item.file.file_type != null &&
-                    item.file.file_type == 'pdf' || item.file.file_type ==
-                    'doc' || item.file.file_type == 'ppt' ||
-                    item.file.file_type == 'pptx' || item.file.file_type ==
-                    'msword'||item.file.file_type ==
-                    'xlsx'||item.file.file_type == 'ods'||item.file.file_type
-                    =='docx'||item.file.file_type =='ppt'">
+                  <span class="filetype_{{item.type}}
+                    mat-card-image" *ngIf="item.type != null &&
+                    item.type == 'pdf' || item.type ==
+                    'doc' || item.type == 'ppt' ||
+                    item.type == 'pptx' || item.type ==
+                    'msword'||item.type ==
+                    'xlsx'||item.type == 'ods'||item.type
+                    =='docx'||item.type =='ppt'">
 
                       <div class="documentcls_wrapper">
                         <ng-container class="documentcls" *ngIf="item?.images!=null && item?.images!=undefined &&
@@ -294,7 +294,7 @@
 
                         <ng-template class="documentcls" #elseTemplate>
                           <span class="material-icons
-                    icon_{{item.file.file_type}}">
+                    icon_{{item.type}}">
                             picture_as_pdf
                           </span>
                         </ng-template>
@@ -305,41 +305,41 @@
                           <p class="File_titlecls">{{ item.file_title }}</p>
                         </div>
                         <div class="descriptioncls">
-                          <p *ngIf='item.file_description.length > 120 && shwmorefileflg==false'>{{
-                            item.file_description
+                          <p *ngIf='item.file_desc.length > 120 && shwmorefileflg==false'>{{
+                            item.file_desc
                             |
                             slice:0:120}}</p>
 
-                          <p class='greatercls' *ngIf='item.file_description.length > 120 && shwmorefileflg==true'>{{
-                            item.file_description }}</p>
-                          <p *ngIf='item.file_description.length < 120'>{{ item.file_description }}</p>
-                          <span class="shwmrcls" *ngIf='item.file_description.length > 120 && shwmorefileflg==false'>
+                          <p class='greatercls' *ngIf='item.file_desc.length > 120 && shwmorefileflg==true'>{{
+                            item.file_desc }}</p>
+                          <p *ngIf='item.file_desc.length < 120'>{{ item.file_desc }}</p>
+                          <span class="shwmrcls" *ngIf='item.file_desc.length > 120 && shwmorefileflg==false'>
                             <button mat-raised-button (click)="shwmorefileflg=true">
                               Show More ..
                             </button>
                           </span>
-                          <span class='shwlesscls' *ngIf='item.file_description.length > 120 && shwmorefileflg==true'>
+                          <span class='shwlesscls' *ngIf='item.file_desc.length > 120 && shwmorefileflg==true'>
                             <button mat-raised-button (click)="shwmorefileflg=false">
                               Show Less ..
                             </button>
                           </span>
                         </div>
                         <div class="file_btn_cls">
-                          <button class="previewbtncls" matTooltip="Preview" mat-raised-button
+                          <!-- <button class="previewbtncls" matTooltip="Preview" mat-raised-button
                             (click)="previewpdf(item,'pdf')">
                             Preview
-                          </button>
+                          </button> -->
 
                           <button matTooltip="Download" class="downloadbtncls" mat-raised-button
                             (click)="downloadPdf(item,1)">
                             Download
                           </button>
                         </div>
-                        <div class="mandetorycls_wrapper">
+                        <div class="mandetorycls_wrapper" *ngIf="userType=='technological-consultant'">
                           <span class="mandetorycls" *ngIf="item.file_skippable!=true">*This is a mandetory file to
                             complete this lesson (after
                             download)
-                            <span *ngIf="complete_fileflag[item.file._id]==true" class="donetikcls">
+                            <span *ngIf="complete_fileflag[item.screenshots.fileservername]==true" class="donetikcls">
                               <img class="doneimgcls"
                                 src="https://all-frontend-assets.s3.amazonaws.com/dna-frontend-new/assets/images/Trainninglibary_right_icon.jpg"
                                 alt="">
@@ -348,7 +348,7 @@
                         </div>
                       </div>
                       
-                    </span> -->
+                    </span>
 
                   <!-- </div> -->
 

@@ -544,13 +544,13 @@ export class ListlessonComponent implements OnInit {
         // this.dataSource = new MatTableDataSource(allData);
         // // this.dataSource.paginator = this.paginator;
         // // this.dataSource.sort = this.sort;
-        this.getlessonlist()
+        this.getlessondata()
       }
 
     })
   }
 
-  getlessonlist() {
+  getlessondata() {
     let link = this.serverDetailsVal.serverUrl + this.formSourceVal.searchEndpoint;
     let data: any = {
       "source": this.formSourceVal.associatedTrainingSourceName,

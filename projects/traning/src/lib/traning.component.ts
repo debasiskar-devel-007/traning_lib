@@ -697,8 +697,8 @@ export class TraningComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result, '=>>>>>', i, key);
       if (result.flag == 'yes') {
-        if (result.screenshots.type && result.screenshots.type != null && result.screenshots.type != '') {
-          let type = result.screenshots.type.split('/', 3);
+        if (result.product_file&&result.product_file.type && result.product_file.type != null && result.product_file.type != '') {
+          let type = result.product_file.type.split('/', 3);
           console.log(type);
           result.type = type[1]
         }

@@ -195,7 +195,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     // // // // // // console.log(this.lessonParamId, 'lessionParamId1111111')
     if (this.activatedRoute.snapshot.params._id != null) {
       console.log('in if ');
-      
+
       this.paramslessonId = this.activatedRoute.snapshot.params._id;
 
     } else {
@@ -268,7 +268,11 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     }
 
     // // // console.log(this.percentage, ' this.percentage__________________')
-
+    console.log(this.activatedRoute.snapshot.queryParams.singletraining);
+    if (this.cookieService.check('catname')) {
+      console.log('ppppppppppppp');
+      this.training_cat_name = this.cookieService.get('catname') ? this.cookieService.get('catname') : this.activatedRoute.snapshot.queryParams.catname;
+    }
     for (const i in this.trainingCategoryData) {
       if (this.paramsTrainingId == this.trainingCategoryData[i]._id) {
         // // // // // // // console.log(this.trainingCategoryData[i]._id, 'this.trainingCentreData[i]._id')
@@ -297,26 +301,53 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     }
 
     // // // console.log(this.percentage, 'percentage')
+    console.log(this.activatedRoute.snapshot);
+    if (this.activatedRoute.snapshot.queryParams.singletraining && this.activatedRoute.snapshot.queryParams.singletraining != null && typeof this.activatedRoute.snapshot.queryParams.singletraining != 'undefined' && this.activatedRoute.snapshot.queryParams.singletraining == 'true') {
+      for (const key in this.trainingLessonData) {
+        // // // // // // // console.log(this.trainingLessonData[key], 'raju')
+        for (const iterator in this.trainingCentreData.donesingledata) {
+          // // // // // // // console.log(iterator)
+          // // // // // // // console.log(iterator, 'this.trainingCategoryData[key]._id',this.trainingLessonData[key]._id)
 
-    for (const key in this.trainingLessonData) {
-      // // // // // // // console.log(this.trainingLessonData[key], 'raju')
-      for (const iterator in this.trainingCentreData.donetraininglessondata) {
-        // // // // // // // console.log(iterator)
-        // // // // // // // console.log(iterator, 'this.trainingCategoryData[key]._id',this.trainingLessonData[key]._id)
-        if (this.trainingCentreData.donetraininglessondata[iterator].lesson_id == this.trainingLessonData[key]._id) {
-          // // // // console.log()
-          // this.is_done[iterator.lesson_id] = true;
-          this.trainingLessonData[key].is_done = true;
-          // // console.log(this.trainingLessonData[key], 'trainingLessonData');
+          if (this.trainingCentreData.donesingledata[iterator].lesson_id == this.trainingLessonData[key]._id) {
+            // // // // console.log()
+            // this.is_done[iterator.lesson_id] = true;
+            this.trainingLessonData[key].is_done = true;
+            // // console.log(this.trainingLessonData[key], 'trainingLessonData');
 
+
+          }
+
+          // else {
+          //   this.trainingLessonData[key].is_done = false;
+          // }
         }
-        // else {
-        //   this.trainingLessonData[key].is_done = false;
-        // }
+        this.trainingLessonData[key].trainingshwflag = true;
       }
-      this.trainingLessonData[key].trainingshwflag = true;
     }
+    else {
+      for (const key in this.trainingLessonData) {
+        // // // // // // // console.log(this.trainingLessonData[key], 'raju')
+        for (const iterator in this.trainingCentreData.donetraininglessondata) {
+          // // // // // // // console.log(iterator)
+          // // // // // // // console.log(iterator, 'this.trainingCategoryData[key]._id',this.trainingLessonData[key]._id)
 
+          if (this.trainingCentreData.donetraininglessondata[iterator].lesson_id == this.trainingLessonData[key]._id) {
+            // // // // console.log()
+            // this.is_done[iterator.lesson_id] = true;
+            this.trainingLessonData[key].is_done = true;
+            // // console.log(this.trainingLessonData[key], 'trainingLessonData');
+
+
+          }
+
+          // else {
+          //   this.trainingLessonData[key].is_done = false;
+          // }
+        }
+        this.trainingLessonData[key].trainingshwflag = true;
+      }
+    }
     // // // console.log(this.trainingCategoryData, 'kkkkkkkkkkkk')
 
 
@@ -539,7 +570,16 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       }
     }
     else {
-      this.router.navigateByUrl(this.trainingCenterRoute + this.paramsTrainingId + '/' + val._id);
+      if (this.activatedRoute.snapshot.queryParams.singletraining && this.activatedRoute.snapshot.queryParams.singletraining != '' && this.activatedRoute.snapshot.queryParams.singletraining == 'true') {
+        console.log(typeof this.activatedRoute.snapshot.queryParams.singletraining);
+        this.router.navigateByUrl(this.trainingCenterRoute + this.paramsTrainingId + '/' + val._id + '?singletraining=true');
+      }
+      else {
+        this.router.navigateByUrl(this.trainingCenterRoute + this.paramsTrainingId + '/' + val._id);
+      }
+      return
+
+
 
     }
 
@@ -718,7 +758,13 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
                 // // // // // // // console.log('++>>>>', this.trainingCategoryList[n]._id, this.trainingCategoryList[n + 1]._id,)
                 // '>>>',this.trainingCategoryList[0]._id)
                 this.progressLoader = false;
-                this.router.navigateByUrl(this.trainingCenterRoute + this.trainingCategoryData[0]._id);
+                console.log(this.activatedRoute, 'this.activatedRoute');
+                if (this.activatedRoute.snapshot.queryParams.singletraining === 'true') {
+                  this.router.navigateByUrl(this.formSourceVal.dashbord_route);
+                } else {
+                  this.router.navigateByUrl(this.trainingCenterRoute + this.trainingCategoryData[0]._id);
+                }
+                //
 
               }
             }
@@ -1281,15 +1327,16 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     // // // // // // // console.log(file.file_type, 'fvgbnjkmgbh')
     let fileendpoint: any;
 
+
     // // // // // // // console.log(this.serverDetailsVal.serverUrl, 'serverDetailsVal')
     fileendpoint = this.serverDetailsVal.serverUrl + this.lessionFileEndpoint.file_endpoint
     let file_data = {
       user_id: this.userId,
       training_id: this.paramsTrainingId,
       lesson_id: this.paramslessonId,
-      file_type: file.file.file_type,
-      file_id: file.file._id,
-      file_servername: file.file.fileservername
+      file_type: file.screenshots.type,
+      file_id: file.screenshots.fileservername,
+      file_servername: file.screenshots.fileservername
 
     }
 
@@ -1297,14 +1344,14 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       this.apiService.postDatawithoutToken(fileendpoint, file_data).subscribe(res => {
         // // // // // // console.log(res, 'res')
         const result: any = res;
-        this.complete_fileflag[file.file._id] = false;
+        this.complete_fileflag[file.screenshots.fileservername] = false;
 
         // // // // // // // console.log(this.complete_fileflag[file.file._id], '+++++++_______________')
         if (result.status == 'success') {
-          this.complete_fileflag[file.file._id] = true
+          this.complete_fileflag[file.screenshots.fileservername] = true
 
           let checked_status = 'success';
-          let pdf_url = this.bucket_url + file.file.fileservername;
+          let pdf_url = this.bucket_url + file.screenshots.fileservername;
           const externalWindow = window.open(
             pdf_url
           );
@@ -1328,7 +1375,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   getTrainingCenterlistFunctionwithLessonId(associated_training: any, type: any, user_id: any, _id: any) {
     // // // // // // // console.log('associated_training', associated_training, 'type', type, 'user_id', user_id, '_id', _id)
     // // // console.log("mahitosh")
-    console.log(this.activatedRoute.snapshot,this.paramslessonId);
+    console.log(this.activatedRoute.snapshot, this.paramslessonId);
 
     const link = this.serverDetailsVal.serverUrl + this.formSourceVal.gettrainingcenterlistendpoint;
     const data: any = {
@@ -1489,7 +1536,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       location.reload();
       return;
       let currentUrl = this.router.url;
-      console.log(this.router.url,'this.router.url');
+      console.log(this.router.url, 'this.router.url');
       // return
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
       this.router.onSameUrlNavigation = 'reload';
@@ -1497,7 +1544,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       // console.log(result, 'result********************', val)
       if (result != null && result === 'yes') {
         // // // // // // // console.log()
-      console.log(this.activatedRoute.snapshot,this.paramslessonId);
+        console.log(this.activatedRoute.snapshot, this.paramslessonId);
 
         this.getTrainingCenterlistFunctionwithLessonId(this.paramsId, this.userType, this.userId, this.paramslessonId);
 
