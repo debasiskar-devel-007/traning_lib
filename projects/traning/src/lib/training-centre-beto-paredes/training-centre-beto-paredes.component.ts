@@ -395,7 +395,9 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     if (this.paramslessonId && this.paramslessonId != null && typeof this.paramslessonId != 'undefined' && this.paramslessonId != '' && this.paramslessonId != '<no name set>') {
 
       setTimeout(() => {
-        document.getElementById(this.paramslessonId + 'classlessonongoing').scrollIntoView({ behavior: 'smooth' });
+        if(document.getElementById(this.paramslessonId + 'classlessonongoing') != null){
+          document.getElementById(this.paramslessonId + 'classlessonongoing').scrollIntoView({ behavior: 'smooth' });
+        }
       }, 1000);
     }
 
