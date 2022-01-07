@@ -1681,7 +1681,7 @@ export class BetoparedesLessonVideoModalComponent {
   player: videojs.Player;
   video_currenttime: any = '';
   public video_duration: any = '';
-  public video_end_time: any = '0:0:00';
+  public video_end_time: any = '0:0:0';
   public videotimeflag: boolean = false;
   public video_percent: any = 0;
   public playpauseflag: any = false;
@@ -1724,6 +1724,25 @@ export class BetoparedesLessonVideoModalComponent {
       this.player = videojs('#my-video-modal');
       this.player.controls(false); // TO CONTROL FALSE
       this.playerid = this.player.id_;
+      videojs.hook('error', function (player, err) {
+        console.log(`player ${player.id()} has errored out with code ${err.code} ${err.message}`);
+        // this.closedModals();
+        // document.getElementsByClassName('videoerror').style.display='none';
+        setTimeout(() => {
+          const elm: any = document.querySelectorAll(".videoerror");
+          // elm.classList.add('hidecls');
+          // elm.style.display = 'none';
+          let i: any;
+          for (i = 0; i < elm.length; i++) {
+            // elm[i].style.backgroundColor = "red";
+            elm[i].classList.add('hidecls')
+
+          }
+
+        }, 500);
+
+
+      });
       // this.onprocess();
       console.log('pppppppppppp', parseInt(this.player.currentTime()));
       setTimeout(() => {

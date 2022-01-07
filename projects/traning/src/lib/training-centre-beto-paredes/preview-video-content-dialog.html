@@ -6,7 +6,7 @@
         </div>
 
         <div mat-dialog-content class="videocls">
-            <div class="video_timecls" *ngIf="video_time != null">
+            <div class="video_timecls videoerror" *ngIf="video_time != null">
                 Video Duration : {{video_end_time}}
                 <!-- <span>ddd</span> -->
             </div>
@@ -28,13 +28,13 @@
                         </a> -->
                     </p>
                 </video>
-                <mat-progress-bar class="loaderprogress" mode="determinate" value="{{ video_percent }}">
+                <mat-progress-bar class="loaderprogress videoerror" mode="determinate" value="{{ video_percent }}">
                 </mat-progress-bar>
                 <ng-container *ngIf="videotimeflag&&data.data.video_skippable">
                     <mat-progress-bar class="loaderprogress" mode="determinate" value="{{ video_percent }}">
                     </mat-progress-bar>
                     <!-- {{video_percent}} -->
-                    <div class="actioncontrol">
+                    <div class="actioncontrol videoerror">
                         <span class="videotime">{{ video_time }}/{{ video_end_time }}</span>
 
                         <button (click)="playbtn()" *ngIf='playpausedata==0' class="playbtn">
