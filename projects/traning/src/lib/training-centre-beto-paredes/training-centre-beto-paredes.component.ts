@@ -395,7 +395,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     if (this.paramslessonId && this.paramslessonId != null && typeof this.paramslessonId != 'undefined' && this.paramslessonId != '' && this.paramslessonId != '<no name set>') {
 
       setTimeout(() => {
-        if(document.getElementById(this.paramslessonId + 'classlessonongoing') != null){
+        if (document.getElementById(this.paramslessonId + 'classlessonongoing') != null) {
           document.getElementById(this.paramslessonId + 'classlessonongoing').scrollIntoView({ behavior: 'smooth' });
         }
       }, 1000);
@@ -1535,14 +1535,14 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       data: { 'safe_url': safe_url, data: val, training_id: this.activatedRoute.snapshot.params.associated_training, lesson_id: this.paramslessonId, endpoint: server_url, user_id: this.userId, video_url: video_url }
     });
     dialogRef.afterClosed().subscribe((result: any) => {
-      location.reload();
-      return;
+      // location.reload();
+      // return;
       let currentUrl = this.router.url;
       console.log(this.router.url, 'this.router.url');
       // return
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
       this.router.onSameUrlNavigation = 'reload';
-      this.router.navigateByUrl('training-center-beto-paredes/61c317b79defb40009ca27d1/61c32ac765d1510008609e58?singletraining=true');
+      // this.router.navigateByUrl('training-center-beto-paredes/61c317b79defb40009ca27d1/61c32ac765d1510008609e58?singletraining=true');
       // console.log(result, 'result********************', val)
       if (result != null && result === 'yes') {
         // // // // // // // console.log()
@@ -1685,6 +1685,7 @@ export class BetoparedesLessonVideoModalComponent {
   public video_percent: any = 0;
   public playpauseflag: any = false;
   public playpausedata: any = 0;
+  public httpdataflag: any = 0;
   public videoJsConfigObj = {
     preload: "metadata",
     controls: false,
@@ -1750,6 +1751,8 @@ export class BetoparedesLessonVideoModalComponent {
 
   onprocess() {
     // this.video_percent = 0;
+    console.log('video finished at top' + this.video_percent + ' %');
+
     setTimeout(() => {
       this.video_currenttime = parseInt(this.player.currentTime());
       const sec_num = parseInt(this.video_currenttime, 10);
@@ -1772,23 +1775,34 @@ export class BetoparedesLessonVideoModalComponent {
 
 
       this.video_percent = (this.video_currenttime / this.video_duration) * 100;
+      setTimeout(() => {
+        if (this.video_percent < 100)
+          this.onprocess();
+
+      }, 3000);
+
+
+      if (this.video_percent === 100) {
+        console.log('video finished 100 %');
+        // this.close_video();
+        completeflag = true;
+        // this.playpauseflag = false;
+        setTimeout(() => {
+          // this.playpausedata = 0;
+          // this.video_percent = 0;
+
+        }, 500);
+
+        this.close_video();
+        return;
+
+      }
 
     }, 1000);
     let completeflag = false;
-    if (this.video_percent === 100) {
-      // this.close_video();
-      completeflag = true;
-      // this.playpauseflag = false;
-      setTimeout(() => {
-        // this.playpausedata = 0;
-        // this.video_percent = 0;
+    console.log('video finished ' + this.video_percent + ' %');
 
-      }, 500);
 
-      this.close_video();
-      return;
-
-    }
     // if (completeflag) {
 
     // }
@@ -1819,11 +1833,14 @@ export class BetoparedesLessonVideoModalComponent {
       flag: 1,
     };
     // // // // // // console.log(video_data, 'data===++')
-    if (this.data.data.video_skippable !== true) {
+    // if(this.httpdataflag!=1)
+    this.httpdataflag ++;
+    if (this.data.data.video_skippable !== true && this.httpdataflag < 3) {
 
       this.apiService.postDatawithoutToken(endpoint, video_data).subscribe(res => {
         // // // // // console.log(res, 'frghjk++++++++++', event.target.playerInfo.videoData.video_id)
         const result: any = res;
+        this.httpdataflag = 10;
         if (result.status === 'success') {
           // getTrainingCenterlistFunctionwithLessonId(associated_training: any, type: any, user_id: any, _id: any)
           this.data.flag = 'yes';

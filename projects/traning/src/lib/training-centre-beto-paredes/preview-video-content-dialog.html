@@ -8,6 +8,7 @@
         <div mat-dialog-content class="videocls">
             <div class="video_timecls" *ngIf="video_time != null">
                 Video Duration : {{video_end_time}}
+                <!-- <span>ddd</span> -->
             </div>
             <div class="mainvdcls">
                 <div class="mt-1" id="player"></div>
@@ -16,9 +17,7 @@
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen></iframe> -->
                 <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
-                <video width="560" height="315" id="my-video-modal" *ngIf="videoplayflag"
-                    class="video-js videothwrapper-item videothwrapper-16by9" (timeupdate)="onprocess()" preload="auto"
-                    poster="https://all-frontend-assets.s3.amazonaws.com/AWS-Physicians/images/dr_banner1.jpg"
+                <video width="560" height="315" id="my-video-modal" *ngIf="videoplayflag" class="video-js videothwrapper-item videothwrapper-16by9" (timeupdate)="onprocess()" preload="auto" poster="https://all-frontend-assets.s3.amazonaws.com/AWS-Physicians/images/dr_banner1.jpg"
                     data-setup="{}">
                     <source [src]="video_url1" type="video/mp4" />
                     <p class="vjs-no-js">
@@ -34,7 +33,7 @@
                 <ng-container *ngIf="videotimeflag&&data.data.video_skippable">
                     <mat-progress-bar class="loaderprogress" mode="determinate" value="{{ video_percent }}">
                     </mat-progress-bar>
-<!-- {{video_percent}} -->
+                    <!-- {{video_percent}} -->
                     <div class="actioncontrol">
                         <span class="videotime">{{ video_time }}/{{ video_end_time }}</span>
 

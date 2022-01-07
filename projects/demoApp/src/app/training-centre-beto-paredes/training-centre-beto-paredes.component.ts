@@ -27,7 +27,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   public lessonParamId = '';
   public lessionFileEndpoint: any = {
     file_endpoint: 'updateusercompletelessonfiles',
-    video_endpoint: 'updateusercompletelessonvideo',
+    video_endpoint: 'completelessonvideo',
     audio_endpoint: 'updateusercompletelessonaudio'
 
   }
