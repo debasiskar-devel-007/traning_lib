@@ -150,6 +150,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "traning"
+    }
+  },
+  "defaultProject": "traning",
+  "cli": {
+    "analytics": false
+  }
 }
