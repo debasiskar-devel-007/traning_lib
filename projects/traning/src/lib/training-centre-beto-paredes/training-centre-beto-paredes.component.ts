@@ -1531,6 +1531,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       panelClass: 'lesson_videomodal',
       width: '900px',
       height: 'auto',
+      disableClose: true,
       // tslint:disable-next-line: max-line-length
       data: { 'safe_url': safe_url, data: val, training_id: this.activatedRoute.snapshot.params.associated_training, lesson_id: this.paramslessonId, endpoint: server_url, user_id: this.userId, video_url: video_url }
     });
@@ -1680,7 +1681,7 @@ export class BetoparedesLessonVideoModalComponent {
   player: videojs.Player;
   video_currenttime: any = '';
   public video_duration: any = '';
-  public video_end_time: any = '0:0:0';
+  public video_end_time: any = '0:0:00';
   public videotimeflag: boolean = false;
   public video_percent: any = 0;
   public playpauseflag: any = false;
@@ -1734,7 +1735,9 @@ export class BetoparedesLessonVideoModalComponent {
         const duration_hours: any = Math.floor(sec_duration_num / 3600);
         const duration_minutes: any = Math.floor((sec_duration_num - (duration_hours * 3600)) / 60);
         const duration_seconds: any = sec_duration_num - (duration_hours * 3600) - (duration_minutes * 60);
-        this.video_end_time = duration_hours + ':' + duration_minutes + ':' + duration_seconds;
+
+        this.video_end_time = this.convertHMS(this.video_duration);
+        // this.video_end_time = duration_hours.padStart(2, '0') + ':' + duration_minutes.padStart(2, '0') + ':' + duration_seconds.padStart(2, '0');
       }, 500);
 
 
@@ -1747,6 +1750,24 @@ export class BetoparedesLessonVideoModalComponent {
         this.player.play();
       }, 2000);
     }
+  }
+
+  convertHMS(value) {
+    const sec = parseInt(value, 10); // convert value to number if it's string
+    let hours: any = Math.floor(sec / 3600); // get hours
+    let minutes: any = Math.floor((sec - (hours * 3600)) / 60); // get minutes
+    let seconds: any = sec - (hours * 3600) - (minutes * 60); //  get seconds
+    // add 0 if value < 10; Example: 2 => 02
+    if (hours < 10) {
+      hours = "0" + hours;
+    }
+    if (minutes < 10) {
+      minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+      seconds = "0" + seconds;
+    }
+    return hours + ':' + minutes + ':' + seconds; // Return is HH : MM : SS
   }
 
   onprocess() {
@@ -1766,7 +1787,9 @@ export class BetoparedesLessonVideoModalComponent {
         const duration_hours: any = Math.floor(sec_duration_num / 3600);
         const duration_minutes: any = Math.floor((sec_duration_num - (duration_hours * 3600)) / 60);
         const duration_seconds: any = sec_duration_num - (duration_hours * 3600) - (duration_minutes * 60);
-        this.video_end_time = duration_hours + ':' + duration_minutes + ':' + duration_seconds;
+        // this.video_end_time = duration_hours.toFixed(2) + ':' + duration_minutes.toFixed(2) + ':' + duration_seconds.toFixed(2);
+        this.video_end_time = this.convertHMS(this.video_duration);
+
         this.videotimeflag = true;
 
       }, 500);
@@ -1834,7 +1857,7 @@ export class BetoparedesLessonVideoModalComponent {
     };
     // // // // // // console.log(video_data, 'data===++')
     // if(this.httpdataflag!=1)
-    this.httpdataflag ++;
+    this.httpdataflag++;
     if (this.data.data.video_skippable !== true && this.httpdataflag < 3) {
 
       this.apiService.postDatawithoutToken(endpoint, video_data).subscribe(res => {
