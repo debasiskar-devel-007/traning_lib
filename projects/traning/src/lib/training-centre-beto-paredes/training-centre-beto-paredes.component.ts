@@ -1717,7 +1717,7 @@ export class BetoparedesLessonVideoModalComponent {
     this.video_url = myArray.join('/');
     this.video_url1 = this.sanitizer.bypassSecurityTrustResourceUrl(this.video_url);
     console.log(this.video_url1);
-
+    
     this.videoplayflag = true;
     setTimeout(() => {
       this.player = videojs('#my-video-modal');
@@ -1759,7 +1759,7 @@ export class BetoparedesLessonVideoModalComponent {
       const hours: any = Math.floor(sec_num / 3600);
       const minutes: any = Math.floor((sec_num - (hours * 3600)) / 60);
       const seconds: any = sec_num - (hours * 3600) - (minutes * 60);
-      this.video_time = hours + ':' + minutes + ':' + seconds;
+      this.video_time = String("0" + hours).slice(-2) + ':' + minutes + ':' + seconds;
       setTimeout(() => {
         this.video_duration = parseInt(this.player.duration());
         const sec_duration_num = parseInt(this.video_duration, 10);
