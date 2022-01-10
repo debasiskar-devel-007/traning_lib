@@ -1531,7 +1531,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       panelClass: 'lesson_videomodal',
       width: '900px',
       height: 'auto',
-      disableClose: true,
+      // disableClose: true,
       // tslint:disable-next-line: max-line-length
       data: { 'safe_url': safe_url, data: val, training_id: this.activatedRoute.snapshot.params.associated_training, lesson_id: this.paramslessonId, endpoint: server_url, user_id: this.userId, video_url: video_url }
     });
@@ -1704,12 +1704,14 @@ export class BetoparedesLessonVideoModalComponent {
       }
     }
   };
+  // dialog: any; // sourodip add 
   constructor(public dialogRef: MatDialogRef<BetoparedesLessonVideoModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData4,
     public snakBar: MatSnackBar,
     private sanitizer: DomSanitizer,
     public apiService: ApiService,
     public router: Router,
+    public dialog: MatDialog,
     public activatedRoute: ActivatedRoute) {
 
     console.log(data, 'data_video', this.activatedRoute.snapshot.params);
@@ -1791,14 +1793,9 @@ export class BetoparedesLessonVideoModalComponent {
 
   onprocess() {
     // this.video_percent = 0;
-    console.log('video finished at top' + this.video_percent + ' %');
-    console.log('onprocess', this.player);
-    console.log('onprocess isDisposed_', this.player.isDisposed_);
-
-
+    console.log('video_percent at top' + this.video_percent + ' %');
     setTimeout(() => {
       if (this.player == null) {
-        console.log('player is null ');
         return;
       }
       if (this.player.isDisposed_ == true) return;
@@ -1851,7 +1848,7 @@ export class BetoparedesLessonVideoModalComponent {
 
     }, 1000);
     let completeflag = false;
-    console.log('video finished ' + this.video_percent + ' %');
+    console.log('video_percent at bottom ' + this.video_percent + ' %');
 
 
     // if (completeflag) {
@@ -1860,16 +1857,42 @@ export class BetoparedesLessonVideoModalComponent {
 
   }
   closedModals() {
+    this.player.pause();
     // // // // // // console.log()
     if (this.data.data.video_skippable !== true) {
-      this.snakBar.open('Video Lesson Has Not Been Completed ...!', 'OK', {
-        duration: 4000
+      console.log("Non Skippabke Video | ","video_skippable Value ==>",this.data.data.video_skippable)
+      const dialog2 = this.dialog.open(CloseVideoModalComponent, {
+        panelClass: 'lesson_videomodal',
+        width: '900px',
+        height: 'auto',
+        // data: { data: val }
       });
-    }
+      dialog2.afterClosed().subscribe(result => {
+        console.log("modal result==>",result)
+        if (result == true){
+          this.onprocess();
+          this.player.play();
 
+          return
+        }else{
+          this.snakBar.open('Video Lesson Has Not Been Completed ...!', 'OK', {
+            duration: 4000
+          });
+          this.dialogRef.close();
+          this.player.dispose();
+          this.player.currentTime(0);
+          return
+        }
+        
+      });
+      
+    }else{
+      console.log("Skippabke Video | ","video_skippable Value ==>",this.data.data.video_skippable)
     this.dialogRef.close();
     this.player.dispose();
     this.player.currentTime(0);
+    }
+    
 
   }
 
@@ -1966,6 +1989,34 @@ export class BetoparedesLessonVideoModalComponent {
 
   }
 }
+// Sourodip Dialog video modal close
+@Component({
+  selector: 'close-video-example-dialog',
+  templateUrl: 'video_close_confirmation_dialog.html',
+  styleUrls: ['preview-video-content-dialog.css']
+})
+export class CloseVideoModalComponent {
+  constructor(
+    public dialogRef: MatDialogRef<CloseVideoModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData8,
+    public snakBar: MatSnackBar
+  ) {}
+  public close_vid_flag:any = false;
+  onstop(): void {
+    this.close_vid_flag = false;
+    console.log('close_vid_flag',this.close_vid_flag)
+    this.snakBar.open('Video Lesson Has Not Been Completed ...!', 'OK', {
+      duration: 4000
+    });
+    this.dialogRef.close(this.close_vid_flag);
+  }
+  oncontinue(): void {
+    this.close_vid_flag = true;
+    console.log('close_vid_flag',this.close_vid_flag)
+    this.dialogRef.close(this.close_vid_flag);
+  }
+}
+// Sourodip Dialog video modal close
 @Component({
   selector: 'lessonquiz',
   templateUrl: './lesson_betoparedes_quiz.html'
