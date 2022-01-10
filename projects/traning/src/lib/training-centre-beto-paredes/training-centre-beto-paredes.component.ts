@@ -1743,6 +1743,26 @@ export class BetoparedesLessonVideoModalComponent {
 
 
       });
+
+      videojs.hook('setup', function (player, err) {
+        console.log(`player ${player.id()} is ready `);
+        // this.closedModals();
+        // document.getElementsByClassName('videoerror').style.display='none';
+        setTimeout(() => {
+          const elm: any = document.querySelectorAll("#my-video-modal");
+          // elm.classList.add('hidecls');
+          // elm.style.display = 'none';
+          let i: any;
+          for (i = 0; i < elm.length; i++) {
+            // elm[i].style.backgroundColor = "red";
+            elm[i].classList.remove('hidecls')
+
+          }
+
+        }, 500);
+
+
+      });
       // this.onprocess();
       console.log('pppppppppppp', parseInt(this.player.currentTime()));
       setTimeout(() => {
@@ -1790,6 +1810,38 @@ export class BetoparedesLessonVideoModalComponent {
   }
 
   onprocess() {
+
+    // videoprogress
+    setTimeout(() => {
+      const elm: any = document.querySelectorAll(".videoprogress");
+      // elm.classList.add('hidecls');
+      // elm.style.display = 'none';
+      let i: any;
+      for (i = 0; i < elm.length; i++) {
+        // elm[i].style.display = "block";
+        elm[i].classList.add('hidecls');
+        console.log('video showing ');
+
+      }
+
+    }, 500);
+
+
+
+    setTimeout(() => {
+      const elm: any = document.querySelectorAll(".videodiv");
+      // elm.classList.add('hidecls');
+      // elm.style.display = 'none';
+      let i: any;
+      for (i = 0; i < elm.length; i++) {
+        elm[i].style.display = "block";
+        elm[i].classList.remove('hidecls');
+        console.log('video showing ');
+
+      }
+
+    }, 500);
+
     // this.video_percent = 0;
     console.log('video finished at top' + this.video_percent + ' %');
     console.log('onprocess', this.player);
