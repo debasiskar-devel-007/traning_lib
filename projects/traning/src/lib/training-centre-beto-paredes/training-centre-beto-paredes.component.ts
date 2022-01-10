@@ -1792,9 +1792,18 @@ export class BetoparedesLessonVideoModalComponent {
   onprocess() {
     // this.video_percent = 0;
     console.log('video finished at top' + this.video_percent + ' %');
+    console.log('onprocess', this.player);
+    console.log('onprocess isDisposed_', this.player.isDisposed_);
+
 
     setTimeout(() => {
-      this.video_currenttime = parseInt(this.player.currentTime());
+      if (this.player == null) {
+        console.log('player is null ');
+        return;
+      }
+      if (this.player.isDisposed_ == true) return;
+      // }
+      if (this.player != null && this.player.currentTime() != null && this.player.isDisposed_ != true) this.video_currenttime = parseInt(this.player.currentTime());
       const sec_num = parseInt(this.video_currenttime, 10);
       const hours: any = Math.floor(sec_num / 3600);
       const minutes: any = Math.floor((sec_num - (hours * 3600)) / 60);
@@ -1816,7 +1825,7 @@ export class BetoparedesLessonVideoModalComponent {
       // console.log(this.video_currenttime, 'audio_duration', this.video_duration)
 
 
-      this.video_percent = (this.video_currenttime / this.video_duration) * 100;
+      if (this.video_currenttime != null) this.video_percent = (this.video_currenttime / this.video_duration) * 100;
       setTimeout(() => {
         if (this.video_percent < 100)
           this.onprocess();
@@ -1886,9 +1895,11 @@ export class BetoparedesLessonVideoModalComponent {
         if (result.status === 'success') {
           // getTrainingCenterlistFunctionwithLessonId(associated_training: any, type: any, user_id: any, _id: any)
           this.data.flag = 'yes';
+          if (this.player != null && this.player.isDisposed_ == true) {
+            this.player.currentTime(0);
+            this.player.dispose();
+          }
           this.dialogRef.close(this.data.flag);
-          this.player.dispose();
-          this.player.currentTime(0);
 
 
           this.snakBar.open('Successfully Completed The Lesson Video..!', 'OK', {
