@@ -10,14 +10,20 @@
                 Video Duration : {{video_end_time}}
                 <!-- <span>ddd</span> -->
             </div>
-            <div class="mainvdcls">
+            <div class="videoprogress">
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+
+
+            </div>
+
+            <div class="mainvdcls hidecls videodiv">
                 <div class="mt-1" id="player"></div>
 
                 <!-- <iframe width="700" height="400" [src]="data.safe_url" frameborder="0"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen></iframe> -->
                 <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
-                <video width="560" height="315" id="my-video-modal" *ngIf="videoplayflag" class="video-js videothwrapper-item videothwrapper-16by9" (timeupdate)="onprocess()" preload="auto" poster="https://all-frontend-assets.s3.amazonaws.com/AWS-Physicians/images/dr_banner1.jpg"
+                <video class="hidecls" width="560" height="315" id="my-video-modal" *ngIf="videoplayflag" class="video-js videothwrapper-item videothwrapper-16by9" (timeupdate)="onprocess()" preload="auto" poster="https://all-frontend-assets.s3.amazonaws.com/AWS-Physicians/images/dr_banner1.jpg"
                     data-setup="{}">
                     <source [src]="video_url1" type="video/mp4" />
                     <p class="vjs-no-js">
