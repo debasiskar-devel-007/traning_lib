@@ -1794,35 +1794,37 @@ export class BetoparedesLessonVideoModalComponent {
     console.log('video finished at top' + this.video_percent + ' %');
 
     setTimeout(() => {
-      this.video_currenttime = parseInt(this.player.currentTime());
-      const sec_num = parseInt(this.video_currenttime, 10);
-      const hours: any = Math.floor(sec_num / 3600);
-      const minutes: any = Math.floor((sec_num - (hours * 3600)) / 60);
-      const seconds: any = sec_num - (hours * 3600) - (minutes * 60);
-      this.video_time = String("0" + hours).slice(-2) + ':' + minutes + ':' + seconds;
-      setTimeout(() => {
-        this.video_duration = parseInt(this.player.duration());
-        const sec_duration_num = parseInt(this.video_duration, 10);
-        const duration_hours: any = Math.floor(sec_duration_num / 3600);
-        const duration_minutes: any = Math.floor((sec_duration_num - (duration_hours * 3600)) / 60);
-        const duration_seconds: any = sec_duration_num - (duration_hours * 3600) - (duration_minutes * 60);
-        // this.video_end_time = duration_hours.toFixed(2) + ':' + duration_minutes.toFixed(2) + ':' + duration_seconds.toFixed(2);
-        this.video_end_time = this.convertHMS(this.video_duration);
+      if (this.video_percent < 100){
+        this.video_currenttime = parseInt(this.player.currentTime());
+        const sec_num = parseInt(this.video_currenttime, 10);
+        const hours: any = Math.floor(sec_num / 3600);
+        const minutes: any = Math.floor((sec_num - (hours * 3600)) / 60);
+        const seconds: any = sec_num - (hours * 3600) - (minutes * 60);
+        this.video_time = String("0" + hours).slice(-2) + ':' + minutes + ':' + seconds;
+        setTimeout(() => {
+          this.video_duration = parseInt(this.player.duration());
+          const sec_duration_num = parseInt(this.video_duration, 10);
+          const duration_hours: any = Math.floor(sec_duration_num / 3600);
+          const duration_minutes: any = Math.floor((sec_duration_num - (duration_hours * 3600)) / 60);
+          const duration_seconds: any = sec_duration_num - (duration_hours * 3600) - (duration_minutes * 60);
+          // this.video_end_time = duration_hours.toFixed(2) + ':' + duration_minutes.toFixed(2) + ':' + duration_seconds.toFixed(2);
+          this.video_end_time = this.convertHMS(this.video_duration);
 
-        this.videotimeflag = true;
+          this.videotimeflag = true;
 
-      }, 500);
+        }, 500);
 
       // console.log(this.video_currenttime, 'audio_duration', this.video_duration)
 
 
-      this.video_percent = (this.video_currenttime / this.video_duration) * 100;
-      setTimeout(() => {
-        if (this.video_percent < 100)
-          this.onprocess();
+        this.video_percent = (this.video_currenttime / this.video_duration) * 100;
+        setTimeout(() => {
+          if (this.video_percent < 100)
+            this.onprocess();
 
-      }, 3000);
-
+        }, 3000);
+      }
+      
 
       if (this.video_percent === 100) {
         console.log('video finished 100 %');
@@ -1887,8 +1889,8 @@ export class BetoparedesLessonVideoModalComponent {
           // getTrainingCenterlistFunctionwithLessonId(associated_training: any, type: any, user_id: any, _id: any)
           this.data.flag = 'yes';
           this.dialogRef.close(this.data.flag);
-          this.player.dispose();
-          this.player.currentTime(0);
+          // this.player.dispose(); //at this point player element missing from DOM
+          // this.player.currentTime(0);
 
 
           this.snakBar.open('Successfully Completed The Lesson Video..!', 'OK', {
