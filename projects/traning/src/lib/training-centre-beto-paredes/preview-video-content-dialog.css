@@ -42,3 +42,19 @@
 .hidecls {
     display: none;
 }
+.openfullscreen{
+    float: right;
+}
+.actioncontrol{
+    margin-bottom: 5px;
+}
+.actioncontrol button{
+    margin: 5px 3px;
+}
+.actioncontrol button .mat-icon{
+    font-size: 30px;
+}
+.actioncontrol .videotime{
+    margin: 5px 21px;
+    font-size: 24px;
+}
