@@ -36,27 +36,29 @@
                 </video>
                 <mat-progress-bar class="loaderprogress videoerror" mode="determinate" value="{{ video_percent }}">
                 </mat-progress-bar>
-                <ng-container *ngIf="videotimeflag&&data.data.video_skippable">
-                    <mat-progress-bar class="loaderprogress" mode="determinate" value="{{ video_percent }}">
-                    </mat-progress-bar>
+                
+                    <!-- <mat-progress-bar class="loaderprogress" mode="determinate" value="{{ video_percent }}">
+                    </mat-progress-bar> -->
                     <!-- {{video_percent}} -->
                     <div class="actioncontrol videoerror">
+                        <ng-container *ngIf="videotimeflag&&data.data.video_skippable">
+                            <button (click)="playbtn()" *ngIf='playpausedata==0' class="playbtn">
+                                <mat-icon>play_arrowaa</mat-icon>
+                            </button>
+                            <button (click)="pausebtn()" *ngIf='playpausedata==1' class="pausebtn">
+                                <mat-icon>pause</mat-icon>
+                            </button>
+                            <!-- <div class="playbtnlessplus"> -->
+                            <button (click)="skip(-10)" class="playbtnless">
+                                <!-- <img src="https://img.icons8.com/ios-glyphs/30/000000/replay-10.png" /> -->
+                                <mat-icon>replay_10</mat-icon>
+                            </button>
+                            <button (click)="skip(10)" class="playbtnplus">
+                                <!-- <img src="https://img.icons8.com/ios-glyphs/60/000000/forward-10.png" /> -->
+                                <mat-icon>forward_10</mat-icon>
+                            </button>
+                        </ng-container>
                         
-                        <button (click)="playbtn()" *ngIf='playpausedata==0' class="playbtn">
-                            <mat-icon>play_arrowaa</mat-icon>
-                        </button>
-                        <button (click)="pausebtn()" *ngIf='playpausedata==1' class="pausebtn">
-                            <mat-icon>pause</mat-icon>
-                        </button>
-                        <!-- <div class="playbtnlessplus"> -->
-                        <button (click)="skip(-10)" class="playbtnless">
-                            <!-- <img src="https://img.icons8.com/ios-glyphs/30/000000/replay-10.png" /> -->
-                            <mat-icon>replay_10</mat-icon>
-                        </button>
-                        <button (click)="skip(10)" class="playbtnplus">
-                            <!-- <img src="https://img.icons8.com/ios-glyphs/60/000000/forward-10.png" /> -->
-                            <mat-icon>forward_10</mat-icon>
-                        </button>
                         <span class="videotime">{{ video_time }}/{{ video_end_time }}</span>
                         <button (click)="openfullscreen()" class="openfullscreen">
                             <mat-icon>fullscreen</mat-icon>
@@ -64,7 +66,8 @@
                         <!-- </div> -->
 
                     </div>
-                </ng-container>
+                
+                
                 <!-- <youtube-player
                           [videoId]="data.video_url"
                           (ready)="savePlayer($event)"
@@ -75,6 +78,11 @@
                           [width]=850>
                         </youtube-player> -->
             </div>
+            <!-- <div class="actioncontrol videoerror">
+                <button (click)="openfullscreen()" class="openfullscreen">
+                    <mat-icon>fullscreen</mat-icon>
+                </button>
+            </div> -->
 
             <div class="videocls">
                 <p class="videotitlecls">{{data?.data?.video_title}}</p>

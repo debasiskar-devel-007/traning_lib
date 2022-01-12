@@ -8,7 +8,9 @@
     opacity: .9;
     display: none !important;
 }
-
+.videocls{
+    margin-top: 10px;
+}
 .videocls .videotitlecls {
     background-color: cyan;
     height: 20px;
@@ -46,7 +48,7 @@
     float: right;
 }
 .actioncontrol{
-    margin-bottom: 5px;
+    margin-bottom: 30px;
 }
 .actioncontrol button{
     margin: 5px 3px;
