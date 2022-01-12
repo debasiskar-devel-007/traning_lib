@@ -55,6 +55,8 @@
 }
 .actioncontrol button .mat-icon{
     font-size: 30px;
+    height: 30px !important;
+    width: 28px !important;
 }
 .actioncontrol .videotime{
     margin: 5px 21px;
