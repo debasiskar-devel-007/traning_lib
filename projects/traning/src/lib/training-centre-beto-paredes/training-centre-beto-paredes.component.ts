@@ -1523,7 +1523,8 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     const safe_url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
 
     if (val.video_skippable === true) {
-      video_url = val.video_url + '?rel=0&modestbranding=1&autoplay=1&showinfo=0&controls=0&listType=playlist';
+      // video_url = val.video_url + '?rel=0&modestbranding=1&autoplay=1&showinfo=0&controls=1&listType=pla xylist';
+      video_url = val.video_url + '?rel=0&modestbranding=1&autoplay=1&showinfo=0&controls=1&listType=playlist';
     } else {
       video_url = val.video_url + '?rel=0&modestbranding=1&autoplay=1&showinfo=0&controls=0&listType=playlist';
     }
@@ -2060,10 +2061,17 @@ export class CloseVideoModalComponent {
   public close_vid_flag: any = false;
   onstop(): void {
     this.close_vid_flag = false;
+<<<<<<< HEAD
     console.log('close_vid_flag', this.close_vid_flag)
     this.snakBar.open('Video Lesson Has Not Been Completed ...!', 'OK', {
       duration: 4000
     });
+=======
+    console.log('close_vid_flag',this.close_vid_flag)
+    // this.snakBar.open('Video Lesson Has Not Been Completed ...!', 'OK', {
+    //   duration: 4000
+    // });
+>>>>>>> 8a3b14f59e756702817ab254b2b3550f7f845f36
     this.dialogRef.close(this.close_vid_flag);
   }
   oncontinue(): void {
