@@ -1726,7 +1726,10 @@ export class BetoparedesLessonVideoModalComponent {
     setTimeout(() => {
       this.player = videojs('#my-video-modal');
       this.player.controls(false); // TO CONTROL FALSE
+      // this.player.requestFullscreen();
+      // this.player.fullscreen({ options: { navigationUI: 'show' } });
       this.playerid = this.player.id_;
+      // document.getElementsByClassName('vjs-fullscreen-control').click();
       videojs.hook('error', function (player, err) {
         console.log(`player ${player.id()} has errored out with code ${err.code} ${err.message}`);
         // this.closedModals();
@@ -1793,6 +1796,12 @@ export class BetoparedesLessonVideoModalComponent {
       this.playpausedata = 1;
     }, 2000);
     // }
+  }
+  openfullscreen() {
+    if (this.player != null && this.player.currentTime() != null && this.player.isDisposed_ != true)
+      this.player.requestFullscreen();
+
+
   }
 
   convertHMS(value) {
@@ -2061,17 +2070,10 @@ export class CloseVideoModalComponent {
   public close_vid_flag: any = false;
   onstop(): void {
     this.close_vid_flag = false;
-<<<<<<< HEAD
     console.log('close_vid_flag', this.close_vid_flag)
     this.snakBar.open('Video Lesson Has Not Been Completed ...!', 'OK', {
       duration: 4000
     });
-=======
-    console.log('close_vid_flag',this.close_vid_flag)
-    // this.snakBar.open('Video Lesson Has Not Been Completed ...!', 'OK', {
-    //   duration: 4000
-    // });
->>>>>>> 8a3b14f59e756702817ab254b2b3550f7f845f36
     this.dialogRef.close(this.close_vid_flag);
   }
   oncontinue(): void {
