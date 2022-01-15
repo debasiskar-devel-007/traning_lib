@@ -6,17 +6,17 @@
         </div>
 
         <div mat-dialog-content class="videocls">
-            <div class="video_timecls videoerror" *ngIf="video_time != null">
+            <div class="video_timecls videoerror" *ngIf="video_end_time != null ">
                 Video Duration : {{video_end_time}}
                 <!-- <span>ddd</span> -->
-            </div> 
+            </div>
             <div class="videoprogress">
                 <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 
 
             </div>
 
-            <div class="mainvdcls hidecls videodiv">
+            <div class="mainvdcls hidecls videodiv" *ngIf="flg==1">
                 <div class="mt-1" id="player"></div>
 
                 <!-- <iframe width="700" height="400" [src]="data.safe_url" frameborder="0"
@@ -36,38 +36,39 @@
                 </video>
                 <mat-progress-bar class="loaderprogress videoerror" mode="determinate" value="{{ video_percent }}">
                 </mat-progress-bar>
-                
-                    <!-- <mat-progress-bar class="loaderprogress" mode="determinate" value="{{ video_percent }}">
-                    </mat-progress-bar> -->
-                    <!-- {{video_percent}} -->
-                    <div class="actioncontrol videoerror">
-                        <ng-container *ngIf="videotimeflag&&data.data.video_skippable">
-                            <button (click)="playbtn()" *ngIf='playpausedata==0' class="playbtn">
-                                <mat-icon>play_arrowaa</mat-icon>
-                            </button>
-                            <button (click)="pausebtn()" *ngIf='playpausedata==1' class="pausebtn">
-                                <mat-icon>pause</mat-icon>
-                            </button>
-                            <!-- <div class="playbtnlessplus"> -->
-                            <button (click)="skip(-10)" class="playbtnless">
-                                <!-- <img src="https://img.icons8.com/ios-glyphs/30/000000/replay-10.png" /> -->
-                                <mat-icon>replay_10</mat-icon>
-                            </button>
-                            <button (click)="skip(10)" class="playbtnplus">
-                                <!-- <img src="https://img.icons8.com/ios-glyphs/60/000000/forward-10.png" /> -->
-                                <mat-icon>forward_10</mat-icon>
-                            </button>
-                        </ng-container>
-                        
-                        <span class="videotime">{{ video_time }}/{{ video_end_time }}</span>
-                        <button (click)="openfullscreen()" class="openfullscreen">
-                            <mat-icon>fullscreen</mat-icon>
-                        </button>
-                        <!-- </div> -->
 
-                    </div>
-                
-                
+                <!-- <mat-progress-bar class="loaderprogress" mode="determinate" value="{{ video_percent }}">
+                    </mat-progress-bar> -->
+                <!-- {{video_percent}} -->
+                <div class="actioncontrol videoerror">
+                    <ng-container *ngIf="videotimeflag&&data.data.video_skippable ">
+                        <button (click)="playbtn()" *ngIf='playpausedata==0' class="playbtn">
+                            <mat-icon>play_arrowaa</mat-icon>
+                        </button>
+                        <button (click)="pausebtn()" *ngIf='playpausedata==1' class="pausebtn">
+                            <mat-icon>pause</mat-icon>
+                        </button>
+                        <!-- <div class="playbtnlessplus"> -->
+                        <button (click)="skip(-10)" class="playbtnless">
+                            <!-- <img src="https://img.icons8.com/ios-glyphs/30/000000/replay-10.png" /> -->
+                            <mat-icon>replay_10</mat-icon>
+                        </button>
+                        <button (click)="skip(10)" class="playbtnplus">
+                            <!-- <img src="https://img.icons8.com/ios-glyphs/60/000000/forward-10.png" /> -->
+                            <mat-icon>forward_10</mat-icon>
+                        </button>
+                    </ng-container>
+                    <button (click)="forcefinish()"> finish this </button>
+
+                    <span class="videotime">{{ video_time }}/{{ video_end_time }}</span>
+                    <button (click)="openfullscreen()" class="openfullscreen">
+                        <mat-icon>fullscreen</mat-icon>
+                    </button>
+                    <!-- </div> -->
+
+                </div>
+
+
                 <!-- <youtube-player
                           [videoId]="data.video_url"
                           (ready)="savePlayer($event)"

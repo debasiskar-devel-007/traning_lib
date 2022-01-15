@@ -451,11 +451,27 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     // setTimeout(() => {
     //   document.getElementById(this.libdataval.containerid).scrollIntoView({ behavior: "smooth" });
     // }, 100);
+
+    console.log('this.activatedRoute.snapshot.params', this.activatedRoute.snapshot.params);
+    if (this.activatedRoute.snapshot.params != null && this.activatedRoute.snapshot.params._id == null) {
+      let curl = this.activatedRoute.snapshot.url.join('/');
+      // curl = window.location.href;
+      if (this.trainingLessonData[0] != null && this.trainingLessonData[0]._id != null) {
+        curl = 'traning/' + curl + '/' + this.trainingLessonData[0]._id;
+        console.log('no lesson id', this.trainingLessonData[0], 'curl', curl);
+
+        this.router.navigateByUrl(curl);
+      }
+
+
+    }
+
   }
 
 
   clicktrcataining(val, catagory_name: any, i) {
-    // console.log(val);
+    console.log(val, catagory_name);
+    // return;
 
 
     this.progressSpinner.loading = true;
@@ -487,31 +503,40 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
       }
     }
+    // console.log('this.activatedRoute.snapshot.params', this.activatedRoute.snapshot.params);
+    // this.router.navigateByUrl(this.trainingCenterRoute + val );
+
+
 
     // console.log(this.trainingCategoryData, val, i);
     if (this.userType == 'technological-consultant') {
       if (this.activatedRoute.snapshot.params.associated_training == val) {
-        this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + this.trainingCategoryData[i].fasttraining_id);
+        // this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + this.trainingCategoryData[i].fasttraining_id);
+        this.router.navigateByUrl(this.trainingCenterRoute + val);
         this.progressSpinner.loading = false;
 
         return;
       }
       else if (i == 0) {
-        this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + this.trainingCategoryData[i].fasttraining_id);
+        this.router.navigateByUrl(this.trainingCenterRoute + val);
+        // this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + this.trainingCategoryData[i].fasttraining_id);
         this.progressSpinner.loading = false;
 
         return;
       }
       else if (this.trainingCategoryData[i].done == this.trainingCategoryData[i].count) {
-        this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + this.trainingCategoryData[i].fasttraining_id);
+        // this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + this.trainingCategoryData[i].fasttraining_id);
+        this.router.navigateByUrl(this.trainingCenterRoute + val);
       }
       else if (i > 0 && this.trainingCategoryData[i - 1].done == this.trainingCategoryData[i - 1].count) {
-        this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + this.trainingCategoryData[i].fasttraining_id);
+        this.router.navigateByUrl(this.trainingCenterRoute + val);
+        // this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + this.trainingCategoryData[i].fasttraining_id);
       }
       else if (training_access_flag && this.trainingCategoryData[i].traingcompleteflag == 'false' && duplicate_array.length == 0) {
         // console.log(training_access_flag);
 
-        this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + this.trainingCategoryData[i].fasttraining_id);
+        this.router.navigateByUrl(this.trainingCenterRoute + val);
+        // this.router.navigateByUrl(this.trainingCenterRoute + val + '/' + this.trainingCategoryData[i].fasttraining_id);
       }
       else {
 
@@ -560,8 +585,26 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
 
   }
 
-  nochildclick(val: any, flag) {
-    // console.log(val, flag, 'nochiuld', this.paramslessonId);
+  nochildclick(val: any, flag, i) {
+    console.log('nochildclick', val, flag, 'nochiuld', 'ss', this.paramslessonId, this.trainingLessonData[i - 1]);
+    let routeflg: any = false;
+    if (val.is_done != null && val.is_done == true) {
+      routeflg = true;
+
+    }
+    if (this.trainingLessonData[i - 1] != null && this.trainingLessonData[i - 1].is_done == true) {
+      routeflg = true;
+
+    }
+    if (i == 0)
+      routeflg = true;
+
+    if (routeflg == false) {
+      this.snakBar.open('You Can not access this lesson as you have not finished previous one ', 'OK', {
+        duration: 4000
+      });
+      return;
+    }
     // return
     if (val._id == this.paramslessonId) {
       if (val.trainingshwflag == true) {
@@ -729,11 +772,12 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
           }
           // // // // // // // console.log('ind', ind);
           if (this.lessonDataList[ind] != null) {
+            this.lessonDataList[ind].is_done = true;
 
-            setTimeout(() => {
-              this.nochildclick(this.lessonDataList[ind], lastflag);
+            // setTimeout(() => {
+            this.nochildclick(this.lessonDataList[ind], lastflag, ind);
 
-            }, 500)
+            // }, 5500)
 
             this.progressLoader = true;
           } else {
@@ -813,7 +857,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
           //   this.nochildclick(this.lessonDataList[ind]);
           //   }
 
-          this.nochildclick(this.lessonDataList[ind1], 'prev');
+          this.nochildclick(this.lessonDataList[ind1], 'prev', ind1);
 
           this.progressLoader = true;
         }, 500);
@@ -1528,11 +1572,13 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     } else {
       video_url = val.video_url + '?rel=0&modestbranding=1&autoplay=1&showinfo=0&controls=0&listType=playlist';
     }
+    console.log('video_url1 at comp', video_url);
+    // return;
     const dialogRef = this.dialog.open(BetoparedesLessonVideoModalComponent, {
       panelClass: 'lesson_videomodal',
       width: '900px',
       height: 'auto',
-      // disableClose: true,
+      disableClose: true,
       // tslint:disable-next-line: max-line-length
       data: { 'safe_url': safe_url, data: val, training_id: this.activatedRoute.snapshot.params.associated_training, lesson_id: this.paramslessonId, endpoint: server_url, user_id: this.userId, video_url: video_url }
     });
@@ -1688,6 +1734,8 @@ export class BetoparedesLessonVideoModalComponent {
   public playpauseflag: any = false;
   public playpausedata: any = 0;
   public httpdataflag: any = 0;
+  flg: any = 0;
+
   public videoJsConfigObj = {
     preload: "metadata",
     controls: false,
@@ -1720,12 +1768,16 @@ export class BetoparedesLessonVideoModalComponent {
     myArray[0] = 'https://d291rlacfzbauk.cloudfront.net';
     this.video_url = myArray.join('/');
     this.video_url1 = this.sanitizer.bypassSecurityTrustResourceUrl(this.video_url);
-    console.log(this.video_url1);
+    console.log(this.video_url1, 'this.video_url1');
 
     this.videoplayflag = true;
+    this.flg = 0;
+    this.flg = 1;
+
     setTimeout(() => {
       this.player = videojs('#my-video-modal');
       this.player.controls(false); // TO CONTROL FALSE
+      // this.player.currentSrc(this.video_url1);
       // this.player.requestFullscreen();
       // this.player.fullscreen({ options: { navigationUI: 'show' } });
       this.playerid = this.player.id_;
@@ -1745,10 +1797,23 @@ export class BetoparedesLessonVideoModalComponent {
 
           }
 
-        }, 500);
+        }, 800);
 
 
       });
+
+      setTimeout(() => {
+        const elm: any = document.querySelectorAll("#my-video-modal");
+        // elm.classList.add('hidecls');
+        // elm.style.display = 'none';
+        let i: any;
+        for (i = 0; i < elm.length; i++) {
+          // elm[i].style.backgroundColor = "red";
+          elm[i].classList.remove('hidecls')
+
+        }
+
+      }, 2500);
 
       videojs.hook('setup', function (player, err) {
         console.log(`player ${player.id()} is ready `);
@@ -1797,6 +1862,14 @@ export class BetoparedesLessonVideoModalComponent {
     }, 2000);
     // }
   }
+  forcefinish() {
+    console.log('ct', this.player.currentTime());
+    console.log('dt', this.player.duration());
+    this.player.currentTime(this.player.duration() - 5);
+    console.log('ct after', this.player.currentTime());
+
+    // this.player.duration()
+  }
   openfullscreen() {
     if (this.player != null && this.player.currentTime() != null && this.player.isDisposed_ != true)
       this.player.requestFullscreen();
@@ -1833,7 +1906,7 @@ export class BetoparedesLessonVideoModalComponent {
       for (i = 0; i < elm.length; i++) {
         // elm[i].style.display = "block";
         elm[i].classList.add('hidecls');
-        console.log('video showing ');
+        // console.log('video showing ');
 
       }
 
@@ -1849,14 +1922,14 @@ export class BetoparedesLessonVideoModalComponent {
       for (i = 0; i < elm.length; i++) {
         elm[i].style.display = "block";
         elm[i].classList.remove('hidecls');
-        console.log('video showing ');
+        // console.log('video showing ');
 
       }
 
     }, 500);
 
     // this.video_percent = 0;
-    console.log('video_percent at top' + this.video_percent + ' %');
+    // console.log('video_percent at top' + this.video_percent + ' %');
     setTimeout(() => {
       if (this.player == null) {
         return;
@@ -1869,6 +1942,7 @@ export class BetoparedesLessonVideoModalComponent {
       const minutes: any = Math.floor((sec_num - (hours * 3600)) / 60);
       const seconds: any = sec_num - (hours * 3600) - (minutes * 60);
       this.video_time = hours + ':' + minutes + ':' + seconds;
+      this.video_time = this.convertHMS(this.player.currentTime());
       setTimeout(() => {
         this.video_duration = parseInt(this.player.duration());
         const sec_duration_num = parseInt(this.video_duration, 10);
@@ -1914,7 +1988,7 @@ export class BetoparedesLessonVideoModalComponent {
 
     }, 1000);
     let completeflag = false;
-    console.log('video_percent at bottom ' + this.video_percent + ' %');
+    // console.log('video_percent at bottom ' + this.video_percent + ' %');
 
 
     // if (completeflag) {
@@ -1925,12 +1999,13 @@ export class BetoparedesLessonVideoModalComponent {
   closedModals() {
     this.player.pause();
     // // // // // // console.log()
-    if (this.data.data.video_skippable !== true) {
+    if (this.data.data.video_skippable !== true && this.video_percent < 100) {
       console.log("Non Skippabke Video | ", "video_skippable Value ==>", this.data.data.video_skippable)
       const dialog2 = this.dialog.open(CloseVideoModalComponent, {
         panelClass: 'lesson_videomodal',
         width: '900px',
         height: 'auto',
+        disableClose: true
         // data: { data: val }
       });
       dialog2.afterClosed().subscribe(result => {
@@ -1953,8 +2028,9 @@ export class BetoparedesLessonVideoModalComponent {
       });
 
     } else {
-      console.log("Skippabke Video | ", "video_skippable Value ==>", this.data.data.video_skippable)
-      this.dialogRef.close();
+      console.log("Skippabke Video | ", "video_skippable Value ==>", this.data.data.video_skippable);
+      this.data.flag = 'yes';
+      this.dialogRef.close(this.data.flag);
       this.player.dispose();
       this.player.currentTime(0);
     }
@@ -1975,7 +2051,7 @@ export class BetoparedesLessonVideoModalComponent {
     // // // // // // console.log(video_data, 'data===++')
     // if(this.httpdataflag!=1)
     this.httpdataflag++;
-    if (this.data.data.video_skippable !== true && this.httpdataflag < 3) {
+    if (this.data.data.video_skippable !== true && this.httpdataflag < 2) {
 
       this.apiService.postDatawithoutToken(endpoint, video_data).subscribe(res => {
         // // // // // console.log(res, 'frghjk++++++++++', event.target.playerInfo.videoData.video_id)
@@ -1984,11 +2060,17 @@ export class BetoparedesLessonVideoModalComponent {
         if (result.status === 'success') {
           // getTrainingCenterlistFunctionwithLessonId(associated_training: any, type: any, user_id: any, _id: any)
           this.data.flag = 'yes';
-          if (this.player != null && this.player.isDisposed_ == true) {
-            this.player.currentTime(0);
-            this.player.dispose();
-          }
-          this.dialogRef.close(this.data.flag);
+          this.closedModals();
+          // this.flg = 0;
+          // setTimeout(() => {
+          //   this.dialogRef.close(this.data.flag);
+          //   if (this.player != null && this.player.isDisposed_ == true) {
+          //     this.player.currentTime(0);
+          //     this.player.dispose();
+
+          //   }
+
+          // }, 800);
 
 
           this.snakBar.open('Successfully Completed The Lesson Video..!', 'OK', {
