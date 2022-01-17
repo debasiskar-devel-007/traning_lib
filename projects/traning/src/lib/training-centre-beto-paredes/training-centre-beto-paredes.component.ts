@@ -458,7 +458,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       // curl = window.location.href;
       console.log(window.location.href.includes('traning'), 'traningurl');
       if (window.location.href.includes('traning')) {
-        curl += 'traning/';
+        curl = 'traning/' + curl;
       }
       if (this.trainingLessonData[0] != null && this.trainingLessonData[0]._id != null) {
         curl = curl + '/' + this.trainingLessonData[0]._id;
