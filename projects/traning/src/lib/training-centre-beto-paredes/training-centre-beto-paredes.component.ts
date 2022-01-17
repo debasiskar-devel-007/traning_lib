@@ -456,9 +456,13 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     if (this.activatedRoute.snapshot.params != null && this.activatedRoute.snapshot.params._id == null) {
       let curl = this.activatedRoute.snapshot.url.join('/');
       // curl = window.location.href;
+      console.log(window.location.href.includes('traning'), 'traningurl');
+      if (window.location.href.includes('traning')) {
+        curl += 'traning/';
+      }
       if (this.trainingLessonData[0] != null && this.trainingLessonData[0]._id != null) {
-        curl = 'traning/' + curl + '/' + this.trainingLessonData[0]._id;
-        console.log('no lesson id', this.trainingLessonData[0], 'curl', curl);
+        curl = curl + '/' + this.trainingLessonData[0]._id;
+        console.log('no lesson id', this.trainingLessonData[0], 'curl', curl, window.location);
 
         this.router.navigateByUrl(curl);
       }
