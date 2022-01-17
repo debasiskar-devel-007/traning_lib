@@ -35,7 +35,7 @@ import { ListQuizComponent } from './manage-quiz/list-quiz/list-quiz.component';
 import { AddEditQuizComponent } from './manage-quiz/add-edit-quiz/add-edit-quiz.component';
 import { AudioServiceService } from './audio-service.service';
 import {  DetailsPipe } from './pipe/details.pipe';
-import { TrainingCentreBetoParedesComponent ,PreviewContentDialogBeto, BetoparedesLessonVideoModalComponent, LessonQuizBetoparedesModalComponent, GameplanModalComponent, QuizReportmodal, CloseVideoModalComponent} from './training-centre-beto-paredes/training-centre-beto-paredes.component';
+import { TrainingCentreBetoParedesComponent ,PreviewContentDialogBeto, BetoparedesLessonVideoModalComponent, LessonQuizBetoparedesModalComponent, GameplanModalComponent, QuizReportmodal, CloseVideoModalComponent,TrainingCenterContinueResumeComponent} from './training-centre-beto-paredes/training-centre-beto-paredes.component';
 import { PercentagePipe } from './pipe/percentage.pipe';
 import { LessonQuizPeceModalComponent, peceLessonVideoModalComponent, PreviewContentDialogpece, TraingCenterPeceComponent } from './traing-center-pece/traing-center-pece.component';
 
@@ -80,6 +80,7 @@ import { LessonQuizPeceModalComponent, peceLessonVideoModalComponent, PreviewCon
     PreviewContentDialogBeto,
     BetoparedesLessonVideoModalComponent,
     CloseVideoModalComponent,
+    TrainingCenterContinueResumeComponent,
     LessonQuizBetoparedesModalComponent,
     AnswerchangeconfromDialog,
     GameplanModalComponent,
@@ -108,6 +109,6 @@ import { LessonQuizPeceModalComponent, peceLessonVideoModalComponent, PreviewCon
   
   schemas:[CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   providers: [CookieService, ApiService,DatePipe,AudioServiceService],
-  entryComponents:[DialogBoxComponent,Dialogtest,PurchaseModalComponent,ReviewLessonPlanComponent,ScheduleModalComponent,questionDataModalComponent,UnlockLessonModalComponent,videoDialogComponent,LessonVideoModalComponent,LessonQuizModalComponent,AddAudioVideoFileDialogComponent,AudioVideoFileDialogComponent,PreviewContentDialog,PreviewContentDialogBeto,BetoparedesLessonVideoModalComponent,LessonQuizBetoparedesModalComponent,AnswerchangeconfromDialog,GameplanModalComponent,QuizReportmodal,LessonQuizPeceModalComponent,peceLessonVideoModalComponent,PreviewContentDialogpece,CloseVideoModalComponent]
+  entryComponents:[DialogBoxComponent,Dialogtest,PurchaseModalComponent,ReviewLessonPlanComponent,ScheduleModalComponent,questionDataModalComponent,UnlockLessonModalComponent,videoDialogComponent,LessonVideoModalComponent,LessonQuizModalComponent,AddAudioVideoFileDialogComponent,AudioVideoFileDialogComponent,PreviewContentDialog,PreviewContentDialogBeto,BetoparedesLessonVideoModalComponent,LessonQuizBetoparedesModalComponent,AnswerchangeconfromDialog,GameplanModalComponent,QuizReportmodal,LessonQuizPeceModalComponent,peceLessonVideoModalComponent,PreviewContentDialogpece,CloseVideoModalComponent,TrainingCenterContinueResumeComponent]
 })
 export class TraningModule { }

@@ -452,19 +452,71 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
     //   document.getElementById(this.libdataval.containerid).scrollIntoView({ behavior: "smooth" });
     // }, 100);
 
-    console.log('this.activatedRoute.snapshot.params', this.activatedRoute.snapshot.params);
+    console.log('this.activatedRoute.snapshot.params ==>', this.activatedRoute.snapshot.params);
+    console.log('this.trainingLessonData ==>', this.trainingLessonData);
     if (this.activatedRoute.snapshot.params != null && this.activatedRoute.snapshot.params._id == null) {
       let curl = this.activatedRoute.snapshot.url.join('/');
-      // curl = window.location.href;
       console.log(window.location.href.includes('traning'), 'traningurl');
       if (window.location.href.includes('traning')) {
         curl = 'traning/' + curl;
       }
       if (this.trainingLessonData[0] != null && this.trainingLessonData[0]._id != null) {
-        curl = curl + '/' + this.trainingLessonData[0]._id;
-        console.log('no lesson id', this.trainingLessonData[0], 'curl', curl, window.location);
+        // training id exists but lesson id does not exists
+        if(this.trainingLessonData[0].is_done != null && this.trainingLessonData[0].is_done == true){
+          let last_lesson_id = ''
+          // first lesson is done and is_done flag exists
+          for (const i in this.trainingLessonData) {
+            // loop for fetching last lesson done id
+            if(this.trainingLessonData[i].is_done == undefined ){
+              // after next lesson id , is_done does not exists
+              last_lesson_id = this.trainingLessonData[i]._id;
+              break;
+            }
+      
+          }
+          
+          if(last_lesson_id==''){ 
+            // if all lesson are completed redirect to first lesson
+            // curl = curl + '/' + this.trainingLessonData[((this.trainingLessonData.length) -1)]._id; //for routing to last lesson
+            curl = curl + '/' + this.trainingLessonData[0]._id;
+            this.router.navigateByUrl(curl);
+          }else{
+            // not all lesson completed and next lesson id found
+            const dialog_tran = this.dialog.open(TrainingCenterContinueResumeComponent, {
+              panelClass: 'lesson_videomodal',
+              width: '900px',
+              height: 'auto',
+              disableClose: true,
+              // data: { data: this.trainingLessonData }
+            });
+            dialog_tran.afterClosed().subscribe(result => {
+              // return dialog data as result
+              console.log("dialog_tran result==>",result);
+              if(result == true){
+                // continue clicked
+                curl = curl + '/' + last_lesson_id;
+                this.router.navigateByUrl(curl);
+              }else{
+                // from the first clicked
+                curl = curl + '/' + this.trainingLessonData[0]._id;
+                this.router.navigateByUrl(curl);
+              }
+            })
 
-        this.router.navigateByUrl(curl);
+          }
+          
+        }else{
+          // first lesson is itself not done therefore no choise
+          curl = curl + '/' + this.trainingLessonData[0]._id;
+          console.log('no lesson id', this.trainingLessonData[0], 'curl', curl, window.location);
+          this.router.navigateByUrl(curl);
+        }
+        
+        
+        
+      }else{
+        //case no lesson data found ?logic pending
+        console.log("case no lesson data found")
       }
 
 
@@ -2169,6 +2221,37 @@ export class CloseVideoModalComponent {
   }
 }
 // Sourodip Dialog video modal close
+
+// Sourodip Dialog training centre continue or resume modal
+@Component({
+  selector: 'training_center_continue_resume_dialog',
+  templateUrl: 'training_center_continue_resume_dialog.html',
+  styleUrls: ['preview-video-content-dialog.css']
+})
+export class TrainingCenterContinueResumeComponent {
+  constructor(
+    public dialogRef: MatDialogRef<TrainingCenterContinueResumeComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData8,
+    public snakBar: MatSnackBar
+  ) { }
+  onlessonresume(){
+    // clicked resume go to next training
+    console.log("onlessonresume")
+    this.dialogRef.close(true)
+  }
+  onlessonredo(){
+    // clicked redo go to first training
+    console.log("onlessonredo")
+    let flag_id = ''
+    
+    this.dialogRef.close(false)
+  }
+  
+}
+
+// Sourodip Dialog training centre continue or resume modal
+
+
 @Component({
   selector: 'lessonquiz',
   templateUrl: './lesson_betoparedes_quiz.html'
