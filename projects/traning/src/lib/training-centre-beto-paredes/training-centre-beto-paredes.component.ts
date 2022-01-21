@@ -875,7 +875,11 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
         }, 500);
         // // // // // // // console.log("souresh test", this.nextdata);
         // }
-        this.trainingDataListener.emit({'markasdonelistner':true})
+        if(lastflag == true) {
+          // on the last mark as done emit listner
+          this.trainingDataListener.emit({'markasdonelistner':true})
+        }
+        
         break;
       case 'next_go':
         if (this.trainingLessonData[i + 1]) {
