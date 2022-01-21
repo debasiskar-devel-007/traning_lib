@@ -111,7 +111,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   }
 
   trainingDataListener(val) {
-    console.log(val, '+++++++++++-----------------------+++++')
+    console.log('listner emitter val ==>',val)
   }
 
 }
