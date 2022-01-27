@@ -81,19 +81,19 @@
                           item.video_description }}
                         </p>
                         <p *ngIf='item.video_description.length > 120 && shwmorevideoflg==false'>{{
-                          item.video_description | slice:0:120}}
+                          (item.video_description | slice:0:120) + '...'}}
                         </p>
-                        <p class='greatercls' *ngIf='item.video_description.length > 120 && shwmorevideoflg==true'>{{
-                          item.video_description }}</p>
+                        <!-- <p class='greatercls' *ngIf='item.video_description.length > 120 && shwmorevideoflg==true'>{{
+                          item.video_description }}</p> -->
                         <p *ngIf='item.video_description.length < 120'>{{ item.video_description }}</p>
                         <span class="shwmrcls" *ngIf='item.video_description.length > 120 && shwmorevideoflg==false'>
                           <button mat-raised-button (click)="shwmorevideoflg=true">
-                            Show More ..
+                            Show More
                           </button>
                         </span>
                         <span class='shwlesscls' *ngIf='item.video_description.length > 120 && shwmorevideoflg==true'>
                           <button mat-raised-button (click)="shwmorevideoflg=false">
-                            Show Less ...
+                            Show Less
                           </button>
                         </span>
                       </div>
@@ -310,8 +310,8 @@
                           slice:0:120}}
                         </p>
 
-                        <p class='greatercls' *ngIf='item.file_desc.length > 120 && shwmorefileflg==true'>{{
-                          item.file_desc }}</p>
+                        <!-- <p class='greatercls' *ngIf='item.file_desc.length > 120 && shwmorefileflg==true'>{{
+                          item.file_desc }}</p> -->
                         <p *ngIf='item.file_desc.length < 120'>{{ item.file_desc }}</p>
                         <span class="shwmrcls" *ngIf='item.file_desc.length > 120 && shwmorefileflg==false'>
                           <button mat-raised-button (click)="shwmorefileflg=true">
