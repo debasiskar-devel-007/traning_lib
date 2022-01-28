@@ -462,25 +462,25 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
       }
       if (this.trainingLessonData[0] != null && this.trainingLessonData[0]._id != null) {
         // training id exists but lesson id does not exists
-        if(this.trainingLessonData[0].is_done != null && this.trainingLessonData[0].is_done == true){
+        if (this.trainingLessonData[0].is_done != null && this.trainingLessonData[0].is_done == true) {
           let last_lesson_id = ''
           // first lesson is done and is_done flag exists
           for (const i in this.trainingLessonData) {
             // loop for fetching last lesson done id
-            if(this.trainingLessonData[i].is_done == undefined ){
+            if (this.trainingLessonData[i].is_done == undefined) {
               // after next lesson id , is_done does not exists
               last_lesson_id = this.trainingLessonData[i]._id;
               break;
             }
-      
+
           }
-          
-          if(last_lesson_id==''){ 
+
+          if (last_lesson_id == '') {
             // if all lesson are completed redirect to first lesson
             // curl = curl + '/' + this.trainingLessonData[((this.trainingLessonData.length) -1)]._id; //for routing to last lesson
             curl = curl + '/' + this.trainingLessonData[0]._id;
             this.router.navigateByUrl(curl);
-          }else{
+          } else {
             // not all lesson completed and next lesson id found
             const dialog_tran = this.dialog.open(TrainingCenterContinueResumeComponent, {
               panelClass: 'lesson_videomodal',
@@ -491,12 +491,12 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
             });
             dialog_tran.afterClosed().subscribe(result => {
               // return dialog data as result
-              console.log("dialog_tran result==>",result);
-              if(result == true){
+              console.log("dialog_tran result==>", result);
+              if (result == true) {
                 // continue clicked
                 curl = curl + '/' + last_lesson_id;
                 this.router.navigateByUrl(curl);
-              }else{
+              } else {
                 // from the first clicked
                 curl = curl + '/' + this.trainingLessonData[0]._id;
                 this.router.navigateByUrl(curl);
@@ -504,17 +504,17 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
             })
 
           }
-          
-        }else{
+
+        } else {
           // first lesson is itself not done therefore no choise
           curl = curl + '/' + this.trainingLessonData[0]._id;
           console.log('no lesson id', this.trainingLessonData[0], 'curl', curl, window.location);
           this.router.navigateByUrl(curl);
         }
-        
-        
-        
-      }else{
+
+
+
+      } else {
         //case no lesson data found ?logic pending
         console.log("case no lesson data found")
       }
@@ -875,11 +875,11 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
         }, 500);
         // // // // // // // console.log("souresh test", this.nextdata);
         // }
-        if(lastflag == true) {
+        if (lastflag == true) {
           // on the last mark as done emit listner
-          this.trainingDataListener.emit({'markasdonelistner':true})
+          this.trainingDataListener.emit({ 'markasdonelistner': true })
         }
-        
+
         break;
       case 'next_go':
         if (this.trainingLessonData[i + 1]) {
@@ -2239,19 +2239,19 @@ export class TrainingCenterContinueResumeComponent {
     @Inject(MAT_DIALOG_DATA) public data: DialogData8,
     public snakBar: MatSnackBar
   ) { }
-  onlessonresume(){
+  onlessonresume() {
     // clicked resume go to next training
     console.log("onlessonresume")
     this.dialogRef.close(true)
   }
-  onlessonredo(){
+  onlessonredo() {
     // clicked redo go to first training
     console.log("onlessonredo")
     let flag_id = ''
-    
+
     this.dialogRef.close(false)
   }
-  
+
 }
 
 // Sourodip Dialog training centre continue or resume modal
@@ -2269,7 +2269,7 @@ export class LessonQuizBetoparedesModalComponent {
   public correctQuizVal: any = [];
   public resultVal: any;
   public resultStatus: any = 'Failed';
-  public indexVal: any = 1;
+  public indexVal: number = 1;
   public progressSpinner: any = {
     mode: 'indeterminate',
     loading: true,
@@ -2299,7 +2299,22 @@ export class LessonQuizBetoparedesModalComponent {
 
   //next quiz
   nextQuizRecord(val: any) {
-    this.indexVal = this.indexVal + 1;
+    console.log(this.indexVal, 'indexval');
+
+    let result = this.correctQuizVal.map(a => a.questionId);
+
+    console.log('val in next quiz', val, result, this.correctQuizVal, 'curent index', this.data.quiz_data[this.indexVal], 'next index', this.data.quiz_data[this.indexVal + 1], 'second next index', this.data.quiz_data[this.indexVal + 2]);
+
+    // if (this.indexVal == 0)
+    if (this.data.quiz_data[this.indexVal] != null && result.includes(this.data.quiz_data[this.indexVal]._id)) {
+      console.log('already answered question found');
+      this.indexVal++;
+      this.nextQuizRecord(this.data.quiz_data[this.indexVal - 1]);
+      return;
+      // this.indexVal += 2;
+
+    } else
+      this.indexVal++;
     // // // // // // console.log(this.CheckedAnswer, 'CheckedAnswer', this.quizVal)
     if (this.quizVal != '') {
       this.CheckedAnswer.push(this.quizVal)
@@ -2327,6 +2342,8 @@ export class LessonQuizBetoparedesModalComponent {
               }
             }
           }
+          this.correctQuizVal = [...new Set(this.correctQuizVal)];
+          this.CheckedAnswer = [...new Set(this.CheckedAnswer)];
 
           if (this.correctQuizVal.length > 0) {
             const result = (this.correctQuizVal.length / this.data.quiz_data.length) * 100
@@ -2343,6 +2360,8 @@ export class LessonQuizBetoparedesModalComponent {
         }
       }
     }
+
+
   }
 
   saveQuizRecord(val) {
@@ -2382,11 +2401,34 @@ export class LessonQuizBetoparedesModalComponent {
   }
 
   startQuizAgain(val) {
-    this.CheckedAnswer = [];
-    this.correctQuizVal = [];
-    this.resultVal = 0
-    this.resultStatus = 'Failed';
-    this.quizData = '';
+    console.log('this.quizData', this.data.quiz_data, 'this.CheckedAnswer', this.CheckedAnswer, 'this.correctQuizVal', this.correctQuizVal)
+    // this.CheckedAnswer = [];
+    // this.correctQuizVal = [];
+    // this.resultVal = 0
+    // this.resultStatus = 'Failed';
+    // this.quizData = '';
+    let hasanswered: number = 0;
+    for (let n in this.data.quiz_data) {
+      console.log(this.data.quiz_data[n], n, 'data quiz in start again !! ', this.data.quiz_data[n]._id)
+      hasanswered = 0;
+      for (let b in this.correctQuizVal) {
+        console.log(this.correctQuizVal[b], b);
+
+        if (this.correctQuizVal[b].questionId == this.data.quiz_data[n]._id && this.correctQuizVal[b].isCorrect == 1) {
+          hasanswered = 1;
+        }
+        // questionId
+
+      }
+      if (hasanswered == 0) {
+        this.quizData = this.data.quiz_data[n];
+        this.indexVal = Number(n) + 1;
+        return;
+
+
+
+      }
+    }
     this.quizData = this.data.quiz_data[0];
     this.indexVal = 1;
   }

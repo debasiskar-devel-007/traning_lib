@@ -14,10 +14,8 @@
                 <br>
 
 
-                <mat-radio-group aria-labelledby="example-radio-group-label" class="exampleradiogroupcls"
-                    [(ngModel)]="quizVal">
-                    <mat-radio-button class="example-radio-button" *ngFor="let item of quizData.answer;let i=index"
-                        [value]="item">
+                <mat-radio-group aria-labelledby="example-radio-group-label" class="exampleradiogroupcls" [(ngModel)]="quizVal">
+                    <mat-radio-button class="example-radio-button" *ngFor="let item of quizData.answer;let i=index" [value]="item">
                         {{item.answer}}
                     </mat-radio-button>
                 </mat-radio-group>
@@ -39,8 +37,8 @@
                     <h2 class="resultStatus">
                         Status : <span *ngIf="resultStatus == 'Success'" style="color: forestgreen;"> {{resultStatus}}
                         </span>
-                        <span *ngIf="resultStatus == 'Failed'" style="color:rgb(211, 52, 52);"> {{resultStatus}} </span>
-                    </h2>
+                <span *ngIf="resultStatus == 'Failed'" style="color:rgb(211, 52, 52);"> {{resultStatus}} </span>
+                </h2>
 
                 </span>
             </mat-card-content>
@@ -60,14 +58,11 @@
                     clear
                 </span></button>
 
-            <button *ngIf="quizData == '' && resultStatus == 'Success'" class="btnbluecls" mat-raised-button
-                color="accent" (click)="saveQuizRecord(quizData)">Continue</button>
+            <button *ngIf="quizData == '' && resultStatus == 'Success'" class="btnbluecls" mat-raised-button color="accent" (click)="saveQuizRecord(quizData)">Continue</button>
 
-            <button *ngIf="quizData == '' && resultStatus == 'Failed'" class="btnbluecls" mat-raised-button
-                color="primary" (click)="startQuizAgain(quizData)">Take Quiz Again</button>
+            <button *ngIf="quizData == '' && resultStatus == 'Failed'" class="btnbluecls" mat-raised-button color="primary" (click)="startQuizAgain(quizData)">Take Quiz Again</button>
 
-            <button *ngIf="quizData != null && quizData != ''" class="btnbluecls" mat-raised-button color="accent"
-                (click)="nextQuizRecord(quizData)">Next <span class="material-icons">
+            <button *ngIf="quizData != null && quizData != ''" class="btnbluecls" mat-raised-button color="accent" (click)="nextQuizRecord(quizData)">Next <span class="material-icons">
                     arrow_forward_ios
                 </span></button>
 
