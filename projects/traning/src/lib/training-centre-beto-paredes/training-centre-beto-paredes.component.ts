@@ -799,6 +799,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   }
   nextbutton(value: any, i: number) {
     // // // // console.log(value, 'value', this.lessonDataList)
+    this.shwmorevideoflg=false; // description show more flag set to false for next lesson
     let index;
     this.progressSpinner = {
       mode: 'indeterminate',
@@ -2303,7 +2304,7 @@ export class LessonQuizBetoparedesModalComponent {
 
     let result = this.correctQuizVal.map(a => a.questionId);
 
-    console.log('val in next quiz', val, result, this.correctQuizVal, 'curent index', this.data.quiz_data[this.indexVal], 'next index', this.data.quiz_data[this.indexVal + 1], 'second next index', this.data.quiz_data[this.indexVal + 2]);
+    // console.log('val in next quiz', val, result, this.correctQuizVal, 'curent index', this.data.quiz_data[this.indexVal], 'next index', this.data.quiz_data[this.indexVal + 1], 'second next index', this.data.quiz_data[this.indexVal + 2]);
 
     // if (this.indexVal == 0)
     if (this.data.quiz_data[this.indexVal] != null && result.includes(this.data.quiz_data[this.indexVal]._id)) {
