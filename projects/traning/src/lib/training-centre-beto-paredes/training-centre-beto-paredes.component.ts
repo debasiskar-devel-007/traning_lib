@@ -799,7 +799,7 @@ export class TrainingCentreBetoParedesComponent implements OnInit {
   }
   nextbutton(value: any, i: number) {
     // // // // console.log(value, 'value', this.lessonDataList)
-    this.shwmorevideoflg=false; // description show more flag set to false for next lesson
+    this.shwmorevideoflg = false; // description show more flag set to false for next lesson
     let index;
     this.progressSpinner = {
       mode: 'indeterminate',
@@ -1790,7 +1790,7 @@ export class BetoparedesLessonVideoModalComponent {
   player: videojs.Player;
   video_currenttime: any = '';
   public video_duration: any = '';
-  public video_end_time: any = '0:0:0';
+  public video_end_time: any = 0;
   public videotimeflag: boolean = false;
   public video_percent: any = 0;
   public playpauseflag: any = false;

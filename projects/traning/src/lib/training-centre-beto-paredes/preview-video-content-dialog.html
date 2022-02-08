@@ -6,7 +6,7 @@
         </div>
 
         <div mat-dialog-content class="videocls">
-            <div class="video_timecls videoerror" *ngIf="video_end_time != null ">
+            <div class="video_timecls videoerror" *ngIf="video_end_time != null  ">
                 Video Duration : {{video_end_time}}
                 <!-- <span>ddd</span> -->
             </div>
@@ -58,7 +58,7 @@
                             <mat-icon>forward_10</mat-icon>
                         </button>
                     </ng-container>
-                    <button (click)="forcefinish()"> finish this </button>
+                    <!-- <button (click)="forcefinish()"> finish this </button> -->
 
                     <span class="videotime">{{ video_time }}/{{ video_end_time }}</span>
                     <button (click)="openfullscreen()" class="openfullscreen">
