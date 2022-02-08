@@ -2065,7 +2065,6 @@ export class BetoparedesLessonVideoModalComponent {
       console.log("Non Skippabke Video | ", "video_skippable Value ==>", this.data.data.video_skippable)
       const dialog2 = this.dialog.open(CloseVideoModalComponent, {
         panelClass: 'lesson_videomodal',
-        width: '900px',
         height: 'auto',
         disableClose: true
         // data: { data: val }
