@@ -20,7 +20,7 @@ export class HttpService {
   // public serverUrl: any = 'https://obq0e0nxhk.execute-api.us-east-1.amazonaws.com/production/api1/';//for dna  backend server url
   // public serverUrl: any = 'https://wfr9bu9th2.execute-api.us-east-1.amazonaws.com/dev/api8/';//for PECE server url
   // public serverUrl: any = 'http://localhost:3000/api8/';//for local server url
-  public serverUrl: any = 'https://z2oo2a8oq9.execute-api.us-east-1.amazonaws.com/dev/api1/'; // for beto paredes backend server url
+  public serverUrl: any = 'https://qzgvkmkqh6.execute-api.us-east-1.amazonaws.com/production/api8/'; // for beto paredes backend server url
   public addendpointUrl: any;
   public updateendpointUrl: any;
   public deletesingle_endpointUrl: any;

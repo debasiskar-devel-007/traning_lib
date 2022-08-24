@@ -1227,6 +1227,7 @@ export class peceLessonVideoModalComponent {
       }
     }
   };
+  public playflag:boolean = false;
   constructor(public dialogRef: MatDialogRef<peceLessonVideoModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData2,
     private sanitizer: DomSanitizer,
@@ -1237,6 +1238,8 @@ export class peceLessonVideoModalComponent {
     this.video_url = myArray.join('/');
     this.video_url1 = this.sanitizer.bypassSecurityTrustResourceUrl(this.video_url);
     this.videoplayflag = true;
+    //videojs('#my-video-modal').dispose();
+   // console.log(this.player, 'this.player')
     setTimeout(() => {
       this.player = videojs('#my-video-modal');
       this.player.controls(false); // TO CONTROL FALSE
@@ -1249,11 +1252,7 @@ export class peceLessonVideoModalComponent {
     if (this.data.data.video_skippable !== true) {
       setTimeout(() => {
         // let videoPlayer = <HTMLVideoElement>document.getElementById('my-video-modal');
-
-
         this.player.play();
-
-
       }, 2000);
     }
   }
@@ -1261,6 +1260,12 @@ export class peceLessonVideoModalComponent {
 
   }
   onprocess() {
+    if(this.playflag){
+   // console.log('onprocess>>>>>>');
+      return;
+    }
+    //return;
+    else{
     setTimeout(() => {
       this.video_currenttime = parseInt(this.player.currentTime());
       const sec_num = parseInt(this.video_currenttime, 10);
@@ -1282,26 +1287,34 @@ export class peceLessonVideoModalComponent {
 
 
       this.video_percent = (this.video_currenttime / this.video_duration) * 100;
+    
 
-    }, 1000);
+    
     let completeflag = false;
-    if (this.video_percent === 100) {
+   // console.log("video_percent>>",this.video_percent);
+    if (this.video_percent === 100 && !this.playflag) {
       // this.close_video();
       completeflag = true;
+      this.playflag = true;
+      this.pausebtn();
       this.close_video();
       return;
 
     }
+  }, 1000);
+  }
     // if (completeflag) {
 
     // }
-
   }
+
+
   savePlayer(event) {
     console.log(event, 'save');
   }
 
   close_video() {
+    //console.log("CLOSSSEEEEEEEEEEE")
     var endpoint = this.data.endpoint;
     var video_data: any = {
       user_id: this.data.user_id,
@@ -1322,15 +1335,24 @@ export class peceLessonVideoModalComponent {
           // getTrainingCenterlistFunctionwithLessonId(associated_training: any, type: any, user_id: any, _id: any)
           this.data.flag = 'yes';
           this.dialogRef.close(this.data.flag);
+          setTimeout(() => {
+            this.player.dispose();
+            }, 1000);
           this.snakBar.open('Successfully Completed The Lesson Video..!', 'OK', {
             duration: 5000
           });
+
 
         }
       });
     }
     if (this.data.data.video_skippable === true) {
       this.dialogRef.close(this.data.flag);
+     // console.log("vvv",this.player.currentTime())
+      setTimeout(() => {
+      this.player.dispose();
+      }, 1000);
+
     }
 
   }
@@ -1348,11 +1370,11 @@ export class peceLessonVideoModalComponent {
     this.onprocess();
 
     this.player.play();
-    // console.log(this.player.cache_.currentTime, this.player.cache_.duration);
+     //console.log(this.player.cache_.currentTime, this.player.cache_.duration);
 
   }
   pausebtn() {  // FOR PAUSE THE VIDEO.
-    // console.log(this.player.cache_.currentTime, this.player.cache_.duration);
+     //console.log(this.player.cache_.currentTime, this.player.cache_.duration);
     this.playpauseflag = false;
 
     this.player.pause();
@@ -1360,10 +1382,14 @@ export class peceLessonVideoModalComponent {
 
   closedModals() {
     // // // // // //console.log()
+    this.pausebtn();
     this.snakBar.open('Video Lesson Has Not Been Completed ...!', 'OK', {
       duration: 4000
     })
     this.dialogRef.close()
+    setTimeout(() => {
+      this.player.dispose();
+      }, 2000);
   }
 
   // onStateChange(event) {
@@ -1453,6 +1479,8 @@ export class peceLessonVideoModalComponent {
   //   }
 
   // }
+
+
 }
 
 
